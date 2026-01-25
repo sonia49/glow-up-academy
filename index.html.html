@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Glow Up Academy ✨</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="auth-screen" class="auth-overlay">
+    <div class="auth-card">
+        <div style="font-size: 50px;">✨</div>
+        <h2 style="font-family: 'Fredoka'; color: var(--neon-pink);">Glow Up Login</h2>
+        <p style="font-size: 14px; color: #888; margin-bottom: 20px;">Prête pour ta dose d'éclat ?</p>
+        
+        <input type="email" id="email" placeholder="Email (ex: star@pink.com)">
+        <input type="password" id="password" placeholder="Mot de passe">
+        
+        <button onclick="handleLogin()" class="option-btn" style="background:var(--neon-pink); color:white; border:none;">SE CONNECTER</button>
+        <button onclick="handleSignUp()" class="link-btn">Pas encore de compte ? Créer ici 🎀</button>
+    </div>
+</div>
+
+<header>
+    <h1>Glow Up Academy ✨</h1>
+    <div class="diamond-count">💎 <span id="user-diamonds">0</span></div>
+</header>
+
+<div class="container">
+    <div id="home" class="screen active">
+        <div class="avatar-display" id="main-avatar">👸</div>
+        <div id="rank-name" style="text-align:center; font-weight:700; color:var(--neon-pink); margin-bottom:20px;">Star en devenir</div>
+
+        <div class="widget-grid">
+            <div class="widget"><div id="user-points">0</div><small>POINTS XP</small></div>
+            <div class="widget"><div id="user-level">1</div><small>NIVEAU</small></div>
+        </div>
+
+        <h3>Tes Missions 🎀</h3>
+        <div class="quiz-card" onclick="startQuiz('saca')"><span>SA ou ÇA ?</span><span>🎀</span></div>
+        <div class="quiz-card" onclick="startQuiz('est')"><span>C'EST ou S'EST ?</span><span>✨</span></div>
+        <div class="quiz-card" onclick="startQuiz('er')"><span>É ou ER ?</span><span>👗</span></div>
+    </div>
+
+    <div id="quiz" class="screen">
+        <div class="progress-bar"><div id="progress" style="width:0%"></div></div>
+        <div class="question-box"><h2 id="q-text">Question...</h2></div>
+        <div id="options"></div>
+    </div>
+
+    <div id="result" class="screen" style="text-align:center;">
+        <div style="font-size:80px; margin:20px;">🎉</div>
+        <h2 id="res-score" style="font-size:40px; color:var(--neon-pink);">0/20</h2>
+        <p id="res-gain" style="font-weight:700; color:#00d2ff; margin-bottom:30px;">+0 Diamants 💎</p>
+        <button class="option-btn" style="background:var(--neon-pink); color:white;" onclick="showScreen('home')">CONTINUER</button>
+    </div>
+</div>
+
+<nav class="nav-bar">
+    <div class="nav-item" onclick="showScreen('home')">🏠</div>
+    <div class="nav-item" onclick="logout()">🚪</div>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>

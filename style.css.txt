@@ -1,0 +1,30 @@
+:root {
+    --neon-pink: #ff69b4; --soft-pink: #ffb6d9; --pastel-pink: #ffd1dc;
+    --lavender: #e6d5ff; --mint: #caffbf;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
+body { background: linear-gradient(135deg, #ffeef8 0%, #f0f4ff 100%); min-height: 100vh; }
+
+header { background: linear-gradient(135deg, var(--neon-pink), var(--soft-pink)); padding: 20px; text-align: center; color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(255,105,180,0.3); }
+
+.container { max-width: 500px; margin: 0 auto; padding: 15px; padding-bottom: 80px; }
+.screen { display: none; animation: fadeIn 0.4s; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* LOGIN OVERLAY */
+.auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--pastel-pink); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+.auth-card { background: white; padding: 40px 20px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 15px; border: 2px solid #eee; background: #fafafa; font-size: 16px; transition: 0.3s; }
+input:focus { border-color: var(--neon-pink); background: white; outline: none; }
+
+/* ELEMENTS JEU */
+.avatar-display { width: 120px; height: 120px; background: white; border-radius: 50%; margin: 0 auto 10px; border: 5px solid var(--neon-pink); display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+.diamond-count { position: absolute; top: 15px; right: 15px; background: white; padding: 5px 15px; border-radius: 20px; font-weight: 700; color: #00d2ff; }
+.widget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+.widget { background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); font-size: 20px; font-weight: 700; }
+.quiz-card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 2px solid var(--pastel-pink); cursor: pointer; }
+.option-btn { width: 100%; padding: 18px; margin-bottom: 10px; border-radius: 15px; border: 3px solid var(--pastel-pink); background: white; font-weight: 700; font-size: 18px; cursor: pointer; }
+.nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+.link-btn { background: none; border: none; color: var(--neon-pink); margin-top: 15px; cursor: pointer; text-decoration: underline; }
