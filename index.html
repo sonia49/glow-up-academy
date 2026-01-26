@@ -10,7 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<body>
 
+    <div class="settings-menu">
+        <p>🎨 Personnalisation :</p>
+        <button class="btn-theme" onclick="changeTheme('pink')" style="background: #ff85a2; color: white;">Mode Rose</button>
+        <button class="btn-theme" onclick="changeTheme('blue')" style="background: #85a2ff; color: white;">Mode Bleu</button>
+        <button class="btn-theme" onclick="toggleDys()" style="background: #ffffff; border: 1px solid #ccc;">Police DYS</button>
+    </div>
+    <div id="auth-container">
+        </div>
 <div id="auth-screen" class="auth-overlay">
     <div class="auth-card">
         <div style="font-size: 50px;">✨</div>
@@ -68,3 +77,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+
