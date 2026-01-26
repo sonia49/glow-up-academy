@@ -1,167 +1,51 @@
-// TES INFOS SUPABASE
-const SUPABASE_URL = "https://lcbwehiwjowgthazrydy.supabase.co";
-const SUPABASE_KEY = "sb_publishable_xgO0Nt7F-URpWSwS0zC8Zg_c8s9uA8Q";
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// --- CONFIGURATION ---
+const SUPABASE_URL = "TON_URL_ICI";
+const SUPABASE_KEY = "TA_CLE_ANON_ICI";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let state = { pts: 0, diamonds: 50, avatar: '👸', userId: null };
-let currentQ = 0, score = 0, currentTheme = '';
+// --- FONCTIONS DE CONNEXION ---
 
-// --- AUTHENTIFICATION ---
 async function handleSignUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const { data, error } = await _supabase.auth.signUp({ email, password });
-    if (error) alert("Erreur : " + error.message);
-    else alert("Super ! Vérifie tes emails pour confirmer et te connecter. ✨");
+
+    const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+    });
+
+    if (error) {
+        alert("Erreur d'inscription : " + error.message);
+    } else {
+        alert("Succès ! Tu peux maintenant te connecter.");
+        // Création du profil par défaut dans la table
+        if (data.user) {
+            await supabase.from('profiles').insert([
+                { id: data.user.id, diamonds: 50, theme: 'pink' }
+            ]);
+        }
+    }
 }
 
 async function handleLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
-    if (error) alert("Mince : " + error.message);
-    else {
-        state.userId = data.user.id;
-        await syncData(); // On récupère les diamants sauvés
-        document.getElementById('auth-screen').style.display = 'none';
-        confetti({ particleCount: 150, spread: 70 });
-    }
-}
 
-// --- BASE DE DONNÉES ---
-async function syncData() {
-    // On essaie de récupérer le profil
-    let { data, error } = await _supabase.from('profiles').select('*').eq('id', state.userId).single();
-    
-    if (error && error.code === 'PGRST116') {
-        // Si le profil n'existe pas, on le crée
-        const { data: newProfile } = await _supabase.from('profiles').insert([
-            { id: state.userId, diamonds: 50, points: 0, avatar: '👸' }
-        ]).select().single();
-        data = newProfile;
-    }
-
-    if (data) {
-        state.diamonds = data.diamonds;
-        state.pts = data.points;
-        state.avatar = data.avatar;
-        updateUI();
-    }
-}
-
-async function saveProgress() {
-    if (!state.userId) return;
-    await _supabase.from('profiles').update({ 
-        diamonds: state.diamonds, 
-        points: state.pts 
-    }).eq('id', state.userId);
-}
-
-// --- LOGIQUE DU JEU ---
-const quizzes = {
-    'saca': [{ q: "Elle a pris ___ sac.", a: "sa" }, { q: "___ va bien.", a: "ça" }],
-    'est': [{ q: "___ super !", a: "C'est" }, { q: "Il ___ lavé.", a: "s'est" }],
-    'er': [{ q: "Aller mang___.", a: "er" }, { q: "J'ai mang___.", a: "é" }]
-};
-
-function startQuiz(theme) {
-    currentTheme = theme; currentQ = 0; score = 0;
-    showScreen('quiz');
-    nextQuestion();
-}
-
-function nextQuestion() {
-    const qData = quizzes[currentTheme][currentQ];
-    document.getElementById('q-text').innerText = qData.q.replace('___', '______');
-    document.getElementById('progress').style.width = (currentQ * (100/quizzes[currentTheme].length)) + '%';
-    const options = document.getElementById('options');
-    options.innerHTML = '';
-    
-    let choices = currentTheme === 'saca' ? ['sa', 'ça'] : (currentTheme === 'est' ? ["C'est", "S'est"] : ["é", "er"]);
-
-    choices.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn'; btn.innerText = c;
-        btn.onclick = () => {
-            if(c.toLowerCase() === qData.a.toLowerCase()) { score += 2; confetti({particleCount: 20}); }
-            currentQ++;
-            if(currentQ < quizzes[currentTheme].length) nextQuestion();
-            else finishQuiz();
-        };
-        options.appendChild(btn);
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
     });
+
+    if (error) {
+        alert("Erreur de connexion : " + error.message);
+    } else {
+        alert("Bienvenue !");
+        checkUser(); // Lance le chargement du jeu
+    }
 }
 
-function finishQuiz() {
-    let gain = score * 5;
-    state.diamonds += gain;
-    state.pts += (score * 2);
-    document.getElementById('res-score').innerText = score + "/20";
-    document.getElementById('res-gain').innerText = "+" + gain + " Diamants 💎";
-    showScreen('result');
-    updateUI();
-    saveProgress(); // SAUVEGARDE DANS SUPABASE
-}
+// --- FONCTIONS DE PERSONNALISATION ---
 
-function updateUI() {
-    document.getElementById('user-diamonds').innerText = state.diamonds;
-    document.getElementById('user-points').innerText = state.pts;
-    document.getElementById('main-avatar').innerText = state.avatar;
-    document.getElementById('user-level').innerText = Math.floor(state.pts / 100) + 1;
-}
-
-function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
-
-function logout() {
-    _supabase.auth.signOut();
-    location.reload();
-}
-/* --- AJOUT DES OPTIONS DE PERSONNALISATION --- */
-
-:root {
-    --primary-color: #ff85a2; 
-    --bg-color: #fff0f3;
-    --font-family: 'Poppins', sans-serif;
-}
-
-/* On change les couleurs si le body a la classe "blue-theme" */
-body.blue-theme {
-    --primary-color: #85a2ff;
-    --bg-color: #f0f3ff;
-}
-
-/* On change l'écriture si le body a la classe "dys-mode" */
-body.dys-mode {
-    --font-family: 'OpenDyslexic', 'Arial', sans-serif;
-    letter-spacing: 0.15rem;
-    word-spacing: 0.3rem;
-    line-height: 1.8;
-}
-
-/* Applique les variables à tout le site */
-body {
-    background-color: var(--bg-color) !important;
-    font-family: var(--font-family) !important;
-    transition: 0.3s;
-}
-
-/* Tes boutons utiliseront maintenant la couleur dynamique */
-button, .btn {
-    background-color: var(--primary-color);
-    transition: 0.3s;
-}
-
-.settings-menu {
-    background: white;
-    padding: 15px;
-    border-radius: 20px;
-    margin: 10px 0;
-    border: 2px solid var(--primary-color);
-}
-// Fonction pour changer la couleur
 async function changeTheme(color) {
     const body = document.body;
     if (color === 'blue') {
@@ -170,23 +54,33 @@ async function changeTheme(color) {
         body.classList.remove('blue-theme');
     }
 
-    // Sauvegarder dans Supabase (optionnel mais recommandé)
-    const user = supabase.auth.user();
+    // Sauvegarde du choix sur Supabase
+    const { data: { user } } = await supabase.auth.getUser();
     if (user) {
         await supabase.from('profiles').update({ theme: color }).eq('id', user.id);
     }
 }
 
-// Fonction pour le mode Dys
 function toggleDys() {
     document.body.classList.toggle('dys-mode');
 }
 
-// Fonction pour charger le thème au démarrage
-async function loadUserTheme() {
-    const user = supabase.auth.user();
+// --- VÉRIFICATION AU DÉMARRAGE ---
+
+async function checkUser() {
+    const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-        const { data } = await supabase.from('profiles').select('theme').eq('id', user.id).single();
-        if (data && data.theme) changeTheme(data.theme);
+        // Cacher le login, montrer le jeu
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('app-container').style.display = 'block';
+        
+        // Charger le thème préféré de l'utilisateur
+        const { data: profile } = await supabase.from('profiles').select('theme').eq('id', user.id).single();
+        if (profile && profile.theme) {
+            changeTheme(profile.theme);
+        }
     }
 }
+
+// On vérifie si l'utilisateur est déjà connecté quand on ouvre la page
+window.onload = checkUser;
