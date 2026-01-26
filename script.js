@@ -50,3 +50,22 @@ async function checkUser() {
 }
 
 window.onload = checkUser;
+async function handleLogout() {
+    // 1. On demande à Supabase de fermer la session
+    const { error } = await mySupabase.auth.signOut();
+    
+    if (error) {
+        alert("Erreur lors de la déconnexion : " + error.message);
+    } else {
+        // 2. Une fois déconnecté, on force le retour à l'écran de login
+        document.getElementById('app-container').style.display = 'none';
+        document.getElementById('auth-container').style.display = 'block';
+        
+        // 3. On vide les champs pour plus de sécurité
+        document.getElementById('email').value = "";
+        document.getElementById('password').value = "";
+        
+        alert("Tu as été déconnecté(e). À bientôt ! ✨");
+    }
+}
+
