@@ -1,33 +1,22 @@
-// --- CONFIGURATION ---
+// --- 1. CONFIGURATION ---
 const URL_PROJET = "https://lcbwehiwjowgthazrydy.supabase.co"; 
 const CLE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY";
 
-// Initialisation sécurisée
-var mySupabase;
-try {
-    mySupabase = window.supabase.createClient(URL_PROJET, CLE_ANON);
-    console.log("Supabase est prêt !");
-} catch (e) {
-    console.error("Erreur d'initialisation Supabase :", e);
-}
+// On crée le client avec un nom unique pour éviter les erreurs de doublons
+const myApp = window.supabase.createClient(URL_PROJET, CLE_ANON);
 
-// --- FONCTIONS ---
+// --- 2. CONNEXION ET INSCRIPTION ---
 
 async function handleLogin() {
-    console.log("Bouton Connexion cliqué !"); // Si ça s'affiche, c'est que le bouton marche
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const { data, error } = await mySupabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
+    const { data, error } = await myApp.auth.signInWithPassword({ email, password });
 
     if (error) {
         alert("Erreur : " + error.message);
     } else {
-        alert("Connecté !");
-        checkUser();
+        checkUser(); 
     }
 }
 
@@ -35,37 +24,52 @@ async function handleSignUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const { data, error } = await mySupabase.auth.signUp({ email, password });
+    const { data, error } = await myApp.auth.signUp({ email, password });
 
-    if (error) alert(error.message);
-    else alert("Inscription réussie !");
+    if (error) {
+        alert("Erreur : " + error.message);
+    } else {
+        alert("Inscription réussie !");
+    }
 }
+
+async function handleLogout() {
+    await myApp.auth.signOut();
+    location.reload(); // Recharge la page proprement
+}
+
+// --- 3. GESTION DES THÈMES ---
+
+function changeTheme(color) {
+    if (color === 'blue') {
+        document.body.classList.add('blue-theme');
+    } else {
+        document.body.classList.remove('blue-theme');
+    }
+}
+
+function toggleDys() {
+    document.body.classList.toggle('dys-mode');
+}
+
+// --- 4. VÉRIFICATION AUTOMATIQUE ---
 
 async function checkUser() {
-    const { data: { user } } = await mySupabase.auth.getUser();
-    if (user) {
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('app-container').style.display = 'block';
-    }
-}
-
-window.onload = checkUser;
-async function handleLogout() {
-    // 1. On demande à Supabase de fermer la session
-    const { error } = await mySupabase.auth.signOut();
+    const { data: { user } } = await myApp.auth.getUser();
     
-    if (error) {
-        alert("Erreur lors de la déconnexion : " + error.message);
+    const authDiv = document.getElementById('auth-container');
+    const appDiv = document.getElementById('app-container');
+
+    if (user) {
+        // Utilisateur connecté : on montre le jeu
+        if (authDiv) authDiv.style.display = 'none';
+        if (appDiv) appDiv.style.display = 'block';
     } else {
-        // 2. Une fois déconnecté, on force le retour à l'écran de login
-        document.getElementById('app-container').style.display = 'none';
-        document.getElementById('auth-container').style.display = 'block';
-        
-        // 3. On vide les champs pour plus de sécurité
-        document.getElementById('email').value = "";
-        document.getElementById('password').value = "";
-        
-        alert("Tu as été déconnecté(e). À bientôt ! ✨");
+        // Utilisateur déconnecté : on montre le login
+        if (authDiv) authDiv.style.display = 'block';
+        if (appDiv) appDiv.style.display = 'none';
     }
 }
 
+// Lancer la vérification dès que la page s'affiche
+window.onload = checkUser;
