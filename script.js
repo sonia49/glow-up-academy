@@ -119,3 +119,45 @@ function logout() {
     _supabase.auth.signOut();
     location.reload();
 }
+/* --- AJOUT DES OPTIONS DE PERSONNALISATION --- */
+
+:root {
+    --primary-color: #ff85a2; 
+    --bg-color: #fff0f3;
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* On change les couleurs si le body a la classe "blue-theme" */
+body.blue-theme {
+    --primary-color: #85a2ff;
+    --bg-color: #f0f3ff;
+}
+
+/* On change l'écriture si le body a la classe "dys-mode" */
+body.dys-mode {
+    --font-family: 'OpenDyslexic', 'Arial', sans-serif;
+    letter-spacing: 0.15rem;
+    word-spacing: 0.3rem;
+    line-height: 1.8;
+}
+
+/* Applique les variables à tout le site */
+body {
+    background-color: var(--bg-color) !important;
+    font-family: var(--font-family) !important;
+    transition: 0.3s;
+}
+
+/* Tes boutons utiliseront maintenant la couleur dynamique */
+button, .btn {
+    background-color: var(--primary-color);
+    transition: 0.3s;
+}
+
+.settings-menu {
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    margin: 10px 0;
+    border: 2px solid var(--primary-color);
+}
