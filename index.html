@@ -9,33 +9,51 @@
 </head>
 <body>
 
-    <div class="settings-menu">
-        <p>🎨 Personnaliser l'apprentissage :</p>
-        <button class="btn-theme" onclick="changeTheme('pink')" style="background: #ff85a2; color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">Mode Rose</button>
-        <button class="btn-theme" onclick="changeTheme('blue')" style="background: #85a2ff; color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">Mode Bleu</button>
-        <button class="btn-theme" onclick="toggleDys()" style="background: #ffffff; border: 1px solid #ccc; padding: 10px; border-radius: 10px; cursor: pointer;">Police DYS (Lecture Facile)</button>
+    <div id="settings-bar" class="settings-menu">
+        <span>🎨 Style :</span>
+        <button class="btn-theme" onclick="changeTheme('pink')" style="background: #ff85a2; color: white;">Rose</button>
+        <button class="btn-theme" onclick="changeTheme('blue')" style="background: #85a2ff; color: white;">Bleu</button>
+        <button class="btn-theme" onclick="toggleDys()" style="background: #ffffff; border: 1px solid #ccc;">Mode DYS</button>
     </div>
 
-    <hr>
-
     <div id="auth-container">
-        <h1>Bienvenue à la Glow Up Academy</h1>
-        <p>Connecte-toi pour gagner des diamants !</p>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Mot de passe" required>
-        <br><br>
-        <button onclick="handleLogin()" class="btn">Se connecter</button>
-        <button onclick="handleSignUp()" class="btn" style="background-color: #ccc;">Créer un compte</button>
+        <div class="card">
+            <h1>✨ Glow Up Academy ✨</h1>
+            <p>Apprends en t'amusant et gagne des diamants !</p>
+            
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Ton email">
+                <input type="password" id="password" placeholder="Ton mot de passe">
+            </div>
+
+            <button onclick="handleLogin()" class="btn">Se connecter</button>
+            <button onclick="handleSignUp()" class="btn-secondary">Créer mon compte</button>
+        </div>
     </div>
 
     <div id="app-container" style="display: none;">
-        <h2>Félicitations !</h2>
-        <div class="stats">
-            <span id="diamond-count">💎 50</span> diamants
+        <div class="card">
+            <h2>Bienvenue dans ton espace ! 💎</h2>
+            
+            <div class="stats-box">
+                <span id="diamond-count">💎 50</span> diamants cumulés
+            </div>
+
+            <hr>
+
+            <div id="game-zone">
+                <h3>Challenge Français :</h3>
+                <p>Trouve la bonne orthographe :</p>
+                <div class="quiz-options">
+                    <button class="btn" onclick="verifierReponse(true)">Un éléphant 🐘</button>
+                    <button class="btn" onclick="verifierReponse(false)">Un élefant</button>
+                </div>
+            </div>
+
+            <hr>
+
+            <button onclick="handleLogout()" class="btn-logout">Se déconnecter</button>
         </div>
-        <p>Tu peux maintenant commencer tes exercices personnalisés.</p>
-        <br>
-        <button onclick="location.reload()" class="btn">Se déconnecter</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
