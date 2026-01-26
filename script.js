@@ -161,3 +161,32 @@ button, .btn {
     margin: 10px 0;
     border: 2px solid var(--primary-color);
 }
+// Fonction pour changer la couleur
+async function changeTheme(color) {
+    const body = document.body;
+    if (color === 'blue') {
+        body.classList.add('blue-theme');
+    } else {
+        body.classList.remove('blue-theme');
+    }
+
+    // Sauvegarder dans Supabase (optionnel mais recommandé)
+    const user = supabase.auth.user();
+    if (user) {
+        await supabase.from('profiles').update({ theme: color }).eq('id', user.id);
+    }
+}
+
+// Fonction pour le mode Dys
+function toggleDys() {
+    document.body.classList.toggle('dys-mode');
+}
+
+// Fonction pour charger le thème au démarrage
+async function loadUserTheme() {
+    const user = supabase.auth.user();
+    if (user) {
+        const { data } = await supabase.from('profiles').select('theme').eq('id', user.id).single();
+        if (data && data.theme) changeTheme(data.theme);
+    }
+}
