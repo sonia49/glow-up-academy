@@ -15,7 +15,7 @@ const exerciseBank = {
     french: [
         {
             question: "Quelle est la bonne orthographe ?",
-            options: ["Cheval", "Cheval", "Chevale", "Chevaux"],
+            options: ["Cheval", "Chevale", "Chevaux", "Chevale"],
             correct: 0
         },
         {
@@ -107,6 +107,7 @@ const shopAvatars = [
 
 // ========== Initialisation ==========
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Application démarrée');
     checkSession();
     setupAuthListeners();
     setupNavigation();
@@ -117,13 +118,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ========== Authentification ==========
 async function checkSession() {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (session) {
-        currentUser = session.user;
-        await loadProfile();
-        showDashboard();
-    } else {
+    try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+            console.error('Erreur session:', error);
+            showAuth();
+            return;
+        }
+        
+        if (session) {
+            console.log('✅ Session trouvée:', session.user.email);
+            currentUser = session.user;
+            await loadProfile();
+            showDashboard();
+        } else {
+            console.log('ℹ️ Aucune session active');
+            showAuth();
+        }
+    } catch (error) {
+        console.error('Erreur checkSession:', error);
         showAuth();
     }
 }
@@ -172,110 +186,257 @@ async function handleAuth() {
     const email = document.getElementById('auth-email').value.trim();
     const password = document.getElementById('auth-password').value;
     const errorEl = document.getElementById('auth-error');
+    const submitBtn = document.getElementById('auth-submit');
     
     if (!email || !password) {
         errorEl.textContent = 'Remplis tous les champs !';
         return;
     }
     
+    if (password.length < 6) {
+        errorEl.textContent = 'Le mot de passe doit avoir au moins 6 caractères';
+        return;
+    }
+    
+    // Désactiver le bouton pendant le traitement
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Chargement...';
+    errorEl.textContent = '';
+    
     try {
         if (isSignUp) {
-            const { data, error } = await supabase.auth.signUp({ email, password });
+            console.log('📝 Tentative d\'inscription:', email);
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        email: email
+                    }
+                }
+            });
             
             if (error) throw error;
+            
+            console.log('✅ Inscription réussie:', data);
             
             if (data.user) {
-                // Créer le profil
-                await createProfile(data.user.id, email);
                 currentUser = data.user;
-                await loadProfile();
-                showDashboard();
+                
+                // Attendre un peu avant de créer le profil
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Créer le profil
+                const profileCreated = await createProfile(data.user.id, email);
+                
+                if (profileCreated) {
+                    await loadProfile();
+                    errorEl.style.color = '#4ECDC4';
+                    errorEl.textContent = '✅ Compte créé ! Connexion...';
+                    
+                    setTimeout(() => {
+                        showDashboard();
+                    }, 1000);
+                } else {
+                    throw new Error('Erreur création profil');
+                }
             }
         } else {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            console.log('🔐 Tentative de connexion:', email);
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
             
             if (error) throw error;
+            
+            console.log('✅ Connexion réussie:', data);
             
             currentUser = data.user;
             await loadProfile();
-            showDashboard();
+            
+            errorEl.style.color = '#4ECDC4';
+            errorEl.textContent = '✅ Connexion réussie !';
+            
+            setTimeout(() => {
+                showDashboard();
+            }, 500);
         }
     } catch (error) {
-        errorEl.textContent = error.message || 'Erreur de connexion';
+        console.error('❌ Erreur auth:', error);
+        errorEl.style.color = '#FF6B6B';
+        
+        if (error.message.includes('Invalid login credentials')) {
+            errorEl.textContent = '❌ Email ou mot de passe incorrect';
+        } else if (error.message.includes('User already registered')) {
+            errorEl.textContent = '❌ Cet email est déjà utilisé';
+        } else if (error.message.includes('Email not confirmed')) {
+            errorEl.textContent = '⚠️ Vérifie ton email pour confirmer ton compte';
+        } else {
+            errorEl.textContent = `❌ ${error.message}`;
+        }
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = isSignUp ? "S'inscrire" : 'Se connecter';
     }
 }
 
 async function createProfile(userId, email) {
-    const { error } = await supabase
-        .from('profiles')
-        .insert({
-            id: userId,
-            email: email,
-            diamonds: 100,
-            level: 1,
-            theme: 'pink',
-            avatar_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=default',
-            quests_completed: 0
-        });
-    
-    if (error) console.error('Erreur création profil:', error);
+    try {
+        console.log('📝 Création du profil pour:', userId);
+        
+        const { data, error } = await supabase
+            .from('profiles')
+            .insert({
+                id: userId,
+                email: email,
+                diamonds: 100,
+                level: 1,
+                theme: 'pink',
+                avatar_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=default',
+                quests_completed: 0,
+                owned_avatars: '["default"]'
+            })
+            .select()
+            .single();
+        
+        if (error) {
+            console.error('❌ Erreur création profil:', error);
+            return false;
+        }
+        
+        console.log('✅ Profil créé:', data);
+        currentProfile = data;
+        return true;
+    } catch (error) {
+        console.error('❌ Exception création profil:', error);
+        return false;
+    }
 }
 
 async function loadProfile() {
-    const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', currentUser.id)
-        .single();
-    
-    if (error) {
-        console.error('Erreur chargement profil:', error);
-        return;
+    try {
+        console.log('📂 Chargement du profil...');
+        
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', currentUser.id)
+            .single();
+        
+        if (error) {
+            console.error('❌ Erreur chargement profil:', error);
+            
+            // Si le profil n'existe pas, le créer
+            if (error.code === 'PGRST116') {
+                console.log('ℹ️ Profil inexistant, création...');
+                const created = await createProfile(currentUser.id, currentUser.email);
+                if (created) {
+                    return await loadProfile();
+                }
+            }
+            return;
+        }
+        
+        console.log('✅ Profil chargé:', data);
+        currentProfile = data;
+        updateUI();
+        loadShop();
+    } catch (error) {
+        console.error('❌ Exception loadProfile:', error);
     }
-    
-    currentProfile = data;
-    updateUI();
-    loadShop();
 }
 
 async function updateProfile(updates) {
-    const { error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', currentUser.id);
-    
-    if (error) {
-        console.error('Erreur mise à jour profil:', error);
+    try {
+        console.log('💾 Mise à jour profil:', updates);
+        
+        const { data, error } = await supabase
+            .from('profiles')
+            .update(updates)
+            .eq('id', currentUser.id)
+            .select()
+            .single();
+        
+        if (error) {
+            console.error('❌ Erreur mise à jour profil:', error);
+            return false;
+        }
+        
+        console.log('✅ Profil mis à jour:', data);
+        currentProfile = data;
+        updateUI();
+        return true;
+    } catch (error) {
+        console.error('❌ Exception updateProfile:', error);
         return false;
     }
-    
-    currentProfile = { ...currentProfile, ...updates };
-    updateUI();
-    return true;
 }
 
 function updateUI() {
-    if (!currentProfile) return;
+    if (!currentProfile) {
+        console.warn('⚠️ Pas de profil à afficher');
+        return;
+    }
     
-    // Header
-    document.getElementById('player-name').textContent = currentProfile.email?.split('@')[0] || 'Joueur';
-    document.getElementById('player-level').textContent = currentProfile.level;
-    document.getElementById('player-diamonds').textContent = currentProfile.diamonds;
-    document.getElementById('player-avatar').src = currentProfile.avatar_url;
-    
-    // Page profil
-    document.getElementById('profile-level').textContent = currentProfile.level;
-    document.getElementById('profile-diamonds').textContent = currentProfile.diamonds;
-    document.getElementById('profile-avatar').src = currentProfile.avatar_url;
-    document.getElementById('quests-completed').textContent = currentProfile.quests_completed || 0;
-    
-    // Thème
-    if (currentProfile.theme) {
-        document.body.setAttribute('data-theme', currentProfile.theme);
+    try {
+        // Header
+        const playerName = document.getElementById('player-name');
+        if (playerName) {
+            playerName.textContent = currentProfile.email?.split('@')[0] || 'Joueur';
+        }
+        
+        const playerLevel = document.getElementById('player-level');
+        if (playerLevel) {
+            playerLevel.textContent = currentProfile.level || 1;
+        }
+        
+        const playerDiamonds = document.getElementById('player-diamonds');
+        if (playerDiamonds) {
+            playerDiamonds.textContent = currentProfile.diamonds || 0;
+        }
+        
+        const playerAvatar = document.getElementById('player-avatar');
+        if (playerAvatar) {
+            playerAvatar.src = currentProfile.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=default';
+        }
+        
+        // Page profil
+        const profileLevel = document.getElementById('profile-level');
+        if (profileLevel) {
+            profileLevel.textContent = currentProfile.level || 1;
+        }
+        
+        const profileDiamonds = document.getElementById('profile-diamonds');
+        if (profileDiamonds) {
+            profileDiamonds.textContent = currentProfile.diamonds || 0;
+        }
+        
+        const profileAvatar = document.getElementById('profile-avatar');
+        if (profileAvatar) {
+            profileAvatar.src = currentProfile.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=default';
+        }
+        
+        const questsCompleted = document.getElementById('quests-completed');
+        if (questsCompleted) {
+            questsCompleted.textContent = currentProfile.quests_completed || 0;
+        }
+        
+        // Thème
+        if (currentProfile.theme) {
+            document.body.setAttribute('data-theme', currentProfile.theme);
+        }
+        
+        console.log('✅ UI mise à jour');
+    } catch (error) {
+        console.error('❌ Erreur updateUI:', error);
     }
 }
 
 async function logout() {
+    console.log('👋 Déconnexion...');
     await supabase.auth.signOut();
     currentUser = null;
     currentProfile = null;
@@ -285,6 +446,9 @@ async function logout() {
 function showAuth() {
     document.getElementById('auth-screen').classList.add('active');
     document.getElementById('dashboard-screen').classList.remove('active');
+    document.getElementById('auth-email').value = '';
+    document.getElementById('auth-password').value = '';
+    document.getElementById('auth-error').textContent = '';
 }
 
 function showDashboard() {
@@ -304,7 +468,10 @@ function setupNavigation() {
     });
     
     // Déconnexion
-    document.getElementById('logout-btn').addEventListener('click', logout);
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
 }
 
 function navigateTo(pageName) {
@@ -320,7 +487,11 @@ function navigateTo(pageName) {
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
     });
-    document.getElementById(`${pageName}-page`).classList.add('active');
+    
+    const targetPage = document.getElementById(`${pageName}-page`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
 }
 
 // ========== Exercices ==========
@@ -373,9 +544,13 @@ function showExercise() {
         
         // Enter key
         setTimeout(() => {
-            document.getElementById('exercise-answer').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') checkInputAnswer();
-            });
+            const answerInput = document.getElementById('exercise-answer');
+            if (answerInput) {
+                answerInput.focus();
+                answerInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') checkInputAnswer();
+                });
+            }
         }, 100);
     } else {
         content.innerHTML = `
@@ -472,15 +647,19 @@ function checkInputAnswer() {
 }
 
 function closeExercise() {
-    document.getElementById('exercise-modal').classList.remove('active');
+    const modal = document.getElementById('exercise-modal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
     currentExercise = null;
 }
 
 // ========== Boutique ==========
 function loadShop() {
     const shopGrid = document.getElementById('shop-items');
+    if (!shopGrid || !currentProfile) return;
     
-    // Récupérer les avatars possédés depuis le profil (si stocké en JSON)
+    // Récupérer les avatars possédés depuis le profil
     let ownedAvatars = ['default'];
     if (currentProfile.owned_avatars) {
         try {
@@ -539,19 +718,30 @@ async function buyAvatar(avatarId, price, avatarUrl) {
 }
 
 async function equipAvatar(avatarId, avatarUrl) {
-    await updateProfile({ avatar_url: avatarUrl });
-    alert('✅ Avatar équipé !');
+    const success = await updateProfile({ avatar_url: avatarUrl });
+    if (success) {
+        alert('✅ Avatar équipé !');
+    }
 }
 
 // ========== Paramètres ==========
 function setupSettings() {
-    document.getElementById('settings-btn').addEventListener('click', () => {
-        document.getElementById('settings-modal').classList.add('active');
-    });
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            const modal = document.getElementById('settings-modal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        });
+    }
 }
 
 function closeSettings() {
-    document.getElementById('settings-modal').classList.remove('active');
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 async function changeTheme(theme) {
@@ -564,7 +754,10 @@ async function changeTheme(theme) {
 }
 
 function toggleDysMode() {
-    const isEnabled = document.getElementById('dys-mode-toggle').checked;
+    const toggle = document.getElementById('dys-mode-toggle');
+    if (!toggle) return;
+    
+    const isEnabled = toggle.checked;
     
     if (isEnabled) {
         document.body.classList.add('dys-mode');
@@ -585,7 +778,10 @@ function loadDysMode() {
     
     if (isDysMode) {
         document.body.classList.add('dys-mode');
-        document.getElementById('dys-mode-toggle').checked = true;
+        const toggle = document.getElementById('dys-mode-toggle');
+        if (toggle) {
+            toggle.checked = true;
+        }
     }
 }
 
