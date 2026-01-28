@@ -105,3 +105,11 @@ window.addEventListener('DOMContentLoaded', () => {
         };
     }
 });
+// Fonction pour lancer une mission
+function lancerQuete(nom) {
+    alert("🚀 Lancement de la quête : " + nom + "\nPrépare-toi, ça commence !");
+    // Ici on pourra ajouter le vrai mini-jeu plus tard
+}
+
+// Dans ta fonction de connexion réussie, ajoute ça pour afficher l'email :
+// document.getElementById('display-email').innerText = email;
