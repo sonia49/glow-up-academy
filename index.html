@@ -1,56 +1,182 @@
-<div id="dashboard-screen" class="screen" style="display:none;">
-    <nav class="top-bar">
-        <div class="user-info">
-            <div class="avatar-circle">✨</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Glow Up Academy</title>
+    
+    <style>
+        :root {
+            --primary: #FF6B9D;
+            --bg: #FFF5F8;
+            --card: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .screen { width: 100%; max-width: 450px; display: none; padding: 20px; box-sizing: border-box; }
+        .active { display: block; }
+
+        /* Style Connexion */
+        .auth-card {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(255,107,157,0.1);
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 { color: var(--primary); margin-bottom: 20px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #FFE0EB;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, #FF6B9D, #FF8EBC);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        /* Style Dashboard */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .quest-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quest-card:active { transform: scale(0.98); }
+        .icon { font-size: 2rem; }
+        .error { color: #ff4757; font-size: 0.8rem; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-screen" class="screen active">
+        <div class="auth-card">
+            <h1 id="auth-title">Connexion</h1>
+            <input type="email" id="auth-email" placeholder="Ton email">
+            <input type="password" id="auth-password" placeholder="Mot de passe">
+            <button id="auth-submit" class="btn-main">C'est parti ! 🚀</button>
+            <p style="margin-top:20px; font-size: 0.9rem;">
+                <a href="#" id="auth-switch" style="color: var(--primary); text-decoration: none;">Créer un compte</a>
+            </p>
+            <p id="error-msg" class="error"></p>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="screen">
+        <div class="top-bar">
+            <span>💎 <b id="diamonds">50</b></span>
+            <span>⭐ Niv. 1</span>
+            <button onclick="location.reload()" style="border:none; background:none; cursor:pointer;">🚪</button>
+        </div>
+
+        <h3>Tes Missions ✨</h3>
+        
+        <div class="quest-card" onclick="alert('Bientôt : Mini-jeu Maths !')">
+            <div class="icon">🔢</div>
             <div>
-                <p class="user-name" id="display-email">Joueur</p>
-                <p class="user-level">Niveau 1 (Apprenti)</p>
+                <div style="font-weight: bold;">Maths Express</div>
+                <div style="font-size: 0.8rem; color: #888;">Gagne 10 diamants</div>
             </div>
         </div>
-        <div class="stats-container">
-            <div class="stat-badge">💎 <span id="diamonds-count">50</span></div>
-            <button onclick="location.reload()" class="btn-exit">🚪</button>
+
+        <div class="quest-card" onclick="alert('Bientôt : Mini-jeu Français !')">
+            <div class="icon">📚</div>
+            <div>
+                <div style="font-weight: bold;">Maître des Mots</div>
+                <div style="font-size: 0.8rem; color: #888;">Gagne 15 diamants</div>
+            </div>
         </div>
-    </nav>
+    </div>
 
-    <main class="dashboard-body">
-        <section class="game-section">
-            <h3>🎯 Missions du jour</h3>
-            <div class="quest-grid">
-                <div class="quest-card math" onclick="lancerQuete('Maths')">
-                    <div class="quest-icon">🔢</div>
-                    <h4>Calcul Mental</h4>
-                    <p>+10 💎</p>
-                </div>
-                <div class="quest-card french" onclick="lancerQuete('Français')">
-                    <div class="quest-icon">📚</div>
-                    <h4>Dictée Flash</h4>
-                    <p>+15 💎</p>
-                </div>
-                <div class="quest-card logic" onclick="lancerQuete('Logique')">
-                    <div class="quest-icon">🧩</div>
-                    <h4>Énigme</h4>
-                    <p>+20 💎</p>
-                </div>
-            </div>
-        </section>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialisation Supabase
+        const supabase = window.supabase.createClient(
+            'https://lcbwehiwjowgthazrydy.supabase.co', 
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY',
+            { auth: { persistSession: false } }
+        );
 
-        <section class="game-section">
-            <h3>🛍️ Boutique d'Avatars</h3>
-            <div class="shop-grid">
-                <div class="shop-item">
-                    <div class="item-preview">🦊</div>
-                    <button class="btn-buy">100 💎</button>
-                </div>
-                <div class="shop-item">
-                    <div class="item-preview">👑</div>
-                    <button class="btn-buy">500 💎</button>
-                </div>
-                <div class="shop-item locked">
-                    <div class="item-preview">🔒</div>
-                    <button class="btn-buy disabled">Niv. 5</button>
-                </div>
-            </div>
-        </section>
-    </main>
-</div>
+        let isSignUp = false;
+
+        // Basculer entre Connexion et Inscription
+        document.getElementById('auth-switch').onclick = (e) => {
+            e.preventDefault();
+            isSignUp = !isSignUp;
+            document.getElementById('auth-title').innerText = isSignUp ? "Créer un compte" : "Connexion";
+            document.getElementById('auth-submit').innerText = isSignUp ? "S'inscrire ✨" : "C'est parti ! 🚀";
+            document.getElementById('auth-switch').innerText = isSignUp ? "Déjà un compte ? Se connecter" : "Créer un compte";
+        };
+
+        // Gérer le clic sur le bouton
+        document.getElementById('auth-submit').onclick = async () => {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            if(!email || !password) {
+                alert("Remplis tout !");
+                return;
+            }
+
+            try {
+                let result;
+                if (isSignUp) {
+                    result = await supabase.auth.signUp({ email, password });
+                    if (result.error) throw result.error;
+                    alert("Compte créé ! Tu peux maintenant te connecter.");
+                    location.reload(); 
+                } else {
+                    result = await supabase.auth.signInWithPassword({ email, password });
+                    if (result.error) throw result.error;
+                    
+                    // Succès ! On change d'écran
+                    document.getElementById('auth-screen').classList.remove('active');
+                    document.getElementById('dashboard-screen').classList.add('active');
+                }
+            } catch (err) {
+                errorMsg.innerText = "Erreur : " + err.message;
+            }
+        };
+    </script>
+</body>
+</html>
