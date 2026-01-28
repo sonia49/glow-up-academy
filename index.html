@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Magic Glow Up - Codage 7</title>
+    <title>✨ My Magic Academy - Codage 9</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -24,109 +24,119 @@
             display: flex;
             justify-content: center;
             color: var(--texte);
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        .app-container { width: 100%; max-width: 450px; padding: 15px; box-sizing: border-box; }
-        .screen { display: none; animation: fadeIn 0.5s ease; }
-        .active { display: block !important; }
+        .app-container { width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .screen { display: none; animation: popIn 0.4s ease-out; width: 100%; }
+        .active { display: flex !important; flex-direction: column; align-items: center; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
         /* --- HEADER --- */
         .header-cake {
             background: var(--sucre);
-            padding: 20px;
-            border-radius: 40px;
-            box-shadow: 0 10px 20px rgba(255, 183, 197, 0.4);
+            padding: 15px;
+            border-radius: 30px;
+            box-shadow: 0 8px 15px rgba(255, 183, 197, 0.3);
             text-align: center;
-            margin-bottom: 25px;
+            width: 100%;
+            margin-bottom: 20px;
             border: 3px solid var(--fraise);
+            box-sizing: border-box;
         }
 
-        .diamond-display {
+        .diamond-counter {
             background: var(--menthe);
-            padding: 10px 20px;
+            padding: 5px 15px;
             border-radius: 50px;
+            color: #4CAF50;
             font-weight: 700;
-            color: #55b99b;
             display: inline-block;
-            margin-top: 10px;
-            border: 3px solid #fff;
+            border: 2px solid white;
         }
 
-        /* --- MENU NUAGES CENTRÉ --- */
+        /* --- NAVIGATION NUAGES --- */
         .menu-grid {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         .cloud-btn {
             background: var(--sucre);
             border: none;
-            padding: 15px 10px;
-            width: 85px;
-            border-radius: 30px;
+            width: 90px;
+            padding: 10px;
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 6px 0 var(--lavande);
+            box-shadow: 0 5px 0 var(--lavande);
             transition: 0.2s;
+            font-family: 'Fredoka';
             font-weight: 700;
             color: var(--texte);
-        }
-        .cloud-btn span { display: block; font-size: 1.5rem; }
-        .cloud-btn.active { background: var(--citron); transform: scale(1.1); box-shadow: 0 4px 0 #e6d88a; }
-
-        /* --- MISSIONS MACARONS CENTRÉES --- */
-        .mission-area {
-            background: rgba(255,255,255,0.3);
-            border-radius: 40px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .ex-list {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centre les éléments horizontalement */
-            gap: 12px;
+            align-items: center;
+        }
+        .cloud-btn.active { background: var(--citron); transform: scale(1.05); box-shadow: 0 3px 0 #e6d88a; }
+
+        /* --- LA CARTE DE VŒU UNIQUE --- */
+        .wish-container {
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
         }
 
-        .macaron-card {
+        .wish-card {
             background: var(--sucre);
-            padding: 15px 25px;
+            width: 280px;
+            height: 280px;
             border-radius: 50px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            cursor: pointer;
-            width: 90%; /* Prend presque toute la largeur mais reste centré */
-            box-sizing: border-box;
-            border: 3px solid transparent;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .macaron-card:hover { transform: translateY(-3px); border-color: var(--fraise); }
-        .macaron-card b { color: #ff8ba0; }
-
-        /* --- INPUTS & BOUTONS MAGIQUES --- */
-        input {
-            width: 100%;
-            padding: 18px;
-            margin: 10px 0;
-            border: 4px solid var(--menthe);
-            border-radius: 50px;
             text-align: center;
-            font-size: 1.1rem;
-            font-family: 'Fredoka';
-            outline: none;
-            box-sizing: border-box;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border: 6px solid var(--fraise);
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .wish-card:hover { transform: translateY(-5px) rotate(2deg); }
+        .wish-card h2 { color: var(--fraise); margin: 0; font-size: 1.2rem; }
+        .wish-card .reward { font-size: 1.5rem; margin-top: 10px; }
+
+        .nav-arrows {
+            display: flex;
+            gap: 40px;
+            align-items: center;
         }
 
-        .btn-candy {
-            background: linear-gradient(to right, var(--fraise), #ff8ba0);
+        .arrow {
+            background: var(--sucre);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--lavande);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .arrow:active { transform: translateY(3px); box-shadow: none; }
+
+        /* --- JEU --- */
+        .btn-magic {
+            background: linear-gradient(to right, #FF85A1, #FFAACC);
             color: white;
             border: none;
             padding: 18px;
@@ -135,16 +145,29 @@
             font-weight: 700;
             font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 8px 0 #e5a4b1;
-            margin-top: 10px;
+            box-shadow: 0 6px 0 #e57399;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px;
+            border: 3px solid var(--menthe);
+            border-radius: 50px;
+            text-align: center;
+            font-family: 'Fredoka';
+            font-size: 1.2rem;
+            outline: none;
+            box-sizing: border-box;
         }
 
         .auth-card {
             background: var(--sucre);
-            padding: 40px 25px;
-            border-radius: 50px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 35px 25px;
+            border-radius: 45px;
             text-align: center;
+            width: 100%;
+            box-sizing: border-box;
             margin-top: 50px;
         }
     </style>
@@ -155,42 +178,51 @@
         
         <div id="auth-screen" class="screen active">
             <div class="auth-card">
-                <h1 style="color: var(--fraise); font-size: 2.2rem;">Sweet Magic ✨</h1>
-                <input type="text" id="username" placeholder="Pseudo de fée">
-                <input type="password" id="pass" placeholder="Code secret">
-                <button onclick="validerAuth()" class="btn-candy">Entrer dans l'Academy 🌸</button>
-                <p onclick="toggleMode()" id="switch-link" style="margin-top:20px; cursor:pointer; font-weight: bold; color: var(--lavande);">Créer un compte ? 🎀</p>
+                <h1 style="color: var(--fraise); margin:0;">Sweet Academy ✨</h1>
+                <input type="text" id="username" placeholder="Pseudo fée">
+                <input type="password" id="pass" placeholder="Mot de passe">
+                <button onclick="validerAuth()" class="btn-magic">Entrer ✨</button>
+                <p onclick="toggleMode()" id="switch-link" style="margin-top:15px; cursor:pointer; font-size: 0.8rem;">Créer un profil 🎀</p>
                 <div id="auth-error" style="color:var(--fraise); margin-top:10px;"></div>
             </div>
         </div>
 
         <div id="dashboard" class="screen">
             <div class="header-cake">
-                <h2 style="margin:0; font-size: 1.1rem;">✨ <span id="display-user">GIRLY</span> ✨</h2>
-                <div class="diamond-display">💎 <span id="diamond-count">0</span></div>
+                <div style="font-size:0.8rem">BIENVENUE <b id="display-user">...</b></div>
+                <div class="diamond-counter">💎 <span id="diamond-count">0</span></div>
             </div>
 
             <div class="menu-grid">
-                <button class="cloud-btn active" onclick="filtrer('math', this)"><span>🍩</span><label>Maths</label></button>
-                <button class="cloud-btn" onclick="filtrer('french', this)"><span>🍬</span><label>French</label></button>
-                <button class="cloud-btn" onclick="filtrer('english', this)"><span>🍦</span><label>English</label></button>
+                <button class="cloud-btn active" onclick="changerCat('math', this)"><span>🍩</span><label>Maths</label></button>
+                <button class="cloud-btn" onclick="changerCat('french', this)"><span>🍬</span><label>Français</label></button>
+                <button class="cloud-btn" onclick="changerCat('english', this)"><span>🍦</span><label>Anglais</label></button>
             </div>
 
-            <div class="mission-area">
-                <p style="font-weight:700; color:white; text-shadow: 1px 1px var(--fraise); margin-bottom:20px;">CHOISIS TA MISSION :</p>
-                <div id="ex-container" class="ex-list"></div>
-            </div>
+            <div class="wish-container">
+                <p style="color:white; text-shadow:1px 1px var(--fraise); font-weight:700;">PIOCHE TON VŒU :</p>
+                
+                <div class="wish-card" onclick="ouvrirVoeu()">
+                    <div style="font-size: 3rem;">✨</div>
+                    <h2 id="wish-title">Vœu Magique #1</h2>
+                    <div class="reward">💎 10</div>
+                    <p style="font-size:0.7rem; color:#aaa; margin-top:10px;">(Clique pour ouvrir)</p>
+                </div>
 
-            <button onclick="location.reload()" style="background:none; border:none; width:100%; margin-top:30px; color:white; cursor:pointer; font-size:0.8rem;">Quitter le paradis 👋</button>
+                <div class="nav-arrows">
+                    <button class="arrow" onclick="naviguer(-1)">👈</button>
+                    <button class="arrow" onclick="naviguer(1)">👉</button>
+                </div>
+            </div>
         </div>
 
-        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:100; padding:20px; box-sizing:border-box; display:none;">
-            <div class="auth-card" style="margin-top: 50px;">
-                <h2 id="ex-cat" style="color:var(--fraise); letter-spacing:2px;">DÉFI MAGIQUE</h2>
-                <p id="ex-q" style="font-size:1.8rem; font-weight:700; margin:30px 0; color: var(--texte);"></p>
-                <input type="text" id="ex-ans" placeholder="Ta réponse magique...">
-                <button onclick="verifierReponse()" class="btn-candy">Lancer le sort ! ✨</button>
-                <button onclick="quitterJeu()" style="background:none; border:none; color:#ccc; margin-top:15px; cursor:pointer;">Plus tard</button>
+        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); padding:20px; box-sizing:border-box; z-index:999; display:none;">
+            <div class="auth-card" style="margin-top: 80px;">
+                <h2 style="color:var(--fraise);">RÉALISE TON VŒU</h2>
+                <p id="ex-q" style="font-size:1.6rem; font-weight:700; margin:30px 0;"></p>
+                <input type="text" id="ex-ans" placeholder="La réponse est...">
+                <button onclick="verifierReponse()" class="btn-magic">Magie ! ✨</button>
+                <button onclick="quitterJeu()" style="background:none; border:none; color:#ccc; margin-top:10px; cursor:pointer;">Annuler</button>
             </div>
         </div>
 
@@ -202,23 +234,20 @@
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
-        let session = null, diamonds = 0, mode = 'login', currentEx = null;
+        let session = null, diamonds = 0, mode = 'login';
+        let currentCat = 'math', currentIndex = 0;
+        let exercicesFiltres = [];
 
         const EXERCICES = [];
         const cats = ['math', 'french', 'english'];
         for(let i=0; i<60; i++) {
             let c = cats[Math.floor(i/20)];
-            EXERCICES.push({
-                id: i+1, cat: c, 
-                q: c == 'math' ? `${i+2} x 10 ?` : (c == 'french' ? `Pluriel de 'Fleur ${i}'` : `Couleur 'Purple'`),
-                a: c == 'math' ? ((i+2)*10).toString() : (c == 'french' ? `fleurs ${i}` : `violet`),
-                r: 10
-            });
+            EXERCICES.push({ id: i+1, cat: c, q: c=='math'?`${i+2}x3?`: (c=='french'?`Pluriel de 'Ciel'`:`'Hello' en FR`), a: c=='math'?((i+2)*3).toString():(c=='french'?'cieux':'bonjour'), r: 10 });
         }
 
         function toggleMode() {
             mode = (mode === 'login') ? 'signup' : 'login';
-            document.getElementById('switch-link').innerText = mode === 'login' ? "Créer un compte ? 🎀" : "Se connecter";
+            document.getElementById('switch-link').innerText = mode === 'login' ? "Créer un profil 🎀" : "Se connecter";
         }
 
         async function validerAuth() {
@@ -238,7 +267,7 @@
                     session = data.user;
                     recupererProfil();
                 }
-            } catch (e) { document.getElementById('auth-error').innerText = "Oups ! Erreur d'accès."; }
+            } catch (e) { document.getElementById('auth-error').innerText = "Erreur de code secret !"; }
         }
 
         async function recupererProfil() {
@@ -250,50 +279,50 @@
             }
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
-            filtrer('math', document.querySelector('.cloud-btn'));
+            changerCat('math', document.querySelector('.cloud-btn'));
         }
 
-        function filtrer(cat, el) {
-            const cont = document.getElementById('ex-container');
-            cont.innerHTML = "";
+        function changerCat(cat, el) {
+            currentCat = cat;
+            currentIndex = 0;
             document.querySelectorAll('.cloud-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
-
-            EXERCICES.filter(e => e.cat === cat).forEach(ex => {
-                const item = document.createElement('div');
-                item.className = "macaron-card";
-                item.innerHTML = `<span>Mission #${ex.id}</span> <b>+${ex.r} 💎</b>`;
-                item.onclick = () => {
-                    currentEx = ex;
-                    document.getElementById('game-view').style.display = 'block';
-                    document.getElementById('ex-q').innerText = ex.q;
-                    document.getElementById('ex-ans').value = "";
-                };
-                cont.appendChild(item);
-            });
+            exercicesFiltres = EXERCICES.filter(e => e.cat === cat);
+            majCarte();
         }
 
-        // --- LA MAGIE DE LA RÉUSSITE ---
+        function majCarte() {
+            const ex = exercicesFiltres[currentIndex];
+            document.getElementById('wish-title').innerText = `Vœu Magique #${ex.id}`;
+        }
+
+        function naviguer(dir) {
+            currentIndex += dir;
+            if(currentIndex < 0) currentIndex = exercicesFiltres.length - 1;
+            if(currentIndex >= exercicesFiltres.length) currentIndex = 0;
+            majCarte();
+        }
+
+        function ouvrirVoeu() {
+            const ex = exercicesFiltres[currentIndex];
+            document.getElementById('game-view').style.display = 'block';
+            document.getElementById('ex-q').innerText = ex.q;
+            document.getElementById('ex-ans').value = "";
+        }
+
         function lancerMagie() {
-            const couleurs = ['#ffb7c5', '#c1f0e1', '#dcd3ff', '#fff4bd', '#ffffff'];
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: couleurs,
-                shapes: ['star'],
-                scalar: 1.2
-            });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffb7c5', '#c1f0e1', '#dcd3ff'], shapes: ['star'] });
         }
 
         async function verifierReponse() {
-            if(document.getElementById('ex-ans').value.trim().toLowerCase() === currentEx.a.toLowerCase()) {
-                lancerMagie(); // POUSSIÈRE D'ÉTOILES
-                diamonds += currentEx.r;
+            const ex = exercicesFiltres[currentIndex];
+            if(document.getElementById('ex-ans').value.trim().toLowerCase() === ex.a.toLowerCase()) {
+                lancerMagie();
+                diamonds += ex.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
-                setTimeout(() => { quitterJeu(); }, 1500);
-            } else { alert("Pas encore ! Essaie une autre formule magique 🪄"); }
+                setTimeout(() => { quitterJeu(); naviguer(1); }, 1500);
+            } else { alert("Oh non ! Réessaie encore 🪄"); }
         }
 
         function quitterJeu() { document.getElementById('game-view').style.display = 'none'; }
