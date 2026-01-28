@@ -7,39 +7,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* CSS IDENTIQUE AU VISUEL DU TONNERRE */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Fredoka', sans-serif; background: linear-gradient(-45deg, #FFE5F1, #E0BBE4, #C1F7DC, #A5E7FF); background-size: 400% 400%; animation: gradientBG 15s ease infinite; min-height: 100vh; display: flex; justify-content: center; overflow: hidden; }
+        :root { --pink: #FFB3D9; --blue: #A5E7FF; --purple: #E0BBE4; --yellow: #FFF4A3; }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(-45deg, #FFE5F1, #E0BBE4, #C1F7DC, #A5E7FF);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh; display: flex; justify-content: center; overflow: hidden;
+        }
+
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .bubble { position: fixed; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,179,217,0.2)); animation: float 8s ease-in-out infinite; z-index: 1; }
+
+        /* BULLES 3D */
+        .bubble { position: fixed; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,179,217,0.2)); box-shadow: 0 10px 30px rgba(0,0,0,0.05); animation: float 8s ease-in-out infinite; z-index: 1; pointer-events: none; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-40px); } }
+
         .container { width: 100%; max-width: 450px; padding: 20px; z-index: 10; position: relative; }
-        .glass { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.7); border-radius: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+
+        /* GLASSMORPHISM */
+        .glass {
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.7); border-radius: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            position: relative; overflow: hidden; padding: 30px;
+        }
+
         .screen { display: none; flex-direction: column; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .active { display: flex !important; }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        .logo { font-family: 'Bubblegum Sans', cursive; font-size: 3rem; text-align: center; background: linear-gradient(45deg, #FF6B9D, #C8A2E8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 20px 0; }
-        .btn-premium { background: linear-gradient(135deg, #FF6B9D, #FFB347); color: white; border: none; padding: 20px; border-radius: 30px; font-weight: 700; font-size: 1.2rem; cursor: pointer; width: 100%; box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4); margin-top: 10px; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        .logo { font-family: 'Bubblegum Sans', cursive; font-size: 3.2rem; text-align: center; background: linear-gradient(45deg, #FF6B9D, #C8A2E8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        
         input { width: 100%; padding: 18px; border-radius: 30px; border: 3px solid #C1F7DC; background: white; text-align: center; font-family: 'Fredoka'; font-size: 1.1rem; margin: 10px 0; outline: none; }
+        
+        .btn-premium { background: linear-gradient(135deg, #FF6B9D, #FFB347); color: white; border: none; padding: 18px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3); margin-top: 10px; transition: 0.3s; }
+        .btn-secondary { background: white; color: #FF6B9D; border: 2px solid #FF6B9D; margin-top: 10px; }
+        .btn-premium:active { transform: scale(0.95); }
+
         .stat-badge { background: white; padding: 10px 15px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .avatar-cupcake { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .avatar-cupcake { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); animation: bounce 3s infinite ease-in-out; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
         .nav-arrow { width: 60px; height: 60px; border-radius: 50%; border: none; background: white; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="bubble" style="width:100px; height:100px; left:5%; top:10%;"></div>
-    <div class="bubble" style="width:150px; height:150px; right:5%; bottom:10%;"></div>
+    <div class="bubble" style="width:120px; height:120px; left:10%; top:20%;"></div>
+    <div class="bubble" style="width:80px; height:80px; right:10%; bottom:20%;"></div>
 
     <div class="container">
         <div id="auth-screen" class="screen active">
-            <div class="glass" style="padding: 40px 25px; text-align: center;">
+            <div class="glass" style="text-align: center;">
                 <h1 class="logo">Candy Academy</h1>
-                <p id="status-msg" style="color: #888; margin-bottom: 15px;">Entre tes identifiants</p>
-                <input type="text" id="username" placeholder="Pseudo (ex: SuperBonbon)">
-                <input type="password" id="pass" placeholder="Mot de passe (6+ car.)">
-                <button class="btn-premium" id="btn-go" onclick="handleAuth()">GO ! ✨</button>
+                <p id="auth-msg" style="color:#888; margin-bottom:15px;">Bienvenue, petit génie !</p>
+                <input type="text" id="username" placeholder="Pseudo">
+                <input type="password" id="pass" placeholder="Mot de passe (6 car. min)">
+                
+                <button class="btn-premium" onclick="login()">Se Connecter 🍬</button>
+                <button class="btn-premium btn-secondary" onclick="register()">Créer un compte ✨</button>
             </div>
         </div>
 
@@ -48,38 +76,40 @@
                 <div class="avatar-cupcake">🧁</div>
                 <div style="flex:1">
                     <div id="user-display" style="font-weight:700; color:#FF6B9D; font-size:1.2rem;">Joueur</div>
-                    <div style="display:flex; gap:5px; margin-top:5px;">
+                    <div style="display:flex; gap:8px; margin-top:5px;">
                         <span class="stat-badge">💎 <span id="val-dia">0</span></span>
                         <span class="stat-badge">⭐ <span id="val-niv">1</span></span>
+                        <span class="stat-badge">🔥 <span id="val-str">0</span></span>
                     </div>
                 </div>
             </div>
 
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('math')">🍩 Maths</button>
-                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('french')">🍬 FR</button>
-                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('english')">🍦 EN</button>
+                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" onclick="setCat('math')">🍩 Maths</button>
+                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" onclick="setCat('french')">🍬 Français</button>
+                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" onclick="setCat('english')">🍦 English</button>
             </div>
 
-            <div class="glass" style="padding:40px; text-align:center;" onclick="openEx()">
-                <div id="wish-emoji" style="font-size:4rem; margin-bottom:15px;">🍩</div>
-                <h2 id="wish-title" style="color:#FF6B9D;">Vœu Magique #1</h2>
-                <p style="margin-top:10px; opacity:0.6;">Clique pour commencer !</p>
+            <div class="glass" style="padding:40px; text-align:center; cursor:pointer;" onclick="openEx()">
+                <div id="wish-emoji" style="font-size:5rem; margin-bottom:20px;">🍩</div>
+                <h2 id="wish-title" style="color:#FF6B9D; font-size:1.8rem;">Vœu Magique #1</h2>
+                <div style="margin-top:20px; background:#4ECDC4; color:white; padding:10px; border-radius:20px; font-weight:700;">Gagne 10 Diamants 💎</div>
             </div>
 
-            <div style="display:flex; justify-content:center; gap:20px; margin-top:20px;">
+            <div style="display:flex; justify-content:center; gap:25px; margin-top:25px;">
                 <button class="nav-arrow" onclick="nav(-1)">👈</button>
                 <button class="nav-arrow" onclick="nav(1)">👉</button>
             </div>
+            <p onclick="location.reload()" style="text-align:center; margin-top:20px; color:#999; font-size:0.8rem; cursor:pointer;">Déconnexion</p>
         </div>
     </div>
 
     <div id="modal" class="modal-overlay">
-        <div class="glass" style="padding:40px 20px; width:100%; max-width:400px; text-align:center;">
-            <p id="ex-q" style="font-size:1.5rem; font-weight:700; color:#8B7AB8; margin-bottom:20px;"></p>
+        <div class="glass" style="width:100%; max-width:400px; text-align:center;">
+            <p id="ex-q" style="font-size:1.8rem; font-weight:700; color:#8B7AB8; margin-bottom:25px;"></p>
             <input type="text" id="ex-ans" placeholder="Ta réponse...">
-            <button class="btn-premium" onclick="check()">Vérifier 🍬</button>
-            <p onclick="closeEx()" style="margin-top:15px; color:#999; cursor:pointer;">Plus tard</p>
+            <button class="btn-premium" onclick="check()">Lancer le sort ! 🪄</button>
+            <p onclick="closeEx()" style="margin-top:20px; color:#ccc; cursor:pointer;">Annuler</p>
         </div>
     </div>
 
@@ -91,59 +121,43 @@
 
         let profile = null, currentCat = 'math', currentIdx = 0;
         const BANK = { math: [], french: [], english: [] };
+        // Génération des 90 exercices
         for(let i=1; i<=30; i++) {
-            BANK.math.push({ q: `${i+4} + ${i}`, a: (i+4+i).toString() });
+            BANK.math.push({ q: `${i+7} + ${i+3}`, a: (i+10).toString() });
             BANK.french.push({ q: "Pluriel de 'Hibou'", a: "hiboux" });
             BANK.english.push({ q: "Chat en anglais", a: "cat" });
         }
 
-        async function handleAuth() {
+        async function register() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
-            const msg = document.getElementById('status-msg');
-
-            if(!user || pass.length < 6) {
-                alert("Choisis un pseudo et un mot de passe de 6 caractères minimum !");
-                return;
-            }
-
-            msg.innerText = "🪄 Magie en cours...";
-            const email = `${user.toLowerCase()}@candy.academy`;
-
-            // TENTATIVE 1 : CONNEXION
-            let { data, error } = await client.auth.signInWithPassword({ email, password: pass });
-
-            // TENTATIVE 2 : SI ERREUR, ON CREE LE COMPTE
-            if (error) {
-                msg.innerText = "✨ Création de ton compte...";
-                const { data: upData, error: upError } = await client.auth.signUp({ email, password: pass });
-                
-                if (upError) {
-                    msg.innerText = "❌ Erreur : " + upError.message;
-                    return;
-                }
-                data = upData;
-                
-                // CRÉATION DU PROFIL DANS LA TABLE
-                await client.from('profiles').insert([{ 
-                    id: data.user.id, 
-                    email: user, 
-                    diamonds: 100, 
-                    level: 1, 
-                    streak: 0 
-                }]);
-            }
-
-            // RÉCUPÉRATION DU PROFIL
-            const { data: p, error: pError } = await client.from('profiles').select('*').eq('id', data.user.id).single();
+            const msg = document.getElementById('auth-msg');
+            if(!user || pass.length < 6) { alert("Pseudo et MDP (6 car.) requis !"); return; }
             
-            if(pError) {
-                msg.innerText = "⚠️ Compte créé, mais profil introuvable. Re-clique sur GO.";
-                return;
-            }
+            msg.innerText = "✨ Création du compte...";
+            const email = `${user.toLowerCase()}@candy.academy`;
+            
+            const { data, error } = await client.auth.signUp({ email, password: pass });
+            if(error) { msg.innerText = "❌ " + error.message; return; }
+            
+            await client.from('profiles').insert([{ id: data.user.id, email: user, diamonds: 100, level: 1, streak: 0 }]);
+            msg.innerText = "✅ Compte créé ! Connecte-toi.";
+        }
 
+        async function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('pass').value;
+            const msg = document.getElementById('auth-msg');
+            
+            msg.innerText = "🪄 Connexion...";
+            const email = `${user.toLowerCase()}@candy.academy`;
+            
+            const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
+            if(error) { msg.innerText = "❌ Erreur de connexion"; return; }
+            
+            const { data: p } = await client.from('profiles').select('*').eq('id', data.user.id).single();
             profile = p;
-            document.getElementById('user-display').innerText = profile.email;
+            document.getElementById('user-display').innerText = profile.email.toUpperCase();
             updateStats();
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
@@ -152,6 +166,7 @@
         function updateStats() {
             document.getElementById('val-dia').innerText = profile.diamonds;
             document.getElementById('val-niv').innerText = profile.level;
+            document.getElementById('val-str').innerText = profile.streak;
         }
 
         function setCat(cat) { currentCat = cat; currentIdx = 0; updateCard(); }
@@ -161,6 +176,7 @@
             document.getElementById('wish-title').innerText = `Vœu Magique #${currentIdx + 1}`;
         }
         function nav(dir) { currentIdx = (currentIdx + dir + 30) % 30; updateCard(); }
+        
         function openEx() {
             document.getElementById('ex-q').innerText = BANK[currentCat][currentIdx].q + " ?";
             document.getElementById('ex-ans').value = "";
@@ -170,13 +186,14 @@
 
         async function check() {
             const ex = BANK[currentCat][currentIdx];
-            if(document.getElementById('ex-ans').value.trim().toLowerCase() === ex.a) {
-                confetti({ particleCount: 100, spread: 70 });
-                profile.diamonds += 10;
-                updateStats();
+            if(document.getElementById('ex-ans').value.trim().toLowerCase() === ex.a.toLowerCase()) {
+                confetti({ particleCount: 150, spread: 70, colors: ['#FFB3D9', '#A5E7FF'] });
+                profile.diamonds += 10; updateStats();
                 await client.from('profiles').update({ diamonds: profile.diamonds }).eq('id', profile.id);
                 closeEx(); nav(1);
-            } else { alert("Oups ! Essaie encore 🍬"); }
+            } else {
+                alert("Oups ! Essaie encore ✨");
+            }
         }
     </script>
 </body>
