@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌈 Glow Up World - Codage 11</title>
+    <title>✨ My Magic Avatar - Codage 12</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -18,56 +18,58 @@
             min-height: 100vh; display: flex; justify-content: center; color: var(--texte); overflow: hidden;
         }
 
-        .app-container { width: 100%; max-width: 420px; height: 100vh; display: flex; flex-direction: column; position: relative; }
-        .screen { display: none; flex-direction: column; align-items: center; padding: 20px; height: calc(100vh - 80px); overflow-y: auto; box-sizing: border-box; }
-        .active { display: flex !important; animation: popIn 0.4s ease-out; }
+        .app-container { width: 100%; max-width: 420px; height: 100vh; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; }
+        .screen { display: none; flex-direction: column; align-items: center; width: 100%; height: 100%; }
+        .active { display: flex !important; animation: pop 0.4s ease-out; }
 
-        @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- BARRE DE NAVIGATION (FIXE EN BAS) --- */
-        .nav-bar {
-            position: absolute; bottom: 0; width: 100%; height: 70px;
-            background: var(--sucre); display: flex; justify-content: space-around; align-items: center;
-            border-radius: 30px 30px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 100;
+        /* --- ZONE AVATAR --- */
+        .avatar-preview {
+            width: 140px; height: 140px; background: var(--sucre);
+            border-radius: 50%; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 5rem; margin-bottom: 15px; position: relative;
         }
-        .nav-item { cursor: pointer; font-size: 1.5rem; transition: 0.3s; filter: grayscale(1); }
-        .nav-item.active { filter: grayscale(0); transform: translateY(-5px) scale(1.2); }
+        .dance { animation: danceAnim 0.6s infinite alternate; }
+        @keyframes danceAnim { from { transform: translateY(0) rotate(-5deg); } to { transform: translateY(-10px) rotate(5deg); } }
 
-        /* --- STREAK & HEADER --- */
-        .header-status {
-            background: var(--sucre); width: 100%; padding: 15px; border-radius: 25px;
-            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
-            border: 3px solid var(--fraise); margin-bottom: 15px;
-        }
-        .streak-fire { color: #FF4500; font-weight: 700; display: flex; align-items: center; gap: 5px; }
-
-        /* --- CARDS & ITEMS --- */
+        /* --- DASHBOARD --- */
         .magic-card {
-            background: var(--sucre); padding: 20px; border-radius: 35px; width: 100%;
-            box-shadow: 0 10px 0 var(--lavande); text-align: center; margin-bottom: 20px; box-sizing: border-box;
+            background: var(--sucre); width: 100%; border-radius: 40px; padding: 25px;
+            box-shadow: 0 10px 0 var(--lavande); text-align: center; box-sizing: border-box;
+            border: 3px solid transparent;
         }
-        .grid-games { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .game-box {
-            background: var(--citron); padding: 20px; border-radius: 30px; cursor: pointer;
-            transition: 0.2s; border: 3px solid white;
-        }
-        .game-box:hover { transform: translateY(-5px); }
 
-        /* --- CHAMBRE VIRTUELLE --- */
-        .room-view {
-            width: 100%; height: 250px; background: var(--menthe); border-radius: 30px;
-            position: relative; border: 5px solid white; overflow: hidden;
-            display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px;
+        .header-cake {
+            background: var(--sucre); width: 100%; padding: 12px; border-radius: 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 3px solid var(--fraise); margin-bottom: 15px; box-sizing: border-box;
         }
-        .pet { font-size: 4rem; animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* --- BOUTONS --- */
-        .btn-action {
-            background: var(--fraise); color: white; border: none; padding: 15px 25px;
-            border-radius: 50px; font-family: 'Fredoka'; font-weight: 700; cursor: pointer;
-            box-shadow: 0 5px 0 #e5a4b1; margin-top: 10px;
+        /* --- CUSTOMISATION --- */
+        .custom-grid { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+        .dot { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+
+        .cloud-btn {
+            background: var(--sucre); border: none; padding: 10px 20px; border-radius: 20px;
+            font-family: 'Fredoka'; font-weight: 700; color: var(--texte); cursor: pointer;
+            box-shadow: 0 4px 0 var(--lavande); margin: 5px;
         }
+
+        /* --- JEU & INPUTS --- */
+        input {
+            width: 100%; padding: 15px; border-radius: 30px; border: 3px solid var(--menthe);
+            text-align: center; font-family: 'Fredoka'; outline: none; margin: 10px 0;
+        }
+        .btn-magic {
+            background: var(--fraise); color: white; border: none; padding: 15px;
+            width: 100%; border-radius: 30px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 5px 0 #e5a4b1;
+        }
+
+        .shake { animation: shake 0.3s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
     </style>
 </head>
 <body>
@@ -75,67 +77,51 @@
     <div class="app-container">
         
         <div id="auth-screen" class="screen active">
-            <div class="magic-card" style="margin-top: 50px;">
-                <h1 style="color: var(--fraise);">Glow Up World ✨</h1>
-                <input type="text" id="username" style="width:100%; padding:15px; border-radius:20px; border:2px solid var(--lavande); margin:10px 0;" placeholder="Ton pseudo adorable">
-                <input type="password" id="pass" style="width:100%; padding:15px; border-radius:20px; border:2px solid var(--lavande); margin:10px 0;" placeholder="Mot de passe">
-                <button onclick="validerAuth()" class="btn-action">Ouvrir le portail 🪄</button>
+            <div class="magic-card" style="margin-top: 80px;">
+                <h1 style="color: var(--fraise);">Magic World ✨</h1>
+                <input type="text" id="username" placeholder="Pseudo">
+                <input type="password" id="pass" placeholder="Mot de passe">
+                <button onclick="validerAuth()" class="btn-magic">C'est parti ! 🌸</button>
             </div>
         </div>
 
-        <div id="wish-screen" class="screen">
-            <div class="header-status">
-                <div class="streak-fire">🔥 7 Jours</div>
+        <div id="dashboard" class="screen">
+            <div class="header-cake">
+                <span id="display-user">GIRLY</span>
                 <div style="background:var(--menthe); padding:5px 15px; border-radius:20px;">💎 <span id="diamond-count">0</span></div>
             </div>
+
+            <div class="avatar-preview" id="avatar-box">👧</div>
+            
             <div class="magic-card">
-                <p>PIOCHE TON VŒU 🍬</p>
-                <div style="font-size:4rem; margin:20px 0;">✨</div>
-                <h2 id="wish-title">Chargement...</h2>
-                <button onclick="ouvrirVoeu()" class="btn-action">Réaliser 🌸</button>
+                <p style="font-size: 0.8rem; margin:0;">PERSONNALISER MON LOOK</p>
+                <div class="custom-grid">
+                    <button class="cloud-btn" onclick="setAvatar('👧')">Fille</button>
+                    <button class="cloud-btn" onclick="setAvatar('🧚‍♀️')">Fée</button>
+                    <button class="cloud-btn" onclick="setAvatar('👑')">Princesse</button>
+                    <button class="cloud-btn" onclick="setAvatar('🐱')">Chat</button>
+                </div>
+                <div class="custom-grid">
+                    <div class="dot" style="background:#FFC0CB" onclick="changeBg('#FFC0CB')"></div>
+                    <div class="dot" style="background:#B5FFFC" onclick="changeBg('#B5FFFC')"></div>
+                    <div class="dot" style="background:#E2D1F9" onclick="changeBg('#E2D1F9')"></div>
+                </div>
+                <button class="btn-magic" style="margin-top:15px;" onclick="animerAvatar()">Faire danser ! 💃</button>
+            </div>
+
+            <button class="cloud-btn" style="margin-top:20px; width:100%; background:var(--citron)" onclick="showGame()">RÉALISER UN VŒU ✨</button>
+        </div>
+
+        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:100; padding:20px; box-sizing:border-box; display:none;">
+            <div class="magic-card" id="game-card" style="margin-top: 80px;">
+                <h2 style="color:var(--fraise);">VŒU MAGIQUE</h2>
+                <p id="ex-q" style="font-size:1.5rem; font-weight:700; margin:20px 0;"></p>
+                <input type="text" id="ex-ans" placeholder="Ta réponse...">
+                <button onclick="verifierReponse()" class="btn-magic">Magie ! ✨</button>
+                <p onclick="hideGame()" style="margin-top:15px; cursor:pointer; color:#ccc">Retour</p>
             </div>
         </div>
 
-        <div id="games-screen" class="screen">
-            <h2 style="color:white; text-shadow:2px 2px var(--fraise);">ARCADE MAGIQUE 🎮</h2>
-            <div class="grid-games">
-                <div class="game-box" onclick="jouer('Memory')">🧠<br>Memory</div>
-                <div class="game-box" onclick="jouer('Snake')">🐍<br>Snake Math</div>
-                <div class="game-box" onclick="jouer('Words')">📝<br>Mots Cachés</div>
-                <div class="game-box" onclick="jouer('Rhythm')">🎵<br>Rythme</div>
-            </div>
-            <div class="magic-card" style="margin-top:20px;">
-                <p>🎁 Coffre Mystère Quotidien</p>
-                <button onclick="ouvrirCoffre()" class="btn-action">Ouvrir ! 📦</button>
-            </div>
-        </div>
-
-        <div id="room-screen" class="screen">
-            <h2 style="color:white; text-shadow:2px 2px var(--fraise);">MA CHAMBRE ✨</h2>
-            <div class="room-view" id="room">
-                <div class="pet">🐱</div> </div>
-            <div class="grid-games" style="margin-top:20px;">
-                <div class="game-box" style="background:var(--sucre)" onclick="acheter('Graines')">🌱<br>Jardin</div>
-                <div class="game-box" style="background:var(--sucre)" onclick="acheter('Poisson')">🐠<br>Aquarium</div>
-            </div>
-            <button class="btn-action" style="width:100%">Boutique de meubles 🛋️</button>
-        </div>
-
-        <div class="nav-bar" id="nav-bar" style="display:none;">
-            <div class="nav-item active" onclick="show('wish-screen', this)">✨</div>
-            <div class="nav-item" onclick="show('games-screen', this)">🎮</div>
-            <div class="nav-item" onclick="show('room-screen', this)">🏠</div>
-        </div>
-
-    </div>
-
-    <div id="game-view" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:999; display:none; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
-        <div class="magic-card">
-            <h2 id="ex-q">...</h2>
-            <input type="text" id="ex-ans" style="width:100%; padding:15px; border-radius:20px; border:2px solid var(--menthe); text-align:center;">
-            <button onclick="verifierReponse()" class="btn-action">Magie ! ✨</button>
-            <p onclick="document.getElementById('game-view').style.display='none'" style="margin-top:15px; cursor:pointer; color:#ccc">Retour</p>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -146,13 +132,12 @@
 
         let session = null, diamonds = 0;
 
-        // --- AUTH (STRICTEMENT GARDEE) ---
         async function validerAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
-            const internalEmail = user.toLowerCase() + "@academy.user";
-            const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
-            if(error) { alert("Accès refusé !"); return; }
+            const email = user.toLowerCase() + "@academy.user";
+            const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
+            if(error) { alert("Code secret erroné !"); return; }
             session = data.user;
             recupererProfil();
         }
@@ -161,46 +146,45 @@
             const { data } = await client.from('profiles').select('*').eq('id', session.id).single();
             diamonds = data.diamonds;
             document.getElementById('diamond-count').innerText = diamonds;
+            document.getElementById('display-user').innerText = data.email.toUpperCase();
             document.getElementById('auth-screen').classList.remove('active');
-            document.getElementById('wish-screen').classList.add('active');
-            document.getElementById('nav-bar').style.display = 'flex';
-            document.getElementById('wish-title').innerText = "Vœu Magique #1";
+            document.getElementById('dashboard').classList.add('active');
         }
 
-        // --- NAVIGATION ---
-        function show(screenId, el) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            el.classList.add('active');
+        function setAvatar(emoji) { document.getElementById('avatar-box').innerText = emoji; }
+        function changeBg(color) { document.getElementById('avatar-box').style.background = color; }
+        
+        function animerAvatar() {
+            const box = document.getElementById('avatar-box');
+            box.classList.add('dance');
+            setTimeout(() => box.classList.remove('dance'), 2000);
         }
 
-        // --- FONCTIONS EXTRA ---
-        function ouvrirCoffre() {
-            const gain = Math.floor(Math.random() * 50) + 10;
-            alert(`📦 Félicitations ! Tu as trouvé ${gain} diamants !`);
-            updateDiamonds(gain);
-        }
-
-        function jouer(nom) { alert("Le jeu " + nom + " va commencer ! ✨ (En développement)"); }
-
-        function ouvrirVoeu() {
+        function showGame() {
             document.getElementById('game-view').style.display = 'flex';
-            document.getElementById('ex-q').innerText = "Combien font 12 + 8 ?";
+            document.getElementById('ex-q').innerText = "15 + 15 ?";
         }
+        function hideGame() { document.getElementById('game-view').style.display = 'none'; }
 
         async function verifierReponse() {
-            if(document.getElementById('ex-ans').value === "20") {
+            const ans = document.getElementById('ex-ans').value;
+            if(ans === "30") {
                 confetti({ particleCount: 150, spread: 70, colors: ['#ffb7c5', '#c1f0e1'] });
-                updateDiamonds(10);
-                document.getElementById('game-view').style.display = 'none';
-            } else { alert("Boing ! 🍪 Oups, réessaie !"); }
-        }
-
-        async function updateDiamonds(val) {
-            diamonds += val;
-            document.getElementById('diamond-count').innerText = diamonds;
-            await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
+                diamonds += 10;
+                document.getElementById('diamond-count').innerText = diamonds;
+                await client.from('profiles').update({ diamonds }).eq('id', session.id);
+                animerAvatar();
+                setTimeout(hideGame, 1500);
+            } else {
+                const card = document.getElementById('game-card');
+                card.classList.add('shake');
+                const audioCtx = new AudioContext();
+                const osc = audioCtx.createOscillator();
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+                setTimeout(() => card.classList.remove('shake'), 300);
+            }
         }
     </script>
 </body>
