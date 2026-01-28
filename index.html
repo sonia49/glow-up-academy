@@ -3,146 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 Glow Up Academy - Codage 5</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <title>🧁 Candy Glow Up - Codage 6</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- DESIGN GIRLY PASTEL --- */
+        /* --- UNIVERS GOURMAND & PASTEL --- */
         :root {
-            --pink-soft: #FFDEE9;
-            --blue-soft: #B5FFFC;
-            --purple-pastel: #E2D1F9;
-            --main-pink: #FF85A1;
-            --grad-pastel: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
-            --white: rgba(255, 255, 255, 0.9);
+            --fraise: #ffb7c5;
+            --menthe: #c1f0e1;
+            --lavande: #dcd3ff;
+            --citron: #fff4bd;
+            --sucre: #ffffff;
+            --texte: #8e7cc3;
         }
 
         body {
             margin: 0;
-            font-family: 'Quicksand', sans-serif;
-            background: var(--grad-pastel);
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(180deg, var(--fraise), var(--lavande));
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            color: #7B68EE;
+            color: var(--texte);
         }
 
-        .app-container { width: 100%; max-width: 420px; padding: 15px; }
-        .screen { display: none; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .app-container { width: 100%; max-width: 450px; padding: 15px; }
+        .screen { display: none; animation: float 1s ease-in-out infinite alternate; }
         .active { display: block !important; }
 
-        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float { from { transform: translateY(0px); } to { transform: translateY(-5px); } }
 
-        /* Cartes Style Nuage */
-        .card {
-            background: var(--white);
-            padding: 30px 20px;
-            border-radius: 40px;
-            box-shadow: 0 15px 35px rgba(255, 133, 161, 0.2);
+        /* --- DASHBOARD STYLE GÂTEAU --- */
+        .header-cake {
+            background: var(--sucre);
+            padding: 20px;
+            border-radius: 40px 40px 15px 15px;
+            box-shadow: 0 10px 0 var(--fraise);
             text-align: center;
-            border: 4px solid #fff;
+            margin-bottom: 25px;
         }
 
-        h1 {
-            font-family: 'Fredoka', sans-serif;
-            color: var(--main-pink);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px #fff;
+        .diamond-display {
+            background: var(--menthe);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: #55b99b;
+            display: inline-block;
+            margin-top: 10px;
+            border: 3px solid #fff;
         }
 
-        /* Inputs Doux */
+        /* --- BOUTONS NUAGES & BONBONS --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .cloud-btn {
+            background: var(--sucre);
+            border: none;
+            padding: 20px 10px;
+            border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%; /* Forme nuage */
+            cursor: pointer;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.05);
+            transition: 0.2s;
+            font-weight: 700;
+        }
+        .cloud-btn span { display: block; font-size: 1.8rem; margin-bottom: 5px; }
+        .cloud-btn.active { background: var(--citron); transform: scale(1.1); box-shadow: 0 5px 0 #e6d88a; }
+
+        /* --- MISSIONS COMME DES MACARONS --- */
+        .mission-area {
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 35px;
+            padding: 20px;
+            min-height: 300px;
+        }
+
+        .macaron-card {
+            background: var(--sucre);
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: 0.3s;
+        }
+        .macaron-card:hover { transform: scale(1.02); border-color: var(--fraise); }
+        .macaron-card b { color: #ff8ba0; font-size: 1.1rem; }
+
+        /* --- INPUTS & BOUTONS --- */
         input {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             margin: 10px 0;
-            border: 2px solid var(--purple-pastel);
-            border-radius: 25px;
-            background: #fff;
-            font-family: inherit;
-            font-size: 1rem;
+            border: 4px solid var(--menthe);
+            border-radius: 50px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-family: 'Fredoka';
             outline: none;
-            color: #7B68EE;
-            box-sizing: border-box;
         }
-        input:focus { border-color: var(--main-pink); box-shadow: 0 0 10px rgba(255, 133, 161, 0.2); }
 
-        /* Boutons Gummies */
-        .btn-girly {
-            background: linear-gradient(to right, #FF85A1, #FFAACC);
+        .btn-candy {
+            background: var(--fraise);
             color: white;
             border: none;
-            padding: 15px;
+            padding: 18px;
             width: 100%;
-            border-radius: 30px;
+            border-radius: 50px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 6px 0 #E57399;
-            transition: 0.2s;
-            margin-top: 15px;
+            box-shadow: 0 8px 0 #e5a4b1;
+            margin-top: 10px;
         }
-        .btn-girly:active { transform: translateY(4px); box-shadow: 0 2px 0 #E57399; }
+        .btn-candy:active { transform: translateY(4px); box-shadow: 0 4px 0 #e5a4b1; }
 
-        /* Dashboard Girly */
-        .header-dash {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .user-pill {
-            background: #fff;
-            padding: 8px 15px;
+        .auth-card {
+            background: var(--sucre);
+            padding: 40px 25px;
             border-radius: 50px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .diamond-counter {
-            background: #FFEDF2;
-            padding: 8px 15px;
-            border-radius: 50px;
-            color: #FF5E8E;
-            font-weight: 800;
-        }
-
-        /* Onglets Pastel */
-        .tab-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-        .tab {
-            flex: 1;
-            padding: 12px;
-            background: #fff;
-            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             text-align: center;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.8rem;
-            border-bottom: 4px solid #eee;
+            margin-top: 50px;
         }
-        .tab.active { background: var(--purple-pastel); border-bottom-color: #C0A9E5; color: white; }
-
-        /* Liste Missions */
-        .ex-list { display: grid; gap: 10px; max-height: 400px; overflow-y: auto; padding: 5px; }
-        .ex-card {
-            background: #fff;
-            padding: 15px;
-            border-radius: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .ex-card:hover { border-color: var(--blue-soft); background: #F0FEFF; }
-        .ex-card b { color: #5ECFFF; }
-
-        .error-msg { color: #FF85A1; font-size: 0.8rem; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -150,46 +141,50 @@
     <div class="app-container">
         
         <div id="auth-screen" class="screen active">
-            <div class="card">
-                <h1 id="auth-title">Coucou ! ✨</h1>
-                <p style="margin-bottom: 20px;">Prête pour ton Glow Up ?</p>
-                
-                <input type="text" id="username" placeholder="Ton pseudo adorable">
-                <input type="password" id="pass" placeholder="Mot de passe magique">
-                
-                <button onclick="validerAuth()" class="btn-girly" id="btn-text">Se connecter ✨</button>
-                <p onclick="toggleMode()" id="switch-link" style="margin-top:20px; color:#A29BFE; cursor:pointer; font-weight: bold;">Pas de compte ? Créer un profil 🎀</p>
-                <div id="auth-error" class="error-msg"></div>
+            <div class="auth-card">
+                <h1 style="color: var(--fraise); font-size: 2.5rem; margin:0;">Sweet Login</h1>
+                <p>Miam, te revoilà ! 🍭</p>
+                <input type="text" id="username" placeholder="Ton pseudo sucré">
+                <input type="password" id="pass" placeholder="Mot de passe biscuit">
+                <button onclick="validerAuth()" class="btn-candy">C'est parti ! 🍰</button>
+                <p onclick="toggleMode()" id="switch-link" style="margin-top:20px; cursor:pointer; font-weight: bold; color: var(--lavande);">Créer un compte ? 🎀</p>
+                <div id="auth-error" style="color:var(--fraise); margin-top:10px;"></div>
             </div>
         </div>
 
         <div id="dashboard" class="screen">
-            <div class="header-dash">
-                <div class="user-pill">
-                    <span style="background:var(--main-pink); color:white; width:30px; height:30px; border-radius:50%; display:grid; place-items:center;" id="avatar-char">?</span>
-                    <span id="display-user">Joueur</span>
-                </div>
-                <div class="diamond-counter">💎 <span id="diamond-count">0</span></div>
+            <div class="header-cake">
+                <h2 style="margin:0; font-size: 1rem;">BIENVENUE, <span id="display-user">GIRLY</span> ! ✨</h2>
+                <div class="diamond-display">💎 <span id="diamond-count">0</span> Diamants</div>
             </div>
 
-            <div class="tab-bar">
-                <div class="tab active" onclick="filtrer('math', this)">🔢 Maths</div>
-                <div class="tab" onclick="filtrer('french', this)">📚 French</div>
-                <div class="tab" onclick="filtrer('english', this)">🇬🇧 English</div>
+            <div class="menu-grid">
+                <button class="cloud-btn active" onclick="filtrer('math', this)">
+                    <span>🍩</span><label>MATHS</label>
+                </button>
+                <button class="cloud-btn" onclick="filtrer('french', this)">
+                    <span>🍬</span><label>FRANÇAIS</label>
+                </button>
+                <button class="cloud-btn" onclick="filtrer('english', this)">
+                    <span>🍦</span><label>ANGLAIS</label>
+                </button>
             </div>
 
-            <div class="ex-list" id="ex-container"></div>
+            <div class="mission-area">
+                <p style="text-align:center; font-weight:700; color:white; text-shadow: 1px 1px var(--fraise);">CHOISIS TON GÂTEAU :</p>
+                <div id="ex-container"></div>
+            </div>
 
-            <p onclick="location.reload()" style="text-align:center; color:#FF85A1; font-size:0.8rem; margin-top:30px; cursor:pointer;">Au revoir ! 👋</p>
+            <button onclick="location.reload()" style="background:none; border:none; width:100%; margin-top:20px; color:white; cursor:pointer; font-weight:bold;">Se déconnecter 👋</button>
         </div>
 
-        <div id="game-view" class="screen">
-            <div class="card">
-                <h2 id="ex-cat" style="color:var(--main-pink); font-size:1rem;">MISSION MAGIQUE</h2>
-                <p id="ex-q" style="font-size:1.5rem; font-weight:700; margin:25px 0; color:#6C5CE7;"></p>
-                <input type="text" id="ex-ans" placeholder="Ta réponse ici...">
-                <button onclick="verifierReponse()" class="btn-girly">Valider ! 🌸</button>
-                <button onclick="quitterJeu()" style="background:none; border:none; color:#BDC3C7; margin-top:15px; cursor:pointer;">Retour</button>
+        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:10; display:none; padding:20px; box-sizing:border-box;">
+            <div class="auth-card" style="margin-top: 80px;">
+                <h2 id="ex-cat" style="color:var(--fraise);">DÉFI SUCRÉ</h2>
+                <p id="ex-q" style="font-size:1.8rem; font-weight:700; margin:30px 0;"></p>
+                <input type="text" id="ex-ans" placeholder="Ta réponse...">
+                <button onclick="verifierReponse()" class="btn-candy">Go ! 🚀</button>
+                <button onclick="quitterJeu()" style="background:none; border:none; color:#ccc; margin-top:15px; cursor:pointer;">Annuler</button>
             </div>
         </div>
 
@@ -203,30 +198,28 @@
 
         let session = null, diamonds = 0, mode = 'login', currentEx = null;
 
-        // BANQUE D'EXERCICES 6ÈME
+        // BANQUE D'EXERCICES 6ÈME (Remplissage auto)
         const EXERCICES = [];
         const cats = ['math', 'french', 'english'];
         for(let i=0; i<60; i++) {
             let c = cats[Math.floor(i/20)];
             EXERCICES.push({
                 id: i+1, cat: c, 
-                q: c == 'math' ? `Calcule ${i+2} x 5` : (c == 'french' ? `Féminin de 'Boulanger ${i}'` : `Couleur 'Blue' en FR`),
-                a: c == 'math' ? ((i+2)*5).toString() : (c == 'french' ? `boulangère ${i}` : `bleu`),
+                q: c == 'math' ? `${i+5} + ${i+10} ?` : (c == 'french' ? `Pluriel de 'Bonbon ${i}'` : `Couleur 'Pink'`),
+                a: c == 'math' ? (i+5+i+10).toString() : (c == 'french' ? `bonbons ${i}` : `rose`),
                 r: 10
             });
         }
 
         function toggleMode() {
             mode = (mode === 'login') ? 'signup' : 'login';
-            document.getElementById('auth-title').innerText = mode === 'login' ? "Coucou ! ✨" : "Bienvenue ! 🎀";
-            document.getElementById('btn-text').innerText = mode === 'login' ? "Se connecter ✨" : "Créer mon compte 🌸";
-            document.getElementById('switch-link').innerText = mode === 'login' ? "Pas de compte ? Créer un profil 🎀" : "Déjà inscrite ? Se connecter";
+            document.getElementById('switch-link').innerText = mode === 'login' ? "Créer un compte ? 🎀" : "Déjà inscrite ? Connexion";
         }
 
         async function validerAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
-            if(!user || pass.length < 6) { alert("Identifiant requis & MDP de 6 car. min"); return; }
+            if(!user || pass.length < 6) return;
             const internalEmail = user.toLowerCase() + "@academy.user";
 
             try {
@@ -234,14 +227,14 @@
                     const { data, error } = await client.auth.signUp({ email: internalEmail, password: pass });
                     if(error) throw error;
                     await client.from('profiles').insert([{ id: data.user.id, email: user, diamonds: 0 }]);
-                    alert("Compte créé ! 🌸 Connecte-toi vite."); location.reload();
+                    alert("Compte créé ! 🧁"); location.reload();
                 } else {
                     const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
                     if(error) throw error;
                     session = data.user;
                     recupererProfil();
                 }
-            } catch (e) { document.getElementById('auth-error').innerText = "Oups ! " + e.message; }
+            } catch (e) { document.getElementById('auth-error').innerText = "Erreur de mot de passe !"; }
         }
 
         async function recupererProfil() {
@@ -249,28 +242,26 @@
             if(data) {
                 diamonds = data.diamonds;
                 document.getElementById('diamond-count').innerText = diamonds;
-                document.getElementById('display-user').innerText = data.email;
-                document.getElementById('avatar-char').innerText = data.email[0].toUpperCase();
+                document.getElementById('display-user').innerText = data.email.toUpperCase();
             }
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
-            filtrer('math', document.querySelector('.tab'));
+            filtrer('math', document.querySelector('.cloud-btn'));
         }
 
         function filtrer(cat, el) {
             const cont = document.getElementById('ex-container');
             cont.innerHTML = "";
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.cloud-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
 
             EXERCICES.filter(e => e.cat === cat).forEach(ex => {
                 const item = document.createElement('div');
-                item.className = "ex-card";
-                item.innerHTML = `<span>Mission #${ex.id}</span> <b>+${ex.r} 💎</b>`;
+                item.className = "macaron-card";
+                item.innerHTML = `<span>Macaron #${ex.id}</span> <b>${ex.r} 💎</b>`;
                 item.onclick = () => {
                     currentEx = ex;
-                    document.getElementById('dashboard').classList.remove('active');
-                    document.getElementById('game-view').classList.add('active');
+                    document.getElementById('game-view').style.display = 'block';
                     document.getElementById('ex-q').innerText = ex.q;
                     document.getElementById('ex-ans').value = "";
                 };
@@ -280,18 +271,15 @@
 
         async function verifierReponse() {
             if(document.getElementById('ex-ans').value.trim().toLowerCase() === currentEx.a.toLowerCase()) {
-                alert("Bravo ma belle ! ✨ +" + currentEx.r + " 💎");
+                alert("Miam ! C'est juste ! ✨");
                 diamonds += currentEx.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
                 quitterJeu();
-            } else { alert("Oh non, réessaie encore ! 🎀"); }
+            } else { alert("Oh non, réessaie petit biscuit ! 🍪"); }
         }
 
-        function quitterJeu() {
-            document.getElementById('game-view').classList.remove('active');
-            document.getElementById('dashboard').classList.add('active');
-        }
+        function quitterJeu() { document.getElementById('game-view').style.display = 'none'; }
     </script>
 </body>
 </html>
