@@ -3,103 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Glow Up Academy</title>
+    <title>✨ Glow Up Academy - Premium</title>
     <style>
-        :root { --pink: #FF6B9D; --bg: #FFF5F8; }
-        body { margin: 0; font-family: sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
-        .screen { width: 100%; max-width: 400px; display: none; }
+        :root { --pink: #FF6B9D; --purple: #A29BFE; --bg: #FFF5F8; --white: #FFFFFF; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; overflow-x: hidden; }
+        .screen { width: 100%; max-width: 500px; display: none; padding: 20px; box-sizing: border-box; }
         .active { display: block !important; }
-        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-        h1 { color: var(--pink); }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; box-sizing: border-box; }
-        .btn-main { background: var(--pink); color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .error { color: #ff4757; font-size: 0.8rem; margin-top: 15px; font-weight: bold; }
+        
+        /* Design des Cartes */
+        .card { background: var(--white); padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; margin-bottom: 20px; }
+        h1 { color: var(--pink); font-size: 1.8rem; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 15px; box-sizing: border-box; font-size: 1rem; }
+        
+        .btn { background: var(--pink); color: white; border: none; padding: 15px 25px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        .btn:hover { filter: brightness(1.1); }
+        .btn-sub { background: var(--purple); margin-top: 10px; }
+
+        /* Dashboard & Stats */
+        .stats-bar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 20px; margin-bottom: 20px; position: sticky; top: 10px; z-index: 100; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .diamond-count { color: #00CEC9; font-weight: bold; font-size: 1.2rem; }
+
+        /* Liste des Exercices */
+        .subject-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .tab { padding: 8px 15px; background: white; border-radius: 15px; cursor: pointer; font-size: 0.9rem; border: 2px solid transparent; }
+        .tab.active { border-color: var(--pink); color: var(--pink); font-weight: bold; }
+
+        .exercise-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; border-left: 5px solid var(--purple); }
+        .exercise-card:hover { transform: translateX(5px); }
+        .reward { color: #FF9F43; font-weight: bold; }
+
+        /* Zone de Jeu */
+        #game-zone { display: none; background: white; padding: 30px; border-radius: 25px; text-align: center; }
+        .error { color: #ff4757; font-size: 0.9rem; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div id="auth-screen" class="screen active">
         <div class="card">
-            <h1 id="title">Connexion</h1>
+            <h1 id="auth-title">Connexion</h1>
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="pass" placeholder="Mot de passe">
-            <button onclick="validerFormulaire()" class="btn-main" id="btn-text">C'est parti ! 🚀</button>
-            <p><a href="#" onclick="changerDeMode()" id="switch-link" style="color: var(--pink);">Créer un compte</a></p>
-            <div id="error-box" class="error"></div>
+            <button onclick="validerAuth()" class="btn" id="btn-text">C'est parti ! 🚀</button>
+            <p><a href="#" onclick="toggleMode()" id="switch-link" style="color: var(--pink); text-decoration:none;">Créer un compte</a></p>
+            <div id="auth-error" class="error"></div>
         </div>
     </div>
 
-    <div id="dashboard" class="screen">
-        <div class="card">
-            <h1>✨ Connecté !</h1>
-            <p>Bienvenue dans ton espace.</p>
-            <button onclick="location.reload()" class="btn-main">Déconnexion</button>
+    <div id="dashboard-screen" class="screen">
+        <div class="stats-bar">
+            <span>✨ <b id="user-display">Joueur</b></span>
+            <span class="diamond-count">💎 <span id="diamond-val">0</span></span>
+            <button onclick="location.reload()" style="border:none; background:none; font-size:1.2rem; cursor:pointer;">🚪</button>
+        </div>
+
+        <div id="main-view">
+            <div class="subject-tabs">
+                <div class="tab active" onclick="filterEx('math')">🔢 Maths</div>
+                <div class="tab" onclick="filterEx('french')">📚 Français</div>
+                <div class="tab" onclick="filterEx('english')">🇬🇧 Anglais</div>
+            </div>
+            <div id="exercise-list">
+                </div>
+        </div>
+
+        <div id="game-zone">
+            <h2 id="ex-title">Exercice</h2>
+            <p id="ex-question" style="font-size: 1.2rem; margin: 20px 0;"></p>
+            <input type="text" id="ex-answer" placeholder="Ta réponse ici...">
+            <button onclick="verifierReponse()" class="btn">Valider ✅</button>
+            <button onclick="fermerJeu()" class="btn btn-sub">Quitter</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-        // CONFIGURATION
-        const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
-        const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
-        
-        let client;
-        let modeInscription = false;
+        // CONFIG SUPABASE
+        const client = window.supabase.createClient(
+            'https://lcbwehiwjowgthazrydy.supabase.co', 
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY',
+            { auth: { persistSession: false } }
+        );
 
-        // On vérifie si Supabase est bien chargé
-        window.onload = function() {
-            if (typeof window.supabase === 'undefined') {
-                alert("ERREUR : La bibliothèque Supabase n'a pas pu se charger. Vérifie ta connexion internet ou désactive tes bloqueurs de pub.");
-            } else {
-                client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
-                console.log("Supabase prêt !");
-            }
-        };
+        let userSession = null;
+        let userDiamonds = 0;
+        let currentMode = 'login';
+        let currentEx = null;
 
-        function changerDeMode() {
-            modeInscription = !modeInscription;
-            document.getElementById('title').innerText = modeInscription ? "Inscription" : "Connexion";
-            document.getElementById('btn-text').innerText = modeInscription ? "Créer mon compte ✨" : "C'est parti ! 🚀";
-            document.getElementById('switch-link').innerText = modeInscription ? "Déjà un compte ? Connexion" : "Pas de compte ? Créer un compte";
+        // BANQUE D'EXERCICES (Echantillon des 60 exercices)
+        const EXERCISES = [
+            // MATHS (Niveau 6ème)
+            { id: 1, cat: 'math', q: "15 x 4 = ?", a: "60", r: 10 },
+            { id: 2, cat: 'math', q: "Combien de mm dans 1,5 cm ?", a: "15", r: 10 },
+            { id: 3, cat: 'math', q: "Le périmètre d'un carré de côté 5cm ?", a: "20", r: 15 },
+            { id: 4, cat: 'math', q: "123 + 87 = ?", a: "210", r: 10 },
+            { id: 5, cat: 'math', q: "Moitié de 150 ?", a: "75", r: 10 },
+            // FRANÇAIS
+            { id: 21, cat: 'french', q: "Pluriel de 'cheval' ?", a: "chevaux", r: 10 },
+            { id: 22, cat: 'french', q: "Féminin de 'directeur' ?", a: "directrice", r: 10 },
+            { id: 23, cat: 'french', q: "Contraire de 'clair' ?", a: "sombre", r: 10 },
+            { id: 24, cat: 'french', q: "Passé composé de 'Je (manger)' ?", a: "j'ai mangé", r: 15 },
+            // ANGLAIS
+            { id: 41, cat: 'english', q: "Couleur 'Yellow' en français ?", a: "jaune", r: 10 },
+            { id: 42, cat: 'english', q: "Traduire : 'The cat is blue'", a: "le chat est bleu", r: 15 },
+            { id: 43, cat: 'english', q: "Pluriel de 'Child' ?", a: "children", r: 20 },
+            { id: 44, cat: 'english', q: "Comment dit-on 'Bonjour' le matin ?", a: "good morning", r: 10 }
+            // ... (On peut en ajouter jusqu'à 60 facilement ici)
+        ];
+
+        // --- AUTHENTIFICATION ---
+        function toggleMode() {
+            currentMode = (currentMode === 'login') ? 'signup' : 'login';
+            document.getElementById('auth-title').innerText = currentMode === 'login' ? "Connexion" : "Inscription";
+            document.getElementById('btn-text').innerText = currentMode === 'login' ? "C'est parti ! 🚀" : "Créer mon compte ✨";
         }
 
-        async function validerFormulaire() {
-            // TEST 1 : Est-ce que la fonction se lance ?
-            console.log("Bouton cliqué");
-            const errorBox = document.getElementById('error-box');
-            errorBox.innerText = "Traitement en cours...";
-
-            // TEST 2 : Est-ce que Supabase existe ?
-            if (!client) {
-                alert("Impossible de continuer : Supabase n'est pas initialisé.");
-                return;
-            }
-
+        async function validerAuth() {
             const email = document.getElementById('email').value.trim();
-            const pass = document.getElementById('pass').value;
-
-            if (!email || !pass) {
-                errorBox.innerText = "⚠️ Remplis tous les champs !";
-                return;
-            }
+            const password = document.getElementById('pass').value;
+            const errBox = document.getElementById('auth-error');
+            errBox.innerText = "Chargement...";
 
             try {
-                if (modeInscription) {
-                    const { data, error } = await client.auth.signUp({ email, password: pass });
-                    if (error) throw error;
-                    alert("Succès ! Compte créé. Vérifie tes e-mails.");
+                let res;
+                if(currentMode === 'signup') {
+                    res = await client.auth.signUp({ email, password });
+                    if(res.error) throw res.error;
+                    // Création du profil initial dans la table SQL
+                    await client.from('profiles').insert([{ id: res.data.user.id, email: email, diamonds: 0 }]);
+                    alert("Compte créé ! Connecte-toi.");
+                    location.reload();
                 } else {
-                    const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
-                    if (error) throw error;
-                    
-                    // Bascule d'écran
-                    document.getElementById('auth-screen').classList.remove('active');
-                    document.getElementById('dashboard').classList.add('active');
+                    res = await client.auth.signInWithPassword({ email, password });
+                    if(res.error) throw res.error;
+                    userSession = res.data.user;
+                    chargerProfil();
                 }
-            } catch (err) {
-                errorBox.innerText = "❌ " + err.message;
+            } catch (e) { errBox.innerText = "❌ " + e.message; }
+        }
+
+        // --- DONNÉES UTILISATEUR ---
+        async function chargerProfil() {
+            const { data, error } = await client.from('profiles').select('*').eq('id', userSession.id).single();
+            if(!error && data) {
+                userDiamonds = data.diamonds;
+                document.getElementById('diamond-val').innerText = userDiamonds;
+                document.getElementById('user-display').innerText = data.email.split('@')[0];
             }
+            document.getElementById('auth-screen').classList.remove('active');
+            document.getElementById('dashboard-screen').classList.add('active');
+            filterEx('math');
+        }
+
+        async function saveDiamonds(nouveauMontant) {
+            userDiamonds += nouveauMontant;
+            document.getElementById('diamond-val').innerText = userDiamonds;
+            await client.from('profiles').update({ diamonds: userDiamonds }).eq('id', userSession.id);
+        }
+
+        // --- GESTION EXERCICES ---
+        function filterEx(category) {
+            const list = document.getElementById('exercise-list');
+            list.innerHTML = "";
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const filtered = EXERCISES.filter(e => e.cat === category);
+            filtered.forEach(ex => {
+                const div = document.createElement('div');
+                div.className = "exercise-card";
+                div.innerHTML = `<span>Exercice #${ex.id}</span> <span class="reward">+${ex.r} 💎</span>`;
+                div.onclick = () => ouvrirJeu(ex);
+                list.appendChild(div);
+            });
+        }
+
+        function ouvrirJeu(ex) {
+            currentEx = ex;
+            document.getElementById('main-view').style.display = 'none';
+            document.getElementById('game-zone').style.display = 'block';
+            document.getElementById('ex-title').innerText = "Mission " + ex.cat.toUpperCase();
+            document.getElementById('ex-question').innerText = ex.q;
+            document.getElementById('ex-answer').value = "";
+        }
+
+        function verifierReponse() {
+            const rep = document.getElementById('ex-answer').value.trim().toLowerCase();
+            if(rep === currentEx.a.toLowerCase()) {
+                alert("🎉 BRAVO ! Tu gagnes " + currentEx.r + " diamants !");
+                saveDiamonds(currentEx.r);
+                fermerJeu();
+            } else {
+                alert("❌ Oups, réessaie encore !");
+            }
+        }
+
+        function fermerJeu() {
+            document.getElementById('main-view').style.display = 'block';
+            document.getElementById('game-zone').style.display = 'none';
         }
     </script>
 </body>
