@@ -3,211 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌈 Glow Up Academy - Codage 3</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+    <title>🌈 Glow Up Academy - Codage 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- STYLE DASHBOARD FUTURISTE --- */
+        /* BASE & THEME ARC-EN-CIEL */
         :root {
-            --rainbow: linear-gradient(90deg, #ff00c1, #9600ff, #00b6ff, #00ff8e, #ffdb00, #ff0000);
-            --bg-dark: #050505;
-            --card-bg: rgba(255, 255, 255, 0.07);
-            --accent: #ff00c1;
+            --rainbow: linear-gradient(45deg, #ff00c1, #9600ff, #00b6ff, #00ff8e, #ffdb00, #ff0000);
+            --bg: #0a0a0c;
+            --card: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
         }
 
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
-            color: white;
-            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             display: flex;
             justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container { width: 100%; max-width: 500px; position: relative; padding-bottom: 80px; }
-        .screen { display: none; padding: 20px; animation: slideUp 0.4s ease-out; }
+        .app-container { width: 100%; max-width: 450px; padding: 20px; }
+        .screen { display: none; animation: fadeIn 0.4s ease-in-out; }
         .active { display: block !important; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- ÉCRAN CONNEXION --- */
-        .auth-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
+        /* --- DESIGN DU DASHBOARD --- */
+        .header-dash {
+            background: var(--card);
+            border-radius: 25px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px 20px;
-            border-radius: 40px;
-            text-align: center;
-            margin-top: 50px;
+            margin-bottom: 25px;
         }
 
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 2.5rem;
+        .user-tag { display: flex; align-items: center; gap: 12px; }
+        .avatar {
+            width: 45px; height: 45px;
             background: var(--rainbow);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            border-radius: 15px;
+            display: grid; place-items: center;
+            font-weight: 900; font-family: 'Montserrat';
         }
+
+        .diamond-badge {
+            background: rgba(0, 182, 255, 0.15);
+            color: #00e5ff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+        }
+
+        /* --- GROS BOUTONS CATEGORIES --- */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .cat-btn {
+            background: var(--card);
+            border: 2px solid transparent;
+            padding: 15px 5px;
+            border-radius: 22px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cat-btn.active {
+            border-color: #9600ff;
+            background: rgba(150, 0, 255, 0.1);
+            box-shadow: 0 0 20px rgba(150, 0, 255, 0.2);
+        }
+        .cat-btn span { display: block; font-size: 1.8rem; margin-bottom: 5px; }
+        .cat-btn label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; color: #aaa; cursor: pointer; }
+        .cat-btn.active label { color: white; }
+
+        /* --- LISTE DES MISSIONS --- */
+        .mission-box {
+            background: var(--card);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .ex-card {
+            background: rgba(255,255,255,0.03);
+            margin-bottom: 12px;
+            padding: 18px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .ex-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
+        .ex-card b { color: #00ff8e; font-family: 'Montserrat'; }
+
+        /* --- BOUTONS ET INPUTS --- */
+        .btn-rainbow {
+            background: var(--rainbow);
+            background-size: 300%;
+            border: none;
+            padding: 20px;
+            width: 100%;
+            border-radius: 25px;
+            color: white;
+            font-weight: 900;
+            font-family: 'Montserrat';
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.5s;
+            margin-top: 15px;
+        }
+        .btn-rainbow:hover { background-position: right; }
 
         input {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            color: white;
+            font-size: 1.1rem;
             margin: 10px 0;
-            border-radius: 20px;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .btn-main {
-            background: var(--rainbow);
-            background-size: 200%;
-            border: none;
-            padding: 20px;
-            width: 100%;
-            border-radius: 20px;
-            color: white;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 20px;
-        }
-        .btn-main:hover { background-position: right; transform: scale(1.02); }
-
-        /* --- DASHBOARD HEADER --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 0 0 30px 30px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar-circle { width: 45px; height: 45px; background: var(--rainbow); border-radius: 50%; display: grid; place-items: center; font-weight: bold; }
-
-        .diamond-pill {
-            background: rgba(0, 182, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 30px;
-            border: 1px solid #00b6ff;
-            color: #00b6ff;
-            font-weight: 800;
-            font-family: 'Orbitron';
-        }
-
-        /* --- MENU MATIÈRES --- */
-        .grid-menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .menu-item {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 20px;
             text-align: center;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
         }
-        .menu-item.active { border-color: var(--accent); background: rgba(255, 0, 193, 0.1); }
-        .menu-item span { display: block; font-size: 1.5rem; margin-bottom: 5px; }
-        .menu-item label { font-size: 0.7rem; font-weight: bold; cursor: pointer; }
+        input:focus { border-color: #9600ff; outline: none; }
 
-        /* --- LISTE EXERCICES --- */
-        .ex-scroll { display: grid; gap: 15px; }
-        .ex-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 6px solid #9600ff;
-            transition: 0.2s;
+        .logo {
+            font-family: 'Montserrat';
+            font-weight: 900;
+            font-size: 2.2rem;
+            background: var(--rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 30px;
         }
-        .ex-card:hover { transform: translateX(10px); background: rgba(255,255,255,0.15); }
-        .ex-card b { font-family: 'Orbitron'; color: #00ff8e; }
-
-        /* --- ZONE DE JEU --- */
-        .game-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); z-index: 1000;
-            padding: 30px; box-sizing: border-box; display: none;
-        }
-        .game-box {
-            background: var(--card-bg);
-            padding: 40px 20px; border-radius: 40px; border: 1px solid var(--accent);
-            text-align: center; margin-top: 40px;
-        }
-
-        .error { color: #ff0055; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="app-container">
         
         <div id="auth-screen" class="screen active">
-            <div class="auth-card">
-                <div class="logo-text">GLOW UP</div>
-                <p style="color: #888; margin-bottom: 30px;">L'Academy du Futur</p>
-                
-                <input type="text" id="username" placeholder="Identifiant">
-                <input type="password" id="pass" placeholder="Mot de passe">
-                
-                <button onclick="validerAuth()" class="btn-main" id="btn-text">Se Connecter</button>
-                <p onclick="toggleMode()" id="switch-link" style="margin-top:20px; font-size:0.9rem; cursor:pointer; color: #aaa;">Pas de compte ? <span style="color:var(--accent)">Créer un profil</span></p>
-                <div id="auth-error" class="error"></div>
+            <div style="margin-top: 60px;">
+                <div class="logo">GLOW UP</div>
+                <input type="text" id="username" placeholder="IDENTIFIANT">
+                <input type="password" id="pass" placeholder="MOT DE PASSE">
+                <button onclick="validerAuth()" class="btn-rainbow">SE CONNECTER 🚀</button>
+                <div id="auth-error" style="color:#ff4757; text-align:center; margin-top:15px; font-weight:bold;"></div>
             </div>
         </div>
 
         <div id="dashboard" class="screen">
-            <div class="header">
-                <div class="user-info">
-                    <div class="avatar-circle" id="user-initial">?</div>
+            <div class="header-dash">
+                <div class="user-tag">
+                    <div class="avatar" id="avatar-init">?</div>
                     <div>
-                        <div style="font-size: 0.7rem; color: #888;">BIENVENUE</div>
-                        <div style="font-weight: 800;" id="display-user">JOUEUR</div>
+                        <div style="font-size:0.7rem; color:#888;">PLAYER</div>
+                        <div style="font-weight:bold; font-size:1.1rem;" id="display-user">...</div>
                     </div>
                 </div>
-                <div class="diamond-pill">💎 <span id="diamond-count">0</span></div>
+                <div class="diamond-badge">💎 <span id="diamond-count">0</span></div>
             </div>
 
-            <div class="grid-menu">
-                <div class="menu-item active" onclick="filtrer('math', this)">
+            <div class="cat-grid">
+                <div class="cat-btn active" onclick="filtrer('math', this)">
                     <span>🔢</span><label>MATHS</label>
                 </div>
-                <div class="menu-item" onclick="filtrer('french', this)">
+                <div class="cat-btn" onclick="filtrer('french', this)">
                     <span>📚</span><label>FRANÇAIS</label>
                 </div>
-                <div class="menu-item" onclick="filtrer('english', this)">
+                <div class="cat-btn" onclick="filtrer('english', this)">
                     <span>🇬🇧</span><label>ANGLAIS</label>
                 </div>
             </div>
 
-            <h3 style="margin-left: 10px; letter-spacing: 2px; font-size: 0.9rem; color: #555;">MISSIONS DISPONIBLES</h3>
-            <div id="ex-container" class="ex-scroll"></div>
+            <div class="mission-box">
+                <h4 style="margin:0 0 15px 5px; color:#555; letter-spacing:1px;">MISSIONS 6ÈME</h4>
+                <div id="ex-container"></div>
+            </div>
+            
+            <p onclick="location.reload()" style="text-align:center; color:#444; margin-top:30px; cursor:pointer;">Quitter la session</p>
         </div>
 
-        <div id="game-view" class="game-overlay">
-            <div class="logo-text" style="font-size: 1.2rem; text-align: center;">MISSION EN COURS</div>
-            <div class="game-box">
-                <p id="ex-q" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 30px;"></p>
-                <input type="text" id="ex-ans" placeholder="TA RÉPONSE..." style="text-align: center; font-size: 1.5rem; background: black; border: 1px solid #333;">
-                <button onclick="verifierReponse()" class="btn-main">VALIDER LA MISSION</button>
-                <button onclick="quitterJeu()" style="background:none; border:none; color: #555; margin-top: 20px; cursor:pointer;">ABANDONNER</button>
+        <div id="game-view" class="screen">
+            <div class="mission-box" style="margin-top:50px; text-align:center;">
+                <h2 id="ex-cat" style="color:#9600ff; font-family:'Montserrat'; font-size:0.8rem;">DÉFI</h2>
+                <p id="ex-q" style="font-size:1.8rem; font-weight:900; margin:30px 0;"></p>
+                <input type="text" id="ex-ans" placeholder="RÉPONSE ICI">
+                <button onclick="verifierReponse()" class="btn-rainbow">VALIDER ✅</button>
+                <button onclick="quitterJeu()" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">RETOUR</button>
             </div>
         </div>
 
@@ -215,48 +214,42 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // ON GARDE EXACTEMENT LES MÊMES INFOS DE CONNEXION QUE LE CODAGE 1
         const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
-        let session = null, diamonds = 0, mode = 'login', currentEx = null;
+        let session = null, diamonds = 0, currentEx = null;
 
-        const EXERCICES = [];
-        const cats = ['math', 'french', 'english'];
-        for(let i=0; i<60; i++) {
-            let c = cats[Math.floor(i/20)];
-            EXERCICES.push({
-                id: i+1, cat: c, 
-                q: c == 'math' ? `${i+5} x ${Math.floor(i/10)+2} ?` : (c == 'french' ? `Pluriel de 'Mot ${i}' ?` : `Traduis 'Hello ${i}'`),
-                a: c == 'math' ? ((i+5)*(Math.floor(i/10)+2)).toString() : (c == 'french' ? `mots ${i}` : `bonjour ${i}`),
-                r: 10 + i
-            });
-        }
-
-        function toggleMode() {
-            mode = (mode === 'login') ? 'signup' : 'login';
-            document.getElementById('btn-text').innerText = mode === 'login' ? "Se Connecter" : "Créer mon Profil";
+        // BANQUE D'EXERCICES 6ÈME
+        const EXERCICES = [
+            { q: "12,5 + 7,5 ?", a: "20", r: 10, cat: 'math' },
+            { q: "Périmètre carré côté 4 ?", a: "16", r: 10, cat: 'math' },
+            { q: "10% de 500 ?", a: "50", r: 15, cat: 'math' },
+            { q: "Pluriel de 'Hibou' ?", a: "hiboux", r: 15, cat: 'french' },
+            { q: "Traduis 'Yellow' ?", a: "jaune", r: 10, cat: 'english' },
+            { q: "6 x 7 ?", a: "42", r: 10, cat: 'math' }
+        ];
+        // Remplissage des 60 missions
+        for(let i=7; i<=60; i++) {
+            let c = i <= 20 ? 'math' : (i <= 40 ? 'french' : 'english');
+            EXERCICES.push({ q: `Mission #${i}: Calcule ${i}+10`, a: (i+10).toString(), r: 5, cat: c });
         }
 
         async function validerAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
-            if(!user || pass.length < 6) { alert("Pseudo requis & MDP 6 car. min"); return; }
+            if(!user || !pass) return;
+
+            // La même transformation invisible que le Codage 1
             const internalEmail = user.toLowerCase() + "@academy.user";
 
             try {
-                if(mode === 'signup') {
-                    const { data, error } = await client.auth.signUp({ email: internalEmail, password: pass });
-                    if(error) throw error;
-                    await client.from('profiles').insert([{ id: data.user.id, email: user, diamonds: 0 }]);
-                    alert("Compte créé !"); location.reload();
-                } else {
-                    const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
-                    if(error) throw error;
-                    session = data.user;
-                    recupererProfil();
-                }
-            } catch (e) { document.getElementById('auth-error').innerText = e.message; }
+                const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
+                if(error) throw error;
+                session = data.user;
+                recupererProfil();
+            } catch (e) { document.getElementById('auth-error').innerText = "Erreur : Identifiants inconnus"; }
         }
 
         async function recupererProfil() {
@@ -265,44 +258,49 @@
                 diamonds = data.diamonds;
                 document.getElementById('diamond-count').innerText = diamonds;
                 document.getElementById('display-user').innerText = data.email.toUpperCase();
-                document.getElementById('user-initial').innerText = data.email[0].toUpperCase();
+                document.getElementById('avatar-init').innerText = data.email[0].toUpperCase();
             }
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
-            filtrer('math', document.querySelector('.menu-item'));
+            filtrer('math', document.querySelector('.cat-btn'));
         }
 
         function filtrer(cat, el) {
             const cont = document.getElementById('ex-container');
             cont.innerHTML = "";
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
 
-            EXERCICES.filter(e => e.cat === cat).forEach(ex => {
-                const item = document.createElement('div');
-                item.className = "ex-card";
-                item.innerHTML = `<div><small style="color:#888">MISSION #${ex.id}</small><br>Défi ${cat}</div> <b>+${ex.r} 💎</b>`;
-                item.onclick = () => {
+            EXERCICES.filter(e => e.cat === cat).forEach((ex, i) => {
+                const div = document.createElement('div');
+                div.className = "ex-card";
+                div.innerHTML = `<span>Mission ${i+1}</span> <b>+${ex.r} 💎</b>`;
+                div.onclick = () => {
                     currentEx = ex;
-                    document.getElementById('game-view').style.display = 'block';
+                    document.getElementById('dashboard').classList.remove('active');
+                    document.getElementById('game-view').classList.add('active');
                     document.getElementById('ex-q').innerText = ex.q;
                     document.getElementById('ex-ans').value = "";
                 };
-                cont.appendChild(item);
+                cont.appendChild(div);
             });
         }
 
         async function verifierReponse() {
-            if(document.getElementById('ex-ans').value.trim().toLowerCase() === currentEx.a.toLowerCase()) {
-                alert("Missions Accomplie ! ✨");
+            const rep = document.getElementById('ex-ans').value.trim().toLowerCase();
+            if(rep === currentEx.a.toLowerCase()) {
+                alert("SUCCÈS ! + " + currentEx.r + " 💎");
                 diamonds += currentEx.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
                 quitterJeu();
-            } else { alert("Échec de la mission ! Réessaie."); }
+            } else { alert("Échec ! Réessaie."); }
         }
 
-        function quitterJeu() { document.getElementById('game-view').style.display = 'none'; }
+        function quitterJeu() {
+            document.getElementById('game-view').classList.remove('active');
+            document.getElementById('dashboard').classList.add('active');
+        }
     </script>
 </body>
 </html>
