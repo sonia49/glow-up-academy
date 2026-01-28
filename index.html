@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* TON VISUEL EXACT RETROUVÉ */
+        /* VISUEL EXACT DU CODAGE 22 */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Fredoka', sans-serif; background: linear-gradient(-45deg, #FFE5F1, #E0BBE4, #C1F7DC, #A5E7FF); background-size: 400% 400%; animation: gradientBG 15s ease infinite; min-height: 100vh; display: flex; justify-content: center; overflow: hidden; }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -37,11 +37,11 @@
         <div id="auth-screen" class="screen active">
             <div class="glass" style="padding: 40px 30px; text-align: center;">
                 <h1 class="logo">Candy Academy</h1>
-                <p id="msg" style="color:#888; margin-bottom:15px;">Ton compte magique ✨</p>
+                <p id="msg" style="color:#888; margin-bottom:15px;">Identifie-toi, petit génie !</p>
                 <input type="text" id="username" placeholder="Pseudo">
-                <input type="password" id="pass" placeholder="Mot de passe">
-                <button class="btn-premium" onclick="auth('login')">SE CONNECTER 🍬</button>
-                <button class="btn-premium btn-secondary" onclick="auth('signup')">CRÉER COMPTE ✨</button>
+                <input type="password" id="pass" placeholder="Mot de passe (6 car.)">
+                <button class="btn-premium" onclick="doAuth('login')">SE CONNECTER 🍬</button>
+                <button class="btn-premium btn-secondary" onclick="doAuth('signup')">CRÉER MON COMPTE ✨</button>
             </div>
         </div>
 
@@ -51,20 +51,22 @@
                 <div style="flex:1">
                     <div id="user-display" style="font-weight:700; color:#FF6B9D; font-size:1.4rem;">Joueur</div>
                     <div style="display:flex; gap:10px; margin-top:8px;">
-                        <span class="stat-badge">💎 <span id="val-dia">0</span></span>
+                        <span class="stat-badge">💎 <span id="val-dia">100</span></span>
                         <span class="stat-badge">⭐ Niv. 1</span>
                     </div>
                 </div>
             </div>
+
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" onclick="setCat('math')">🍩 Maths</button>
-                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" onclick="setCat('french')">🍬 Français</button>
-                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" onclick="setCat('english')">🍦 Anglais</button>
+                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('math')">🍩 Maths</button>
+                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('french')">🍬 Français</button>
+                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('english')">🍦 English</button>
             </div>
-            <div class="glass" style="padding:50px; text-align:center; cursor:pointer;" onclick="ouvrirExo()">
+
+            <div class="glass" style="padding:50px; text-align:center; cursor:pointer;" onclick="faireExo()">
                 <div id="wish-emoji" style="font-size:5rem; margin-bottom:20px;">🍩</div>
                 <h2 id="wish-title" style="color:#FF6B9D;">Vœu Magique #1</h2>
-                <div style="margin-top:20px; background:#4ECDC4; color:white; padding:12px; border-radius:20px; font-weight:700;">+10 💎</div>
+                <div style="margin-top:20px; background:#4ECDC4; color:white; padding:12px; border-radius:20px; font-weight:700;">Gagne 10 Diamants 💎</div>
             </div>
 
             <div style="display:flex; justify-content:center; gap:30px; margin-top:30px;">
@@ -80,32 +82,53 @@
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY);
 
-        let profile = null, currentCat = 'math', currentIdx = 0;
+        let profile = { diamonds: 100, email: "" };
+        let currentCat = 'math', currentIdx = 0;
 
-        async function auth(type) {
+        async function doAuth(type) {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('pass').value;
+            const msg = document.getElementById('msg');
             if(!u || p.length < 6) { alert("Pseudo et MDP (6 car.) requis !"); return; }
             
-            document.getElementById('msg').innerText = "🪄 Magie en cours...";
-            const email = u.toLowerCase() + "@candy.academy";
+            msg.innerText = "🪄 Magie en cours...";
+            const email = u.toLowerCase() + "@candy.app";
 
-            if(type === 'signup') {
-                const { data, error } = await client.auth.signUp({ email, password: p });
-                if(error) { alert(error.message); return; }
-                await client.from('profiles').insert([{ id: data.user.id, email: u, diamonds: 100 }]);
-                alert("✨ Compte créé ! Connecte-toi maintenant.");
-                location.reload();
-            } else {
-                const { data, error } = await client.auth.signInWithPassword({ email, password: p });
-                if(error) { alert("Erreur : Pseudo ou MDP incorrect"); return; }
-                const { data: prof } = await client.from('profiles').select('*').eq('id', data.user.id).single();
-                profile = prof;
-                document.getElementById('auth-screen').classList.remove('active');
-                document.getElementById('dashboard').classList.add('active');
-                document.getElementById('user-display').innerText = profile.email.toUpperCase();
-                document.getElementById('val-dia').innerText = profile.diamonds;
+            try {
+                let response;
+                if(type === 'signup') {
+                    response = await client.auth.signUp({ email, password: p });
+                    if(response.error) throw response.error;
+                    await client.from('profiles').insert([{ id: response.data.user.id, email: u, diamonds: 100 }]);
+                    alert("Compte créé ! Clique maintenant sur SE CONNECTER.");
+                    msg.innerText = "Prêt !";
+                    return;
+                } else {
+                    response = await client.auth.signInWithPassword({ email, password: p });
+                    if(response.error) throw response.error;
+                    
+                    const { data: prof } = await client.from('profiles').select('*').eq('id', response.data.user.id).single();
+                    if(prof) {
+                        profile = prof;
+                    } else {
+                        // SÉCURITÉ : Si le profil n'existe pas, on le crée de force
+                        profile.email = u;
+                        profile.id = response.data.user.id;
+                        await client.from('profiles').insert([{ id: profile.id, email: u, diamonds: 100 }]);
+                    }
+                    ouvrirDashboard();
+                }
+            } catch (err) {
+                alert("Erreur : " + err.message);
+                msg.innerText = "Réessaie encore...";
             }
+        }
+
+        function ouvrirDashboard() {
+            document.getElementById('user-display').innerText = profile.email.toUpperCase();
+            document.getElementById('val-dia').innerText = profile.diamonds;
+            document.getElementById('auth-screen').classList.remove('active');
+            document.getElementById('dashboard').classList.add('active');
         }
 
         function setCat(c) { currentCat = c; currentIdx = 0; updateCard(); }
@@ -116,15 +139,15 @@
             document.getElementById('wish-title').innerText = `Vœu ${currentCat.toUpperCase()} #${currentIdx + 1}`;
         }
 
-        function ouvrirExo() {
-            let r = prompt("Résous l'énigme pour gagner 10 💎 !\nCombien font 8 x 7 ?");
-            if(r === "56") {
+        function faireExo() {
+            let r = prompt("Question rapide : Combien font 9 x 8 ?");
+            if(r === "72") {
                 confetti();
                 profile.diamonds += 10;
                 document.getElementById('val-dia').innerText = profile.diamonds;
-                client.from('profiles').update({ diamonds: profile.diamonds }).eq('id', profile.id).then();
+                if(profile.id) client.from('profiles').update({ diamonds: profile.diamonds }).eq('id', profile.id).then();
                 nav(1);
-            } else { alert("Oups ! Réessaie."); }
+            } else { alert("Réessaie ! 🍬"); }
         }
     </script>
 </body>
