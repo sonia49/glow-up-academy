@@ -5,158 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>✨ Glow Up Academy ✨</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
 </head>
-<body>
-    <!-- Écran de Connexion -->
+<body data-theme="pink">
+
     <div id="auth-screen" class="screen active">
-        <div class="auth-container">
-            <div class="logo-container">
-                <h1 class="logo">✨ Glow Up Academy ✨</h1>
-                <p class="tagline">Apprends en t'amusant !</p>
-            </div>
-            
-            <div class="auth-form">
-                <h2 id="auth-title">Connexion</h2>
-                <input type="email" id="auth-email" placeholder="Email" class="input-field">
-                <input type="password" id="auth-password" placeholder="Mot de passe" class="input-field">
-                <button id="auth-submit" class="btn btn-primary">Se connecter</button>
-                <p class="auth-toggle">
-                    <span id="auth-switch-text">Pas encore de compte ?</span>
-                    <a href="#" id="auth-switch">Créer un compte</a>
-                </p>
-                <p id="auth-error" class="error-message"></p>
+        <div class="auth-card">
+            <h1>✨ Glow Up Academy</h1>
+            <p>Apprends, gagne des diamants et crée ton avatar !</p>
+            <div class="auth-inputs">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Mot de passe">
+                <button id="btn-login" class="btn-main">Se connecter</button>
+                <button id="btn-signup" class="btn-sub">Créer un compte</button>
             </div>
         </div>
     </div>
 
-    <!-- Dashboard Principal -->
     <div id="dashboard-screen" class="screen">
-        <!-- Header avec Stats -->
-        <header class="dashboard-header">
-            <div class="header-content">
-                <div class="player-info">
-                    <img id="player-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=default" alt="Avatar" class="avatar">
-                    <div class="player-stats">
-                        <h2 id="player-name">Joueur</h2>
-                        <div class="stat-badges">
-                            <span class="badge badge-level">Niveau <span id="player-level">1</span></span>
-                            <span class="badge badge-diamonds">💎 <span id="player-diamonds">0</span></span>
-                        </div>
-                    </div>
-                </div>
-                <button id="settings-btn" class="icon-btn">⚙️</button>
+        <header class="game-header">
+            <div class="stats">
+                <div class="stat-item"><img id="user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky" class="mini-avatar"></div>
+                <div class="stat-item">💎 <span id="diamond-count">0</span></div>
+                <div class="stat-item">⭐ Niv. <span id="user-level">1</span></div>
             </div>
+            <button onclick="logout()" class="btn-logout">Quitter</button>
         </header>
 
-        <!-- Navigation -->
-        <nav class="main-nav">
-            <button class="nav-btn active" data-page="quests">🎯 Quêtes</button>
-            <button class="nav-btn" data-page="shop">🛍️ Boutique</button>
-            <button class="nav-btn" data-page="profile">👤 Profil</button>
-        </nav>
-
-        <!-- Pages -->
-        <main class="main-content">
-            <!-- Page Quêtes -->
-            <div id="quests-page" class="page active">
-                <h2 class="page-title">🎯 Tes Quêtes</h2>
-                <div class="quests-grid">
-                    <div class="quest-card" data-type="french">
-                        <div class="quest-icon">📚</div>
-                        <h3>Français</h3>
-                        <p>Orthographe & Grammaire</p>
-                        <button class="btn btn-quest" onclick="startQuest('french')">Commencer</button>
-                    </div>
-                    <div class="quest-card" data-type="math">
-                        <div class="quest-icon">🔢</div>
+        <main class="game-content">
+            <section class="quest-section">
+                <h2>🎯 Tes Missions</h2>
+                <div class="quest-grid">
+                    <div class="quest-card" onclick="startQuest('math')">
+                        <span>🔢</span>
                         <h3>Maths</h3>
-                        <p>Calcul Rapide</p>
-                        <button class="btn btn-quest" onclick="startQuest('math')">Commencer</button>
+                        <button>Jouer</button>
                     </div>
-                    <div class="quest-card" data-type="logic">
-                        <div class="quest-icon">🧩</div>
-                        <h3>Logique</h3>
-                        <p>Énigmes & Réflexion</p>
-                        <button class="btn btn-quest" onclick="startQuest('logic')">Commencer</button>
+                    <div class="quest-card" onclick="startQuest('french')">
+                        <span>📚</span>
+                        <h3>Français</h3>
+                        <button>Jouer</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Page Boutique -->
-            <div id="shop-page" class="page">
-                <h2 class="page-title">🛍️ Boutique d'Avatars</h2>
-                <div class="shop-grid" id="shop-items"></div>
-            </div>
-
-            <!-- Page Profil -->
-            <div id="profile-page" class="page">
-                <h2 class="page-title">👤 Mon Profil</h2>
-                <div class="profile-container">
-                    <div class="profile-avatar-display">
-                        <img id="profile-avatar" src="" alt="Avatar" class="avatar-large">
+            <section class="shop-section">
+                <h2>🛍️ Boutique Avatars</h2>
+                <div id="shop-items" class="shop-grid">
                     </div>
-                    <div class="profile-stats-detailed">
-                        <div class="stat-row">
-                            <span class="stat-label">Niveau</span>
-                            <span class="stat-value" id="profile-level">1</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-label">Diamants</span>
-                            <span class="stat-value">💎 <span id="profile-diamonds">0</span></span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-label">Quêtes complétées</span>
-                            <span class="stat-value" id="quests-completed">0</span>
-                        </div>
-                    </div>
-                    <button id="logout-btn" class="btn btn-secondary">Déconnexion</button>
-                </div>
-            </div>
+            </section>
         </main>
     </div>
 
-    <!-- Modal Exercice -->
-    <div id="exercise-modal" class="modal">
+    <div id="quest-modal" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeExercise()">✕</button>
-            <h2 id="exercise-title" class="exercise-title"></h2>
-            <div id="exercise-content" class="exercise-content"></div>
-            <div class="exercise-actions">
-                <div id="exercise-feedback" class="feedback"></div>
-                <div id="exercise-buttons" class="exercise-buttons"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Paramètres -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeSettings()">✕</button>
-            <h2 class="modal-title">⚙️ Paramètres</h2>
-            <div class="settings-section">
-                <h3>Thème</h3>
-                <div class="theme-selector">
-                    <button class="theme-btn" data-theme="pink" onclick="changeTheme('pink')">
-                        <div class="theme-preview theme-pink"></div>
-                        Rose
-                    </button>
-                    <button class="theme-btn" data-theme="blue" onclick="changeTheme('blue')">
-                        <div class="theme-preview theme-blue"></div>
-                        Bleu
-                    </button>
-                </div>
-            </div>
-            <div class="settings-section">
-                <h3>Accessibilité</h3>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="dys-mode-toggle" onchange="toggleDysMode()">
-                    <span class="toggle-slider"></span>
-                    <span class="toggle-label">Mode DYS (Police OpenDyslexic)</span>
-                </label>
-            </div>
+            <h2 id="q-title">Mission</h2>
+            <p id="q-text" class="question-text">Chargement...</p>
+            <div id="q-options" class="options-grid"></div>
+            <button onclick="closeModal()" class="btn-sub">Fermer</button>
         </div>
     </div>
 
