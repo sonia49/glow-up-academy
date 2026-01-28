@@ -1,86 +1,85 @@
-:root {
-    --primary: #FF6B9D;
-    --bg: #FFF5F8;
-    --card: #FFFFFF;
-    --text: #4A4A4A;
-}
-
-body {
-    margin: 0;
-    font-family: 'Nunito', sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-}
-
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; flex-direction: column; align-items: center; }
-
-/* Carte de Connexion */
-.auth-card {
-    background: var(--card);
-    padding: 2rem;
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
-    text-align: center;
-    margin-top: 10vh;
-    width: 90%;
-    max-width: 400px;
-}
-
-h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; }
-
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 2px solid #FFE0EB;
-    border-radius: 15px;
-    box-sizing: border-box;
-}
-
-.btn-main {
-    background: linear-gradient(135deg, #FF6B9D, #FF9BCC);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 50px;
-    font-weight: 900;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* Dashboard */
+/* Styles du Dashboard */
 .top-bar {
-    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.user-info { display: flex; align-items: center; gap: 10px; }
+.avatar-circle {
+    width: 45px;
+    height: 45px;
+    background: #FF6B9D;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.user-name { font-weight: 900; margin: 0; font-size: 0.9rem; color: #4A4A4A; }
+.user-level { font-size: 0.7rem; margin: 0; color: #FF6B9D; font-weight: bold; }
+
+.stat-badge {
+    background: #FFF0F5;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 900;
+    color: #FF6B9D;
+    border: 2px solid #FFD1E3;
+}
+
+.dashboard-body { padding: 20px; }
+h3 { color: #4A4A4A; margin-bottom: 15px; font-size: 1.2rem; }
+
+/* Grille de Quêtes */
+.quest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.quest-card {
     background: white;
     padding: 15px;
-    display: flex;
-    justify-content: space-around;
+    border-radius: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    border-bottom: 4px solid #ddd;
+}
+
+.quest-card:active { transform: scale(0.95); }
+.quest-card.math { border-color: #5DB7FF; }
+.quest-card.french { border-color: #FFB347; }
+.quest-card.logic { border-color: #B19CD9; }
+
+/* Boutique */
+.shop-grid { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+.shop-item {
+    min-width: 100px;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.stat { font-weight: 900; font-size: 1.2rem; }
-
-.card {
-    background: white;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 600px;
-}
-
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-.menu-item {
-    background: #F8F9FF;
-    border: 2px solid #EDF0FF;
-    padding: 20px;
-    border-radius: 15px;
-    font-size: 1.1rem;
-    font-weight: 700;
+.item-preview { font-size: 2rem; margin-bottom: 10px; }
+.btn-buy {
+    background: #FF6B9D;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
     cursor: pointer;
 }
 
-#auth-error { color: #FF6B6B; font-size: 0.9rem; }
+.btn-buy.disabled { background: #CCC; cursor: not-allowed; }
