@@ -6,19 +6,14 @@
     <title>✨ Glow Up Academy</title>
     <style>
         :root { --pink: #FF6B9D; --bg: #FFF5F8; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        body { margin: 0; font-family: sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
         .screen { width: 100%; max-width: 400px; display: none; }
         .active { display: block !important; }
-        
-        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; margin-top: 30px; }
-        h1 { color: var(--pink); margin-bottom: 20px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
-        
-        .btn-main { background: var(--pink); color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 10px; }
-        .btn-main:active { transform: scale(0.98); }
-        
-        .link { color: var(--pink); cursor: pointer; text-decoration: underline; font-size: 0.9rem; margin-top: 15px; display: inline-block; }
-        .error { color: #ff4757; font-size: 0.8rem; margin-top: 15px; min-height: 1em; }
+        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: var(--pink); }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; box-sizing: border-box; }
+        .btn-main { background: var(--pink); color: white; border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .error { color: #ff4757; font-size: 0.8rem; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -28,31 +23,39 @@
             <h1 id="title">Connexion</h1>
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="pass" placeholder="Mot de passe">
-            
             <button onclick="validerFormulaire()" class="btn-main" id="btn-text">C'est parti ! 🚀</button>
-            
-            <div id="switch-link" class="link" onclick="changerDeMode()">Créer un compte</div>
+            <p><a href="#" onclick="changerDeMode()" id="switch-link" style="color: var(--pink);">Créer un compte</a></p>
             <div id="error-box" class="error"></div>
         </div>
     </div>
 
     <div id="dashboard" class="screen">
         <div class="card">
-            <h1>✨ Bravo !</h1>
-            <p>Tu es maintenant dans l'Academy.</p>
-            <div style="font-size: 3rem;">💎 100</div>
-            <button onclick="location.reload()" class="btn-main" style="background: #ccc;">Se déconnecter</button>
+            <h1>✨ Connecté !</h1>
+            <p>Bienvenue dans ton espace.</p>
+            <button onclick="location.reload()" class="btn-main">Déconnexion</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
         // CONFIGURATION
         const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
-        const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
-
+        
+        let client;
         let modeInscription = false;
+
+        // On vérifie si Supabase est bien chargé
+        window.onload = function() {
+            if (typeof window.supabase === 'undefined') {
+                alert("ERREUR : La bibliothèque Supabase n'a pas pu se charger. Vérifie ta connexion internet ou désactive tes bloqueurs de pub.");
+            } else {
+                client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
+                console.log("Supabase prêt !");
+            }
+        };
 
         function changerDeMode() {
             modeInscription = !modeInscription;
@@ -62,11 +65,19 @@
         }
 
         async function validerFormulaire() {
+            // TEST 1 : Est-ce que la fonction se lance ?
+            console.log("Bouton cliqué");
+            const errorBox = document.getElementById('error-box');
+            errorBox.innerText = "Traitement en cours...";
+
+            // TEST 2 : Est-ce que Supabase existe ?
+            if (!client) {
+                alert("Impossible de continuer : Supabase n'est pas initialisé.");
+                return;
+            }
+
             const email = document.getElementById('email').value.trim();
             const pass = document.getElementById('pass').value;
-            const errorBox = document.getElementById('error-box');
-
-            errorBox.innerText = "Chargement..."; // Feedback visuel immédiat
 
             if (!email || !pass) {
                 errorBox.innerText = "⚠️ Remplis tous les champs !";
@@ -77,13 +88,12 @@
                 if (modeInscription) {
                     const { data, error } = await client.auth.signUp({ email, password: pass });
                     if (error) throw error;
-                    alert("Compte créé ! Vérifie tes mails (ou spams) pour confirmer.");
-                    location.reload();
+                    alert("Succès ! Compte créé. Vérifie tes e-mails.");
                 } else {
                     const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
                     if (error) throw error;
                     
-                    // Si ça marche, on bascule
+                    // Bascule d'écran
                     document.getElementById('auth-screen').classList.remove('active');
                     document.getElementById('dashboard').classList.add('active');
                 }
