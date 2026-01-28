@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ My Magic Avatar - Codage 12</title>
+    <title>✨ Magic Academy & Avatar - Codage 13</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -19,54 +19,53 @@
         }
 
         .app-container { width: 100%; max-width: 420px; height: 100vh; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; }
-        .screen { display: none; flex-direction: column; align-items: center; width: 100%; height: 100%; }
+        .screen { display: none; flex-direction: column; align-items: center; width: 100%; height: 100%; overflow-y: auto; padding-bottom: 20px; }
         .active { display: flex !important; animation: pop 0.4s ease-out; }
 
         @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- ZONE AVATAR --- */
-        .avatar-preview {
-            width: 140px; height: 140px; background: var(--sucre);
-            border-radius: 50%; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 5rem; margin-bottom: 15px; position: relative;
-        }
-        .dance { animation: danceAnim 0.6s infinite alternate; }
-        @keyframes danceAnim { from { transform: translateY(0) rotate(-5deg); } to { transform: translateY(-10px) rotate(5deg); } }
-
-        /* --- DASHBOARD --- */
-        .magic-card {
-            background: var(--sucre); width: 100%; border-radius: 40px; padding: 25px;
-            box-shadow: 0 10px 0 var(--lavande); text-align: center; box-sizing: border-box;
-            border: 3px solid transparent;
-        }
-
+        /* --- HEADER --- */
         .header-cake {
             background: var(--sucre); width: 100%; padding: 12px; border-radius: 30px;
             display: flex; justify-content: space-between; align-items: center;
-            border: 3px solid var(--fraise); margin-bottom: 15px; box-sizing: border-box;
+            border: 3px solid var(--fraise); margin-bottom: 10px; box-sizing: border-box;
         }
 
-        /* --- CUSTOMISATION --- */
-        .custom-grid { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
-        .dot { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        /* --- AVATAR --- */
+        .avatar-preview {
+            width: 100px; height: 100px; background: var(--sucre);
+            border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 3.5rem; margin-bottom: 10px; transition: 0.3s;
+        }
+        .dance { animation: danceAnim 0.6s infinite alternate; }
+        @keyframes danceAnim { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
+        /* --- CARTE DE VŒU (UN PAR UN) --- */
+        .wish-card {
+            background: var(--sucre); width: 280px; height: 260px; border-radius: 50px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 6px solid var(--fraise);
+            transition: 0.3s; cursor: pointer; margin: 10px 0;
+        }
+        .nav-arrows { display: flex; gap: 40px; align-items: center; margin-bottom: 15px; }
+        .arrow {
+            background: var(--sucre); border: none; width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 0 var(--lavande);
+        }
+
+        /* --- MENU --- */
+        .menu-grid { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; width: 100%; }
         .cloud-btn {
-            background: var(--sucre); border: none; padding: 10px 20px; border-radius: 20px;
+            background: var(--sucre); border: none; padding: 10px; border-radius: 20px;
             font-family: 'Fredoka'; font-weight: 700; color: var(--texte); cursor: pointer;
-            box-shadow: 0 4px 0 var(--lavande); margin: 5px;
+            box-shadow: 0 4px 0 var(--lavande); font-size: 0.8rem;
         }
+        .cloud-btn.active { background: var(--citron); box-shadow: 0 3px 0 #e6d88a; }
 
-        /* --- JEU & INPUTS --- */
-        input {
-            width: 100%; padding: 15px; border-radius: 30px; border: 3px solid var(--menthe);
-            text-align: center; font-family: 'Fredoka'; outline: none; margin: 10px 0;
-        }
-        .btn-magic {
-            background: var(--fraise); color: white; border: none; padding: 15px;
-            width: 100%; border-radius: 30px; font-weight: 700; cursor: pointer;
-            box-shadow: 0 5px 0 #e5a4b1;
-        }
+        /* --- INPUTS --- */
+        input { width: 100%; padding: 15px; border-radius: 30px; border: 3px solid var(--menthe); text-align: center; font-family: 'Fredoka'; outline: none; margin: 10px 0; }
+        .btn-magic { background: var(--fraise); color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 0 #e5a4b1; }
 
         .shake { animation: shake 0.3s; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
@@ -75,13 +74,12 @@
 <body>
 
     <div class="app-container">
-        
         <div id="auth-screen" class="screen active">
-            <div class="magic-card" style="margin-top: 80px;">
-                <h1 style="color: var(--fraise);">Magic World ✨</h1>
+            <div style="background: white; padding: 30px; border-radius: 40px; text-align: center; margin-top: 50px;">
+                <h1 style="color: var(--fraise);">Glow Academy ✨</h1>
                 <input type="text" id="username" placeholder="Pseudo">
                 <input type="password" id="pass" placeholder="Mot de passe">
-                <button onclick="validerAuth()" class="btn-magic">C'est parti ! 🌸</button>
+                <button onclick="validerAuth()" class="btn-magic">Entrer 🪄</button>
             </div>
         </div>
 
@@ -91,37 +89,44 @@
                 <div style="background:var(--menthe); padding:5px 15px; border-radius:20px;">💎 <span id="diamond-count">0</span></div>
             </div>
 
-            <div class="avatar-preview" id="avatar-box">👧</div>
-            
-            <div class="magic-card">
-                <p style="font-size: 0.8rem; margin:0;">PERSONNALISER MON LOOK</p>
-                <div class="custom-grid">
+            <div class="avatar-preview" id="avatar-display" onclick="animerAvatar()">👧</div>
+
+            <div class="menu-grid">
+                <button class="cloud-btn active" onclick="changerCat('math', this)">🍩 Maths</button>
+                <button class="cloud-btn" onclick="changerCat('french', this)">🍬 Français</button>
+                <button class="cloud-btn" onclick="changerCat('english', this)">🍦 Anglais</button>
+                <button class="cloud-btn" style="background:var(--lavande); color:white;" onclick="toggleAvatarMenu()">🎨 Look</button>
+            </div>
+
+            <div id="avatar-menu" style="display:none; background:white; padding:15px; border-radius:25px; margin-bottom:15px; width:90%; text-align:center;">
+                <div class="menu-grid">
                     <button class="cloud-btn" onclick="setAvatar('👧')">Fille</button>
                     <button class="cloud-btn" onclick="setAvatar('🧚‍♀️')">Fée</button>
                     <button class="cloud-btn" onclick="setAvatar('👑')">Princesse</button>
-                    <button class="cloud-btn" onclick="setAvatar('🐱')">Chat</button>
                 </div>
-                <div class="custom-grid">
-                    <div class="dot" style="background:#FFC0CB" onclick="changeBg('#FFC0CB')"></div>
-                    <div class="dot" style="background:#B5FFFC" onclick="changeBg('#B5FFFC')"></div>
-                    <div class="dot" style="background:#E2D1F9" onclick="changeBg('#E2D1F9')"></div>
-                </div>
-                <button class="btn-magic" style="margin-top:15px;" onclick="animerAvatar()">Faire danser ! 💃</button>
             </div>
 
-            <button class="cloud-btn" style="margin-top:20px; width:100%; background:var(--citron)" onclick="showGame()">RÉALISER UN VŒU ✨</button>
-        </div>
+            <div class="wish-card" id="main-card" onclick="ouvrirVoeu()">
+                <div style="font-size: 3rem;">✨</div>
+                <h2 id="wish-title">Vœu Magique #1</h2>
+                <div style="font-size: 1.2rem; margin-top: 10px; color: #ff8ba0;">💎 10</div>
+            </div>
 
-        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:100; padding:20px; box-sizing:border-box; display:none;">
-            <div class="magic-card" id="game-card" style="margin-top: 80px;">
-                <h2 style="color:var(--fraise);">VŒU MAGIQUE</h2>
-                <p id="ex-q" style="font-size:1.5rem; font-weight:700; margin:20px 0;"></p>
-                <input type="text" id="ex-ans" placeholder="Ta réponse...">
-                <button onclick="verifierReponse()" class="btn-magic">Magie ! ✨</button>
-                <p onclick="hideGame()" style="margin-top:15px; cursor:pointer; color:#ccc">Retour</p>
+            <div class="nav-arrows">
+                <button class="arrow" onclick="naviguer(-1)">👈</button>
+                <button class="arrow" onclick="naviguer(1)">👉</button>
             </div>
         </div>
 
+        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:1000; padding:20px; box-sizing:border-box; display:none;">
+            <div style="background:white; padding:30px; border-radius:40px; text-align:center; margin-top:80px; width:100%; box-sizing:border-box;" id="game-card">
+                <h3 style="color:var(--fraise); margin:0;">RÉALISE TON VŒU</h3>
+                <p id="ex-q" style="font-size:1.6rem; font-weight:700; margin:30px 0;"></p>
+                <input type="text" id="ex-ans" placeholder="Réponse...">
+                <button onclick="verifierReponse()" class="btn-magic">Lancer le sort ! ✨</button>
+                <p onclick="document.getElementById('game-view').style.display='none'" style="margin-top:20px; cursor:pointer; color:#ccc;">Plus tard</p>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -130,61 +135,103 @@
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
-        let session = null, diamonds = 0;
+        let session = null, diamonds = 0, currentIndex = 0, currentCat = 'math';
+        const EXERCICES = [];
+
+        // --- GÉNÉRATION DES 60 EXERCICES (20 de chaque) ---
+        const matieres = ['math', 'french', 'english'];
+        const questions = {
+            math: ["12 + 8 ?", "5 x 5 ?", "100 - 45 ?", "3 x 9 ?", "15 + 15 ?", "50 / 2 ?", "12 x 2 ?", "9 + 14 ?", "20 x 5 ?", "30 - 12 ?", "7 x 8 ?", "45 + 55 ?", "11 x 3 ?", "60 / 3 ?", "18 + 7 ?", "25 x 2 ?", "90 - 10 ?", "4 x 4 ?", "10 + 90 ?", "100 / 4 ?"],
+            french: ["Pluriel de 'Chat' ?", "Féminin de 'Boulanger' ?", "Synonyme de 'Heureux' ?", "Contraire de 'Grand' ?", "Pluriel de 'Ciel' ?", "Genre de 'Soleil' ?", "Verbe 'Etre' 1p.s ?", "Pluriel de 'Chou' ?", "Féminin de 'Lion' ?", "Pluriel de 'Travail' ?", "Contraire de 'Beau' ?", "Genre de 'Lune' ?", "Verbe 'Avoir' 1p.s ?", "Pluriel de 'Bal' ?", "Féminin de 'Danseur' ?", "Synonyme de 'Rapide' ?", "Pluriel de 'Hibou' ?", "Genre de 'Fleur' ?", "Contraire de 'Petit' ?", "Verbe 'Aller' 1p.s ?"],
+            english: ["'Chat' en Anglais ?", "'Blue' en Français ?", "'Apple' en Français ?", "'Merci' en Anglais ?", "'Red' en Français ?", "'Chien' en Anglais ?", "'Hello' en Français ?", "'Yellow' en Français ?", "'Green' en Français ?", "'S'il vous plaît' en Anglais ?", "'One' en Français ?", "'Pink' en Français ?", "'Lundi' en Anglais ?", "'Water' en Français ?", "'Father' en Français ?", "'Mother' en Français ?", "'Love' en Français ?", "'Goodbye' en Anglais ?", "'Orange' en Français ?", "'Sun' en Français ?"]
+        };
+        const reponses = {
+            math: ["20", "25", "55", "27", "30", "25", "24", "23", "100", "18", "56", "100", "33", "20", "25", "50", "80", "16", "100", "25"],
+            french: ["chats", "boulangère", "content", "petit", "cieux", "masculin", "suis", "choux", "lionne", "travaux", "laid", "féminin", "ai", "bals", "danseuse", "vite", "hiboux", "féminin", "grand", "vais"],
+            english: ["cat", "bleu", "pomme", "thank you", "rouge", "dog", "bonjour", "jaune", "vert", "please", "un", "rose", "monday", "eau", "père", "mère", "amour", "au revoir", "orange", "soleil"]
+        };
+
+        for(let m of matieres) {
+            for(let i=0; i<20; i++) {
+                EXERCICES.push({ id: i+1, cat: m, q: questions[m][i], a: reponses[m][i], r: 10 });
+            }
+        }
+
+        let filtered = [];
 
         async function validerAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
             const email = user.toLowerCase() + "@academy.user";
             const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
-            if(error) { alert("Code secret erroné !"); return; }
+            if(error) { alert("Erreur d'identifiant !"); return; }
             session = data.user;
             recupererProfil();
         }
 
         async function recupererProfil() {
             const { data } = await client.from('profiles').select('*').eq('id', session.id).single();
-            diamonds = data.diamonds;
+            diamonds = data.diamonds || 0;
             document.getElementById('diamond-count').innerText = diamonds;
             document.getElementById('display-user').innerText = data.email.toUpperCase();
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
+            changerCat('math', document.querySelector('.cloud-btn'));
         }
 
-        function setAvatar(emoji) { document.getElementById('avatar-box').innerText = emoji; }
-        function changeBg(color) { document.getElementById('avatar-box').style.background = color; }
-        
-        function animerAvatar() {
-            const box = document.getElementById('avatar-box');
-            box.classList.add('dance');
-            setTimeout(() => box.classList.remove('dance'), 2000);
+        function changerCat(cat, el) {
+            currentCat = cat; currentIndex = 0;
+            document.querySelectorAll('.cloud-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            filtered = EXERCICES.filter(e => e.cat === cat);
+            majCarte();
         }
 
-        function showGame() {
+        function majCarte() {
+            const ex = filtered[currentIndex];
+            document.getElementById('wish-title').innerText = `Vœu Magique #${ex.id}`;
+        }
+
+        function naviguer(dir) {
+            currentIndex = (currentIndex + dir + filtered.length) % filtered.length;
+            majCarte();
+        }
+
+        function ouvrirVoeu() {
+            const ex = filtered[currentIndex];
             document.getElementById('game-view').style.display = 'flex';
-            document.getElementById('ex-q').innerText = "15 + 15 ?";
+            document.getElementById('ex-q').innerText = ex.q;
+            document.getElementById('ex-ans').value = "";
         }
-        function hideGame() { document.getElementById('game-view').style.display = 'none'; }
 
         async function verifierReponse() {
-            const ans = document.getElementById('ex-ans').value;
-            if(ans === "30") {
-                confetti({ particleCount: 150, spread: 70, colors: ['#ffb7c5', '#c1f0e1'] });
-                diamonds += 10;
+            const ex = filtered[currentIndex];
+            const ans = document.getElementById('ex-ans').value.trim().toLowerCase();
+            if(ans === ex.a.toLowerCase()) {
+                confetti({ particleCount: 150, spread: 70, colors: ['#ffb7c5', '#c1f0e1'], shapes: ['star'] });
+                diamonds += ex.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds }).eq('id', session.id);
                 animerAvatar();
-                setTimeout(hideGame, 1500);
+                setTimeout(() => { document.getElementById('game-view').style.display='none'; naviguer(1); }, 1500);
             } else {
-                const card = document.getElementById('game-card');
-                card.classList.add('shake');
-                const audioCtx = new AudioContext();
-                const osc = audioCtx.createOscillator();
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.connect(audioCtx.destination);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-                setTimeout(() => card.classList.remove('shake'), 300);
+                document.getElementById('game-card').classList.add('shake');
+                const ctx = new AudioContext();
+                const o = ctx.createOscillator(); o.frequency.value = 150; o.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.2);
+                setTimeout(() => document.getElementById('game-card').classList.remove('shake'), 300);
             }
+        }
+
+        // --- AVATAR FUNCTIONS ---
+        function setAvatar(emoji) { document.getElementById('avatar-display').innerText = emoji; }
+        function toggleAvatarMenu() {
+            const m = document.getElementById('avatar-menu');
+            m.style.display = m.style.display === 'none' ? 'block' : 'none';
+        }
+        function animerAvatar() {
+            const a = document.getElementById('avatar-display');
+            a.classList.add('dance');
+            setTimeout(() => a.classList.remove('dance'), 1000);
         }
     </script>
 </body>
