@@ -1,43 +1,56 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Glow Up Academy</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div id="auth-screen" class="screen active">
-        <div class="auth-card">
-            <h1 id="auth-title">Connexion</h1>
-            <p id="auth-subtitle">Prêt pour ton Glow Up ?</p>
-            
-            <div class="form-group">
-                <input type="email" id="auth-email" placeholder="Email">
-                <input type="password" id="auth-password" placeholder="Mot de passe">
-                <button id="auth-submit" class="btn-main">Se connecter 🚀</button>
+<div id="dashboard-screen" class="screen" style="display:none;">
+    <nav class="top-bar">
+        <div class="user-info">
+            <div class="avatar-circle">✨</div>
+            <div>
+                <p class="user-name" id="display-email">Joueur</p>
+                <p class="user-level">Niveau 1 (Apprenti)</p>
             </div>
-
-            <p class="toggle-text">
-                <span id="switch-msg">Pas de compte ?</span> 
-                <a href="#" id="auth-switch">Créer un compte</a>
-            </p>
-            
-            <p id="error-display" class="error"></p>
         </div>
-    </div>
-
-    <div id="dashboard-screen" class="screen" style="display:none;">
-        <div class="dashboard-content">
-            <h1>✨ Bienvenue dans l'Academy !</h1>
-            <p>Tu es connecté. Tes quêtes t'attendent.</p>
-            <button onclick="location.reload()" class="btn-sub">Se déconnecter</button>
+        <div class="stats-container">
+            <div class="stat-badge">💎 <span id="diamonds-count">50</span></div>
+            <button onclick="location.reload()" class="btn-exit">🚪</button>
         </div>
-    </div>
+    </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+    <main class="dashboard-body">
+        <section class="game-section">
+            <h3>🎯 Missions du jour</h3>
+            <div class="quest-grid">
+                <div class="quest-card math" onclick="lancerQuete('Maths')">
+                    <div class="quest-icon">🔢</div>
+                    <h4>Calcul Mental</h4>
+                    <p>+10 💎</p>
+                </div>
+                <div class="quest-card french" onclick="lancerQuete('Français')">
+                    <div class="quest-icon">📚</div>
+                    <h4>Dictée Flash</h4>
+                    <p>+15 💎</p>
+                </div>
+                <div class="quest-card logic" onclick="lancerQuete('Logique')">
+                    <div class="quest-icon">🧩</div>
+                    <h4>Énigme</h4>
+                    <p>+20 💎</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-section">
+            <h3>🛍️ Boutique d'Avatars</h3>
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="item-preview">🦊</div>
+                    <button class="btn-buy">100 💎</button>
+                </div>
+                <div class="shop-item">
+                    <div class="item-preview">👑</div>
+                    <button class="btn-buy">500 💎</button>
+                </div>
+                <div class="shop-item locked">
+                    <div class="item-preview">🔒</div>
+                    <button class="btn-buy disabled">Niv. 5</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
