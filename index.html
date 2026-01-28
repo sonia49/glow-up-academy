@@ -3,236 +3,686 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Magic Academy & Avatar - Codage 13</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>🍭 Candy Dream Academy 🍭</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --fraise: #ffb7c5; --menthe: #c1f0e1; --lavande: #dcd3ff;
-            --citron: #fff4bd; --sucre: #ffffff; --texte: #8e7cc3;
+            --candy-pink: #FFB3D9;
+            --candy-blue: #A5E7FF;
+            --candy-purple: #E0BBE4;
+            --candy-yellow: #FFF4A3;
+            --candy-mint: #C1F7DC;
+            --candy-peach: #FFD4B8;
+            --white: #FFFFFF;
+            --shadow: rgba(255, 179, 217, 0.4);
         }
 
         body {
-            margin: 0; font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(180deg, var(--fraise), var(--lavande));
-            min-height: 100vh; display: flex; justify-content: center; color: var(--texte); overflow: hidden;
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FFE5F1 0%, #E0BBE4 25%, #C1F7DC 50%, #A5E7FF 75%, #FFD4B8 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .app-container { width: 100%; max-width: 420px; height: 100vh; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; }
-        .screen { display: none; flex-direction: column; align-items: center; width: 100%; height: 100%; overflow-y: auto; padding-bottom: 20px; }
-        .active { display: flex !important; animation: pop 0.4s ease-out; }
-
-        @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
-        /* --- HEADER --- */
-        .header-cake {
-            background: var(--sucre); width: 100%; padding: 12px; border-radius: 30px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 3px solid var(--fraise); margin-bottom: 10px; box-sizing: border-box;
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        /* --- AVATAR --- */
-        .avatar-preview {
-            width: 100px; height: 100px; background: var(--sucre);
-            border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 3.5rem; margin-bottom: 10px; transition: 0.3s;
+        /* Bulles flottantes d'arrière-plan */
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 179, 217, 0.3));
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(255, 179, 217, 0.3);
         }
-        .dance { animation: danceAnim 0.6s infinite alternate; }
-        @keyframes danceAnim { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
-        /* --- CARTE DE VŒU (UN PAR UN) --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-30px) rotate(5deg); }
+            50% { transform: translateY(-60px) rotate(-5deg); }
+            75% { transform: translateY(-30px) rotate(3deg); }
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ÉCRANS */
+        .screen {
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .screen.active { display: block; }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* CARTE AUTH */
+        .auth-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 243, 250, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 50px 35px;
+            border-radius: 50px;
+            box-shadow: 
+                0 20px 60px rgba(255, 179, 217, 0.4),
+                inset 0 -2px 20px rgba(255, 255, 255, 0.6),
+                0 0 0 8px rgba(255, 255, 255, 0.5);
+            text-align: center;
+            margin-top: 80px;
+            position: relative;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .logo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #FF6B9D, #C8A2E8, #FFB347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: rainbow 3s ease infinite;
+            text-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        @keyframes rainbow {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(20deg); }
+        }
+
+        .tagline {
+            color: #C8A2E8;
+            font-size: 1.1rem;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px 25px;
+            margin-bottom: 15px;
+            border: 3px solid rgba(255, 179, 217, 0.5);
+            border-radius: 30px;
+            font-family: 'Fredoka';
+            font-size: 1.05rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #FF6B9D;
+            box-shadow: 0 0 0 5px rgba(255, 107, 157, 0.1), 0 10px 30px rgba(255, 107, 157, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-candy {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Fredoka';
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B9D, #FFB347);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 157, 0.5), 0 0 0 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .switch-mode {
+            margin-top: 20px;
+            color: #C8A2E8;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .switch-mode:hover {
+            color: #FF6B9D;
+        }
+
+        /* DASHBOARD */
+        .header {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 243, 250, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 35px;
+            margin-bottom: 25px;
+            box-shadow: 
+                0 15px 40px rgba(255, 179, 217, 0.3),
+                inset 0 -2px 15px rgba(255, 255, 255, 0.6),
+                0 0 0 6px rgba(255, 255, 255, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .avatar-candy {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFB3D9, #E0BBE4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.4);
+            border: 4px solid white;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .username {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF6B9D, #C8A2E8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .stat-bubble {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 243, 250, 0.9));
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(255, 179, 217, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .diamonds { color: #4ECDC4; }
+        .level { color: #FFB347; }
+        .streak { color: #FF6B9D; }
+
+        /* NAVIGATION CATÉGORIES */
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .cat-btn {
+            flex: 1;
+            padding: 15px 10px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Fredoka';
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.8);
+            border: 3px solid rgba(255, 179, 217, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 179, 217, 0.2);
+        }
+
+        .cat-btn.active {
+            background: linear-gradient(135deg, #FFB3D9, #E0BBE4);
+            color: white;
+            transform: scale(1.05);
+            border-color: white;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+        }
+
+        /* CARTE DE VŒUX PREMIUM */
         .wish-card {
-            background: var(--sucre); width: 280px; height: 260px; border-radius: 50px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 6px solid var(--fraise);
-            transition: 0.3s; cursor: pointer; margin: 10px 0;
-        }
-        .nav-arrows { display: flex; gap: 40px; align-items: center; margin-bottom: 15px; }
-        .arrow {
-            background: var(--sucre); border: none; width: 50px; height: 50px; border-radius: 50%;
-            font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 0 var(--lavande);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 243, 250, 0.95));
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 
+                0 20px 60px rgba(255, 179, 217, 0.4),
+                inset 0 -2px 20px rgba(255, 255, 255, 0.6),
+                0 0 0 8px rgba(255, 255, 255, 0.5);
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* --- MENU --- */
-        .menu-grid { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; width: 100%; }
-        .cloud-btn {
-            background: var(--sucre); border: none; padding: 10px; border-radius: 20px;
-            font-family: 'Fredoka'; font-weight: 700; color: var(--texte); cursor: pointer;
-            box-shadow: 0 4px 0 var(--lavande); font-size: 0.8rem;
+        .wish-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s ease infinite;
         }
-        .cloud-btn.active { background: var(--citron); box-shadow: 0 3px 0 #e6d88a; }
 
-        /* --- INPUTS --- */
-        input { width: 100%; padding: 15px; border-radius: 30px; border: 3px solid var(--menthe); text-align: center; font-family: 'Fredoka'; outline: none; margin: 10px 0; }
-        .btn-magic { background: var(--fraise); color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 0 #e5a4b1; }
+        @keyframes shine {
+            0%, 100% { transform: translateX(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) rotate(45deg); }
+        }
 
-        .shake { animation: shake 0.3s; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .wish-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 25px 70px rgba(255, 179, 217, 0.5),
+                inset 0 -2px 20px rgba(255, 255, 255, 0.6),
+                0 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .wish-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: float 3s ease infinite;
+        }
+
+        .wish-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF6B9D, #C8A2E8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .wish-reward {
+            display: inline-block;
+            background: linear-gradient(135deg, #4ECDC4, #44B3A8);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        /* FLÈCHES NAVIGATION */
+        .nav-arrows {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .arrow-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 243, 250, 0.95));
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 179, 217, 0.3);
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .arrow-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 179, 217, 0.4);
+        }
+
+        /* MODAL EXERCICE */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(200, 162, 232, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .exercise-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 243, 250, 0.98));
+            backdrop-filter: blur(20px);
+            padding: 50px 40px;
+            border-radius: 45px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 
+                0 30px 80px rgba(255, 107, 157, 0.5),
+                inset 0 -2px 25px rgba(255, 255, 255, 0.6),
+                0 0 0 10px rgba(255, 255, 255, 0.6);
+            border: 5px solid rgba(255, 255, 255, 0.9);
+            position: relative;
+            animation: slideUp 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(100px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .exercise-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF6B9D, #C8A2E8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #8B7AB8;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .btn-secondary {
+            background: rgba(200, 162, 232, 0.2);
+            color: #8B7AB8;
+            box-shadow: none;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(200, 162, 232, 0.3);
+        }
+
+        /* ANIMATIONS ERREUR */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-15px) rotate(-3deg); }
+            50% { transform: translateX(15px) rotate(3deg); }
+            75% { transform: translateX(-10px) rotate(-2deg); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease;
+            border-color: #FF6B9D !important;
+        }
+
+        /* CONFETTIS PERSONNALISÉS */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 107, 157, 0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .logo { font-size: 2.2rem; }
+            .wish-icon { font-size: 4rem; }
+            .wish-title { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
+    <!-- Bulles flottantes -->
+    <div class="bubble" style="width: 100px; height: 100px; left: 10%; top: 20%; animation-delay: 0s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 80%; top: 15%; animation-delay: 1s;"></div>
+    <div class="bubble" style="width: 80px; height: 80px; left: 15%; top: 70%; animation-delay: 2s;"></div>
+    <div class="bubble" style="width: 120px; height: 120px; left: 75%; top: 60%; animation-delay: 1.5s;"></div>
+    <div class="bubble" style="width: 70px; height: 70px; left: 50%; top: 40%; animation-delay: 0.5s;"></div>
 
-    <div class="app-container">
+    <div class="success-overlay" id="confetti-canvas"></div>
+
+    <div class="container">
+        <!-- ÉCRAN AUTHENTIFICATION -->
         <div id="auth-screen" class="screen active">
-            <div style="background: white; padding: 30px; border-radius: 40px; text-align: center; margin-top: 50px;">
-                <h1 style="color: var(--fraise);">Glow Academy ✨</h1>
-                <input type="text" id="username" placeholder="Pseudo">
-                <input type="password" id="pass" placeholder="Mot de passe">
-                <button onclick="validerAuth()" class="btn-magic">Entrer 🪄</button>
+            <div class="auth-card">
+                <h1 class="logo">🍭 Candy Academy 🍬</h1>
+                <p class="tagline">Apprends en t'amusant dans un monde sucré !</p>
+                <input type="text" id="username" placeholder="✨ Ton pseudo magique">
+                <input type="password" id="password" placeholder="🔐 Mot de passe (6+ caractères)">
+                <button class="btn-candy btn-primary" onclick="handleAuth()">
+                    <span id="auth-btn-text">Entrer dans la magie ✨</span>
+                </button>
+                <p class="switch-mode" onclick="toggleAuthMode()">
+                    <span id="switch-text">Pas encore de compte ? Créer un profil 🎀</span>
+                </p>
             </div>
         </div>
 
-        <div id="dashboard" class="screen">
-            <div class="header-cake">
-                <span id="display-user">GIRLY</span>
-                <div style="background:var(--menthe); padding:5px 15px; border-radius:20px;">💎 <span id="diamond-count">0</span></div>
-            </div>
-
-            <div class="avatar-preview" id="avatar-display" onclick="animerAvatar()">👧</div>
-
-            <div class="menu-grid">
-                <button class="cloud-btn active" onclick="changerCat('math', this)">🍩 Maths</button>
-                <button class="cloud-btn" onclick="changerCat('french', this)">🍬 Français</button>
-                <button class="cloud-btn" onclick="changerCat('english', this)">🍦 Anglais</button>
-                <button class="cloud-btn" style="background:var(--lavande); color:white;" onclick="toggleAvatarMenu()">🎨 Look</button>
-            </div>
-
-            <div id="avatar-menu" style="display:none; background:white; padding:15px; border-radius:25px; margin-bottom:15px; width:90%; text-align:center;">
-                <div class="menu-grid">
-                    <button class="cloud-btn" onclick="setAvatar('👧')">Fille</button>
-                    <button class="cloud-btn" onclick="setAvatar('🧚‍♀️')">Fée</button>
-                    <button class="cloud-btn" onclick="setAvatar('👑')">Princesse</button>
+        <!-- ÉCRAN DASHBOARD -->
+        <div id="dashboard-screen" class="screen">
+            <button class="logout-btn" onclick="logout()">👋</button>
+            
+            <div class="header">
+                <div class="user-info">
+                    <div class="avatar-candy">🧁</div>
+                    <div>
+                        <div class="username" id="display-username">Joueur</div>
+                    </div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-bubble diamonds">💎 <span id="diamond-count">0</span></div>
+                    <div class="stat-bubble level">⭐ Niv. <span id="level-count">1</span></div>
+                    <div class="stat-bubble streak">🔥 <span id="streak-count">0</span></div>
                 </div>
             </div>
 
-            <div class="wish-card" id="main-card" onclick="ouvrirVoeu()">
-                <div style="font-size: 3rem;">✨</div>
-                <h2 id="wish-title">Vœu Magique #1</h2>
-                <div style="font-size: 1.2rem; margin-top: 10px; color: #ff8ba0;">💎 10</div>
+            <div class="categories">
+                <button class="cat-btn active" data-cat="math" onclick="changeCategory('math', this)">🍩 Maths</button>
+                <button class="cat-btn" data-cat="french" onclick="changeCategory('french', this)">🍬 Français</button>
+                <button class="cat-btn" data-cat="english" onclick="changeCategory('english', this)">🍦 English</button>
+            </div>
+
+            <div class="wish-card" onclick="openExercise()">
+                <div class="wish-icon" id="wish-icon">✨</div>
+                <h2 class="wish-title" id="wish-title">Vœu Magique #1</h2>
+                <div class="wish-reward">💎 +10</div>
             </div>
 
             <div class="nav-arrows">
-                <button class="arrow" onclick="naviguer(-1)">👈</button>
-                <button class="arrow" onclick="naviguer(1)">👉</button>
+                <button class="arrow-btn" onclick="navigate(-1)">👈</button>
+                <button class="arrow-btn" onclick="navigate(1)">👉</button>
             </div>
         </div>
 
-        <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); z-index:1000; padding:20px; box-sizing:border-box; display:none;">
-            <div style="background:white; padding:30px; border-radius:40px; text-align:center; margin-top:80px; width:100%; box-sizing:border-box;" id="game-card">
-                <h3 style="color:var(--fraise); margin:0;">RÉALISE TON VŒU</h3>
-                <p id="ex-q" style="font-size:1.6rem; font-weight:700; margin:30px 0;"></p>
-                <input type="text" id="ex-ans" placeholder="Réponse...">
-                <button onclick="verifierReponse()" class="btn-magic">Lancer le sort ! ✨</button>
-                <p onclick="document.getElementById('game-view').style.display='none'" style="margin-top:20px; cursor:pointer; color:#ccc;">Plus tard</p>
+        <!-- MODAL EXERCICE -->
+        <div class="modal-overlay" id="exercise-modal">
+            <div class="exercise-card">
+                <h2 class="exercise-title" id="exercise-category">🍩 Mathématiques</h2>
+                <p class="question" id="question-text">5 + 3 = ?</p>
+                <input type="text" id="answer-input" placeholder="Ta réponse...">
+                <button class="btn-candy btn-primary" onclick="checkAnswer()">Valider ma magie ✨</button>
+                <button class="btn-candy btn-secondary" onclick="closeExercise()">Annuler</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
-        const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
-        const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
+        // Configuration Supabase
+        const SUPABASE_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let session = null, diamonds = 0, currentIndex = 0, currentCat = 'math';
-        const EXERCICES = [];
+        // État global
+        let currentUser = null;
+        let currentProfile = null;
+        let authMode = 'login';
+        let currentCategory = 'math';
+        let currentIndex = 0;
+        let filteredExercises = [];
 
-        // --- GÉNÉRATION DES 60 EXERCICES (20 de chaque) ---
-        const matieres = ['math', 'french', 'english'];
-        const questions = {
-            math: ["12 + 8 ?", "5 x 5 ?", "100 - 45 ?", "3 x 9 ?", "15 + 15 ?", "50 / 2 ?", "12 x 2 ?", "9 + 14 ?", "20 x 5 ?", "30 - 12 ?", "7 x 8 ?", "45 + 55 ?", "11 x 3 ?", "60 / 3 ?", "18 + 7 ?", "25 x 2 ?", "90 - 10 ?", "4 x 4 ?", "10 + 90 ?", "100 / 4 ?"],
-            french: ["Pluriel de 'Chat' ?", "Féminin de 'Boulanger' ?", "Synonyme de 'Heureux' ?", "Contraire de 'Grand' ?", "Pluriel de 'Ciel' ?", "Genre de 'Soleil' ?", "Verbe 'Etre' 1p.s ?", "Pluriel de 'Chou' ?", "Féminin de 'Lion' ?", "Pluriel de 'Travail' ?", "Contraire de 'Beau' ?", "Genre de 'Lune' ?", "Verbe 'Avoir' 1p.s ?", "Pluriel de 'Bal' ?", "Féminin de 'Danseur' ?", "Synonyme de 'Rapide' ?", "Pluriel de 'Hibou' ?", "Genre de 'Fleur' ?", "Contraire de 'Petit' ?", "Verbe 'Aller' 1p.s ?"],
-            english: ["'Chat' en Anglais ?", "'Blue' en Français ?", "'Apple' en Français ?", "'Merci' en Anglais ?", "'Red' en Français ?", "'Chien' en Anglais ?", "'Hello' en Français ?", "'Yellow' en Français ?", "'Green' en Français ?", "'S'il vous plaît' en Anglais ?", "'One' en Français ?", "'Pink' en Français ?", "'Lundi' en Anglais ?", "'Water' en Français ?", "'Father' en Français ?", "'Mother' en Français ?", "'Love' en Français ?", "'Goodbye' en Anglais ?", "'Orange' en Français ?", "'Sun' en Français ?"]
-        };
-        const reponses = {
-            math: ["20", "25", "55", "27", "30", "25", "24", "23", "100", "18", "56", "100", "33", "20", "25", "50", "80", "16", "100", "25"],
-            french: ["chats", "boulangère", "content", "petit", "cieux", "masculin", "suis", "choux", "lionne", "travaux", "laid", "féminin", "ai", "bals", "danseuse", "vite", "hiboux", "féminin", "grand", "vais"],
-            english: ["cat", "bleu", "pomme", "thank you", "rouge", "dog", "bonjour", "jaune", "vert", "please", "un", "rose", "monday", "eau", "père", "mère", "amour", "au revoir", "orange", "soleil"]
-        };
-
-        for(let m of matieres) {
-            for(let i=0; i<20; i++) {
-                EXERCICES.push({ id: i+1, cat: m, q: questions[m][i], a: reponses[m][i], r: 10 });
-            }
-        }
-
-        let filtered = [];
-
-        async function validerAuth() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('pass').value;
-            const email = user.toLowerCase() + "@academy.user";
-            const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
-            if(error) { alert("Erreur d'identifiant !"); return; }
-            session = data.user;
-            recupererProfil();
-        }
-
-        async function recupererProfil() {
-            const { data } = await client.from('profiles').select('*').eq('id', session.id).single();
-            diamonds = data.diamonds || 0;
-            document.getElementById('diamond-count').innerText = diamonds;
-            document.getElementById('display-user').innerText = data.email.toUpperCase();
-            document.getElementById('auth-screen').classList.remove('active');
-            document.getElementById('dashboard').classList.add('active');
-            changerCat('math', document.querySelector('.cloud-btn'));
-        }
-
-        function changerCat(cat, el) {
-            currentCat = cat; currentIndex = 0;
-            document.querySelectorAll('.cloud-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            filtered = EXERCICES.filter(e => e.cat === cat);
-            majCarte();
-        }
-
-        function majCarte() {
-            const ex = filtered[currentIndex];
-            document.getElementById('wish-title').innerText = `Vœu Magique #${ex.id}`;
-        }
-
-        function naviguer(dir) {
-            currentIndex = (currentIndex + dir + filtered.length) % filtered.length;
-            majCarte();
-        }
-
-        function ouvrirVoeu() {
-            const ex = filtered[currentIndex];
-            document.getElementById('game-view').style.display = 'flex';
-            document.getElementById('ex-q').innerText = ex.q;
-            document.getElementById('ex-ans').value = "";
-        }
-
-        async function verifierReponse() {
-            const ex = filtered[currentIndex];
-            const ans = document.getElementById('ex-ans').value.trim().toLowerCase();
-            if(ans === ex.a.toLowerCase()) {
-                confetti({ particleCount: 150, spread: 70, colors: ['#ffb7c5', '#c1f0e1'], shapes: ['star'] });
-                diamonds += ex.r;
-                document.getElementById('diamond-count').innerText = diamonds;
-                await client.from('profiles').update({ diamonds }).eq('id', session.id);
-                animerAvatar();
-                setTimeout(() => { document.getElementById('game-view').style.display='none'; naviguer(1); }, 1500);
+        // Banque d'exercices MASSIVE
+        const EXERCISES = [];
+        const categories = ['math', 'french', 'english'];
+        const icons = { math: '🍩', french: '🍬', english: '🍦' };
+        
+        for(let i = 0; i < 90; i++) {
+            let cat = categories[Math.floor(i / 30)];
+            let ex = {};
+            
+            if(cat === 'math') {
+                let a = Math.floor(Math.random() * 15) + 1;
+                let b = Math.floor(Math.random() * 15) + 1;
+                ex = { id: i+1, cat, q: `${a} + ${b} = ?`, a: (a+b).toString(), reward: 10 };
+            } else if(cat === 'french') {
+                const words = ['chat', 'chien', 'maison', 'voiture', 'fleur', 'arbre', 'soleil', 'lune'];
+                const plurals = ['chats', 'chiens', 'maisons', 'voitures', 'fleurs', 'arbres', 'soleils', 'lunes'];
+                let idx = i % words.length;
+                ex = { id: i+1, cat, q: `Pluriel de '${words[idx]}' ?`, a: plurals[idx], reward: 10 };
             } else {
-                document.getElementById('game-card').classList.add('shake');
-                const ctx = new AudioContext();
-                const o = ctx.createOscillator(); o.frequency.value = 150; o.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.2);
-                setTimeout(() => document.getElementById('game-card').classList.remove('shake'), 300);
+                const translations = [
+                    ['pink', 'rose'], ['blue', 'bleu'], ['red', 'rouge'], ['green', 'vert'],
+                    ['cat', 'chat'], ['dog', 'chien'], ['house', 'maison'], ['car', 'voiture']
+                ];
+                let idx = i % translations.length;
+                ex = { id: i+1, cat, q: `'${translations[idx][0]}' en français ?`, a: translations[idx][1], reward: 10 };
+            }
+            
+            EXERCISES.push(ex);
+        }
+
+        // Authentification
+        function toggleAuthMode() {
+            authMode = authMode === 'login' ? 'signup' : 'login';
+            const btnText = document.getElementById('auth-btn-text');
+            const switchText = document.getElementById('switch-text');
+            
+            if(authMode === 'signup') {
+                btnText.textContent = 'Créer mon compte magique ✨';
+                switchText.textContent = 'Déjà un compte ? Se connecter 🔑';
+            } else {
+                btnText.textContent = 'Entrer dans la magie ✨';
+                switchText.textContent = 'Pas encore de compte ? Créer un profil 🎀';
             }
         }
 
-        // --- AVATAR FUNCTIONS ---
-        function setAvatar(emoji) { document.getElementById('avatar-display').innerText = emoji; }
-        function toggleAvatarMenu() {
-            const m = document.getElementById('avatar-menu');
-            m.style.display = m.style.display === 'none' ? 'block' : 'none';
+        async function handleAuth() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if(!username || password.length < 6) {
+                alert('⚠️ Remplis tous les champs (mot de passe 6+ caractères)');
+                return;
+            }
+            
+            const internalEmail = username.toLowerCase() + '@candyacademy.user';
+            
+            try {
+                if(authMode === 'signup') {
+                    const { data, error } = await supabase.auth.signUp({ 
+                        email: internalEmail, 
+                        password: password 
+                    });
+                    if(error) throw error;
+                    
+                    await supabase.from('profiles').insert([{
+                        id: data.user.id,
+                        email: username,
+                        diamonds: 100,
+                        level: 1,
+                        streak: 0,
+                        quests_completed: 0
+                    }]);
+                    
+                    alert('🎉 Compte créé avec succès !');
+                    location.reload();
+                } else {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: internalEmail,
+                        password: password
+                    });
+                    if(error) throw error;
+                    
+                    currentUser = data.user;
+                    await loadProfile();
+                }
+            } catch(error) {
+                alert('❌ ' + (error.message.includes('Invalid') ? 'Identifiants incorrects' : error.message));
+            }
         }
-        function animerAvatar() {
-            const a = document.getElementById('avatar-display');
-            a.classList.add('dance');
-            setTimeout(() => a.classList.remove('dance'), 1000);
-        }
-    </script>
-</body>
-</html>
+
+        async function loadProfile() {
+            const { data } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+            
+            if(data) {
+                currentProfile = data;
+                document.getElementById('display-username').textContent = data.email.toUpperCase();
+                document.getElementById('diamond-count').textContent = data.diamonds || 0;
+                document.getElementById('level-count').textContent = data.level || 1;
+                document.getElementById('streak-count').textContent = data.streak || 0;
+                
+                document.getElementById('auth-screen').classList.remove('active');
+                document.getElementById('dashboard-screen').classList.add('active');
+                
+                changeCategory('math', document.querySelector('.cat-btn'));
