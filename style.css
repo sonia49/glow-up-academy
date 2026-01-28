@@ -1,419 +1,86 @@
-// ========== Configuration Supabase ==========
-const SUPABASE_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ========== État Global ==========
-let currentUser = null;
-let currentProfile = null;
-let isSignUp = false;
-let currentExercise = null;
-
-// ========== Banque d'Exercices ==========
-const exerciseBank = {
-    french: [
-        { question: "Quelle est la bonne orthographe ?", options: ["Papillon", "Papion", "Papilion", "Papyion"], correct: 0 },
-        { question: "Trouve le verbe conjugué correctement :", options: ["Je mange", "Je manger", "Je manges", "Je mangez"], correct: 0 },
-        { question: "Quel mot est bien écrit ?", options: ["Éléphant", "Élefant", "Élephant", "Elefan"], correct: 0 },
-        { question: "Complète : Il ___ à l'école", options: ["va", "vas", "vat", "vais"], correct: 0 },
-        { question: "Pluriel de 'journal' ?", options: ["journaux", "journals", "journales", "journeaux"], correct: 0 }
-    ],
-    math: [
-        { question: "7 + 5 = ?", type: "input", correct: "12" },
-        { question: "15 - 8 = ?", type: "input", correct: "7" },
-        { question: "6 × 3 = ?", type: "input", correct: "18" },
-        { question: "20 ÷ 4 = ?", type: "input", correct: "5" },
-        { question: "9 + 9 = ?", type: "input", correct: "18" }
-    ],
-    logic: [
-        { question: "Si tous les chats ont 4 pattes et Minou est un chat, combien de pattes a Minou ?", options: ["2", "4", "6", "8"], correct: 1 },
-        { question: "Quelle forme vient ensuite ? ⭐🌙⭐🌙⭐", options: ["⭐", "🌙", "☀️", "🌟"], correct: 1 },
-        { question: "Dans une course, tu dépasses le 2ème. En quelle position es-tu ?", options: ["1er", "2ème", "3ème", "Dernier"], correct: 1 },
-        { question: "Quel nombre vient ensuite ? 2, 4, 6, 8...", options: ["9", "10", "11", "12"], correct: 1 }
-    ]
-};
-
-// ========== Avatars Boutique ==========
-const shopAvatars = [
-    { id: 'default', name: 'Avatar Classique', price: 0, seed: 'default' },
-    { id: 'robot', name: 'Robot Spatial', price: 50, seed: 'robot123' },
-    { id: 'unicorn', name: 'Licorne Magique', price: 100, seed: 'unicorn456' },
-    { id: 'ninja', name: 'Ninja Furtif', price: 150, seed: 'ninja789' },
-    { id: 'dragon', name: 'Dragon de Feu', price: 200, seed: 'dragon321' },
-    { id: 'wizard', name: 'Sorcier Mystique', price: 250, seed: 'wizard654' }
-];
-
-// ========== Initialisation ==========
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Glow Up Academy - Démarrage');
-    checkSession();
-    setupAuthListeners();
-    setupNavigation();
-    setupSettings();
-    loadTheme();
-    loadDysMode();
-});
-
-// ========== Authentification ==========
-async function checkSession() {
-    try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            console.log('✅ Session:', session.user.email);
-            currentUser = session.user;
-            await loadProfile();
-            showDashboard();
-        } else {
-            showAuth();
-        }
-    } catch (error) {
-        console.error('❌ Erreur session:', error);
-        showAuth();
-    }
+:root {
+    --primary: #FF6B9D;
+    --bg: #FFF5F8;
+    --card: #FFFFFF;
+    --text: #4A4A4A;
 }
 
-function setupAuthListeners() {
-    document.getElementById('auth-submit').addEventListener('click', handleAuth);
-    document.getElementById('auth-switch').addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleAuthMode();
-    });
-    document.querySelectorAll('#auth-email, #auth-password').forEach(input => {
-        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAuth(); });
-    });
+body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
-function toggleAuthMode() {
-    isSignUp = !isSignUp;
-    document.getElementById('auth-title').textContent = isSignUp ? 'Créer un compte' : 'Connexion';
-    document.getElementById('auth-submit').textContent = isSignUp ? "S'inscrire ✨" : 'Se connecter 🚀';
-    document.getElementById('auth-switch-text').textContent = isSignUp ? 'Déjà un compte ?' : 'Pas encore de compte ?';
-    document.getElementById('auth-switch').textContent = isSignUp ? 'Se connecter' : 'Créer un compte';
-    document.getElementById('auth-error').textContent = '';
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; align-items: center; }
+
+/* Carte de Connexion */
+.auth-card {
+    background: var(--card);
+    padding: 2rem;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
+    text-align: center;
+    margin-top: 10vh;
+    width: 90%;
+    max-width: 400px;
 }
 
-async function handleAuth() {
-    const email = document.getElementById('auth-email').value.trim();
-    const password = document.getElementById('auth-password').value;
-    const errorEl = document.getElementById('auth-error');
-    const submitBtn = document.getElementById('auth-submit');
-    
-    if (!email || !password) {
-        errorEl.style.color = '#FF6B6B';
-        errorEl.textContent = '⚠️ Remplis tous les champs !';
-        return;
-    }
-    if (password.length < 6) {
-        errorEl.style.color = '#FF6B6B';
-        errorEl.textContent = '⚠️ Mot de passe : 6 caractères minimum';
-        return;
-    }
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = '⏳ Chargement...';
-    errorEl.textContent = '';
-    
-    try {
-        if (isSignUp) {
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error) throw error;
-            if (data.user) {
-                currentUser = data.user;
-                await new Promise(r => setTimeout(r, 1000));
-                if (await createProfile(data.user.id, email)) {
-                    await loadProfile();
-                    errorEl.style.color = '#4ECDC4';
-                    errorEl.textContent = '✅ Compte créé ! 🎉';
-                    setTimeout(() => showDashboard(), 1000);
-                }
-            }
-        } else {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-            currentUser = data.user;
-            await loadProfile();
-            errorEl.style.color = '#4ECDC4';
-            errorEl.textContent = '✅ Connexion réussie ! 🎉';
-            setTimeout(() => showDashboard(), 800);
-        }
-    } catch (error) {
-        errorEl.style.color = '#FF6B6B';
-        if (error.message.includes('Invalid login')) errorEl.textContent = '❌ Email ou mot de passe incorrect';
-        else if (error.message.includes('already registered')) errorEl.textContent = '❌ Email déjà utilisé';
-        else errorEl.textContent = `❌ ${error.message}`;
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = isSignUp ? "S'inscrire ✨" : 'Se connecter 🚀';
-    }
+h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #FFE0EB;
+    border-radius: 15px;
+    box-sizing: border-box;
 }
 
-async function createProfile(userId, email) {
-    try {
-        const { data, error } = await supabase.from('profiles').insert({
-            id: userId, email, diamonds: 100, level: 1, theme: 'pink',
-            avatar_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=default',
-            quests_completed: 0, owned_avatars: JSON.stringify(['default'])
-        }).select().single();
-        if (error) return false;
-        currentProfile = data;
-        return true;
-    } catch (error) {
-        console.error('❌ Création profil:', error);
-        return false;
-    }
+.btn-main {
+    background: linear-gradient(135deg, #FF6B9D, #FF9BCC);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: 900;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
 }
 
-async function loadProfile() {
-    try {
-        const { data, error } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
-        if (error && error.code === 'PGRST116') {
-            if (await createProfile(currentUser.id, currentUser.email)) return await loadProfile();
-            return;
-        }
-        if (error) return;
-        currentProfile = data;
-        updateUI();
-        loadShop();
-    } catch (error) {
-        console.error('❌ Chargement profil:', error);
-    }
+/* Dashboard */
+.top-bar {
+    width: 100%;
+    background: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-async function updateProfile(updates) {
-    try {
-        const { data, error } = await supabase.from('profiles').update(updates).eq('id', currentUser.id).select().single();
-        if (error) return false;
-        currentProfile = data;
-        updateUI();
-        return true;
-    } catch (error) {
-        return false;
-    }
+.stat { font-weight: 900; font-size: 1.2rem; }
+
+.card {
+    background: white;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
 }
 
-function updateUI() {
-    if (!currentProfile) return;
-    const username = currentProfile.email?.split('@')[0] || 'Joueur';
-    document.getElementById('player-name').textContent = username;
-    document.getElementById('player-level').textContent = currentProfile.level || 1;
-    document.getElementById('player-diamonds').textContent = currentProfile.diamonds || 0;
-    document.getElementById('player-avatar').src = currentProfile.avatar_url;
-    document.getElementById('profile-username').textContent = username;
-    document.getElementById('profile-level').textContent = currentProfile.level || 1;
-    document.getElementById('profile-diamonds').textContent = currentProfile.diamonds || 0;
-    document.getElementById('profile-avatar').src = currentProfile.avatar_url;
-    document.getElementById('quests-completed').textContent = currentProfile.quests_completed || 0;
-    document.getElementById('profile-theme').textContent = currentProfile.theme === 'pink' ? 'Rose 💖' : 'Bleu 💙';
-    if (currentProfile.theme) {
-        document.body.setAttribute('data-theme', currentProfile.theme);
-        document.querySelectorAll('.theme-btn').forEach(b => {
-            b.classList.toggle('active', b.dataset.theme === currentProfile.theme);
-        });
-    }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+.menu-item {
+    background: #F8F9FF;
+    border: 2px solid #EDF0FF;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-async function logout() {
-    await supabase.auth.signOut();
-    currentUser = null;
-    currentProfile = null;
-    showAuth();
-}
-
-function showAuth() {
-    document.getElementById('auth-screen').classList.add('active');
-    document.getElementById('dashboard-screen').classList.remove('active');
-}
-
-function showDashboard() {
-    document.getElementById('auth-screen').classList.remove('active');
-    document.getElementById('dashboard-screen').classList.add('active');
-}
-
-// ========== Navigation ==========
-function setupNavigation() {
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => navigateTo(btn.dataset.page));
-    });
-    document.getElementById('logout-btn').addEventListener('click', logout);
-}
-
-function navigateTo(pageName) {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === pageName));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(`${pageName}-page`)?.classList.add('active');
-}
-
-// ========== Exercices ==========
-function startQuest(type) {
-    const exercises = exerciseBank[type];
-    currentExercise = { type, data: exercises[Math.floor(Math.random() * exercises.length)] };
-    showExercise();
-}
-
-function showExercise() {
-    const modal = document.getElementById('exercise-modal');
-    const title = document.getElementById('exercise-title');
-    const content = document.getElementById('exercise-content');
-    const buttons = document.getElementById('exercise-buttons');
-    
-    const types = { french: ['📚', 'Français'], math: ['🔢', 'Mathématiques'], logic: ['🧩', 'Logique'] };
-    title.textContent = `${types[currentExercise.type][0]} ${types[currentExercise.type][1]}`;
-    
-    if (currentExercise.data.type === 'input') {
-        content.innerHTML = `<div class="exercise-question">${currentExercise.data.question}</div>
-            <input type="number" id="exercise-answer" class="exercise-input" placeholder="Ta réponse...">`;
-        buttons.innerHTML = `<button class="btn btn-primary" onclick="checkInputAnswer()">Valider ✓</button>`;
-        setTimeout(() => {
-            const inp = document.getElementById('exercise-answer');
-            inp.focus();
-            inp.addEventListener('keypress', e => { if (e.key === 'Enter') checkInputAnswer(); });
-        }, 100);
-    } else {
-        content.innerHTML = `<div class="exercise-question">${currentExercise.data.question}</div>
-            <div class="exercise-options">${currentExercise.data.options.map((o, i) => 
-                `<button class="option-btn" onclick="checkAnswer(${i})">${o}</button>`).join('')}</div>`;
-        buttons.innerHTML = '';
-    }
-    modal.classList.add('active');
-}
-
-function checkAnswer(idx) {
-    const feedback = document.getElementById('exercise-feedback');
-    const btns = document.querySelectorAll('.option-btn');
-    btns.forEach(b => b.disabled = true);
-    
-    if (idx === currentExercise.data.correct) {
-        btns[idx].classList.add('correct');
-        feedback.textContent = '🎉 Excellent ! +10 diamants ! 💎';
-        feedback.className = 'feedback success';
-        updateProfile({
-            diamonds: currentProfile.diamonds + 10,
-            quests_completed: (currentProfile.quests_completed || 0) + 1,
-            level: Math.floor(((currentProfile.quests_completed || 0) + 1) / 5) + 1
-        });
-        setTimeout(closeExercise, 2500);
-    } else {
-        btns[idx].classList.add('incorrect');
-        btns[currentExercise.data.correct].classList.add('correct');
-        feedback.textContent = '❌ Raté ! Réessaye ! 💪';
-        feedback.className = 'feedback error';
-        setTimeout(closeExercise, 3500);
-    }
-}
-
-function checkInputAnswer() {
-    const input = document.getElementById('exercise-answer');
-    const answer = input.value.trim();
-    const feedback = document.getElementById('exercise-feedback');
-    
-    if (!answer) {
-        feedback.textContent = '⚠️ Entre une réponse !';
-        feedback.className = 'feedback error';
-        return;
-    }
-    
-    if (answer === currentExercise.data.correct) {
-        feedback.textContent = '🎉 Parfait ! +10 diamants ! 💎';
-        feedback.className = 'feedback success';
-        input.disabled = true;
-        updateProfile({
-            diamonds: currentProfile.diamonds + 10,
-            quests_completed: (currentProfile.quests_completed || 0) + 1,
-            level: Math.floor(((currentProfile.quests_completed || 0) + 1) / 5) + 1
-        });
-        setTimeout(closeExercise, 2500);
-    } else {
-        feedback.textContent = `❌ Non, c'était ${currentExercise.data.correct} !`;
-        feedback.className = 'feedback error';
-        input.disabled = true;
-        setTimeout(closeExercise, 3500);
-    }
-}
-
-function closeExercise() {
-    document.getElementById('exercise-modal')?.classList.remove('active');
-    currentExercise = null;
-}
-
-// ========== Boutique ==========
-function loadShop() {
-    const grid = document.getElementById('shop-items');
-    if (!grid || !currentProfile) return;
-    
-    let owned = ['default'];
-    try { owned = JSON.parse(currentProfile.owned_avatars); } catch (e) {}
-    
-    grid.innerHTML = shopAvatars.map(a => {
-        const isOwned = owned.includes(a.id);
-        const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${a.seed}`;
-        const canBuy = currentProfile.diamonds >= a.price;
-        return `<div class="shop-item ${isOwned ? 'owned' : ''}">
-            <img src="${url}" alt="${a.name}">
-            <h4>${a.name}</h4>
-            <p class="shop-price">💎 ${a.price}</p>
-            ${isOwned ? `<button class="btn btn-primary" onclick="equipAvatar('${a.id}','${url}')">Équiper</button>` :
-            `<button class="btn btn-shop" onclick="buyAvatar('${a.id}',${a.price},'${url}')" ${!canBuy ? 'disabled' : ''}>
-                ${canBuy ? 'Acheter' : 'Pas assez de 💎'}</button>`}
-        </div>`;
-    }).join('');
-}
-
-async function buyAvatar(id, price, url) {
-    if (currentProfile.diamonds < price) {
-        alert('❌ Pas assez de diamants !');
-        return;
-    }
-    let owned = ['default'];
-    try { owned = JSON.parse(currentProfile.owned_avatars); } catch (e) {}
-    if (!owned.includes(id)) owned.push(id);
-    
-    if (await updateProfile({ diamonds: currentProfile.diamonds - price, owned_avatars: JSON.stringify(owned), avatar_url: url })) {
-        alert('🎉 Avatar acheté ! ✨');
-        loadShop();
-    }
-}
-
-async function equipAvatar(id, url) {
-    if (await updateProfile({ avatar_url: url })) {
-        alert('✅ Avatar équipé ! ✨');
-        loadShop();
-    }
-}
-
-// ========== Paramètres ==========
-function setupSettings() {
-    document.getElementById('settings-btn')?.addEventListener('click', () => {
-        document.getElementById('settings-modal')?.classList.add('active');
-    });
-}
-
-function closeSettings() {
-    document.getElementById('settings-modal')?.classList.remove('active');
-}
-
-async function changeTheme(theme) {
-    document.body.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
-    if (currentProfile) await updateProfile({ theme });
-}
-
-function toggleDysMode() {
-    const enabled = document.getElementById('dys-mode-toggle')?.checked;
-    document.body.classList.toggle('dys-mode', enabled);
-    localStorage.setItem('dys-mode', enabled);
-}
-
-function loadTheme() {
-    document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'pink');
-}
-
-function loadDysMode() {
-    const enabled = localStorage.getItem('dys-mode') === 'true';
-    document.body.classList.toggle('dys-mode', enabled);
-    const toggle = document.getElementById('dys-mode-toggle');
-    if (toggle) toggle.checked = enabled;
-}
-
-window.addEventListener('click', e => { if (e.target.classList.contains('modal')) e.target.classList.remove('active'); });
+#auth-error { color: #FF6B6B; font-size: 0.9rem; }
