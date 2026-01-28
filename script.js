@@ -1,51 +1,81 @@
-// On change le nom de la variable pour éviter l'erreur "Already declared"
-const monAppGlow = window.supabase.createClient(
-    'https://lcbwehiwjowgthazrydy.supabase.co', 
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY',
-    { auth: { persistSession: false } } // Anti-blocage navigateur
-);
+// 1. Initialisation sécurisée (on utilise un nom de variable unique)
+const CONFIG_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
+const CONFIG_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
 
-let modeInscription = false;
+// Création du client avec désactivation du stockage local pour éviter les blocages navigateurs
+const glowClient = window.supabase.createClient(CONFIG_URL, CONFIG_KEY, {
+    auth: {
+        persistSession: false,
+        autoRefreshToken: false
+    }
+});
 
-// Cette fonction s'exécute quand on clique sur le bouton principal
-async function lancerAuthentification() {
-    const email = document.getElementById('auth-email').value;
+// Variable pour savoir si on est en mode Connexion ou Inscription
+let estEnModeInscription = false;
+
+// 2. Gestionnaire principal d'authentification
+async function gererAuth() {
+    const email = document.getElementById('auth-email').value.trim();
     const password = document.getElementById('auth-password').value;
 
-    alert("Bouton cliqué ! Mode : " + (modeInscription ? "Inscription" : "Connexion"));
-
+    // Vérification de base
     if (!email || !password) {
-        alert("Attention : Remplis tous les champs !");
+        alert("⚠️ Erreur : Remplis bien l'email et le mot de passe !");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("⚠️ Sécurité : Le mot de passe doit faire au moins 6 caractères !");
         return;
     }
 
     try {
-        if (modeInscription) {
-            const { data, error } = await monAppGlow.auth.signUp({ email, password });
-            if (error) throw error;
-            alert("Compte créé avec succès ! Tu peux maintenant te connecter.");
-            basculerMode();
+        if (estEnModeInscription) {
+            // --- TENTATIVE D'INSCRIPTION ---
+            console.log("Démarrage de l'inscription pour:", email);
+            const { data, error } = await glowClient.auth.signUp({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert("❌ Erreur d'inscription : " + error.message);
+            } else {
+                alert("✨ SUCCÈS ! Ton compte est créé. \n\nIMPORTANT : Supabase envoie un mail de confirmation. Vérifie tes courriers indésirables (spams) et clique sur le lien pour valider !");
+                basculerAffichage(); // On repasse en mode connexion
+            }
         } else {
-            const { data, error } = await monAppGlow.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-            alert("Connexion réussie ! Bienvenue.");
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('dashboard-screen').classList.add('active');
-            document.getElementById('dashboard-screen').style.display = 'block';
+            // --- TENTATIVE DE CONNEXION ---
+            console.log("Démarrage de la connexion pour:", email);
+            const { data, error } = await glowClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert("❌ Erreur de connexion : " + error.message);
+            } else {
+                alert("✅ Te voilà connecté ! Bienvenue.");
+                // Changement d'écran
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('dashboard-screen').style.display = 'block';
+            }
         }
-    } catch (err) {
-        alert("Erreur Supabase : " + err.message);
+    } catch (e) {
+        alert("🚨 Bug critique : " + e.message);
+        console.error(e);
     }
 }
 
-// Cette fonction change l'affichage entre Connexion et Inscription
-function basculerMode() {
-    modeInscription = !modeInscription;
+// 3. Fonction pour changer de mode (Connexion <-> Inscription)
+function basculerAffichage() {
+    estEnModeInscription = !estEnModeInscription;
+    
     const titre = document.getElementById('auth-title');
     const bouton = document.getElementById('auth-submit');
     const lien = document.getElementById('auth-switch');
 
-    if (modeInscription) {
+    if (estEnModeInscription) {
         titre.innerText = "Créer un compte";
         bouton.innerText = "S'inscrire ✨";
         lien.innerText = "Déjà un compte ? Se connecter";
@@ -56,12 +86,22 @@ function basculerMode() {
     }
 }
 
-// On lie les fonctions aux boutons une fois que la page est chargée
-window.onload = () => {
-    console.log("Application chargée !");
-    document.getElementById('auth-submit').onclick = lancerAuthentification;
-    document.getElementById('auth-switch').onclick = (e) => {
-        e.preventDefault();
-        basculerMode();
-    };
-};
+// 4. Initialisation au chargement de la page
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("Glow Up Academy prête !");
+    
+    // On lie le bouton principal
+    const mainBtn = document.getElementById('auth-submit');
+    if (mainBtn) {
+        mainBtn.onclick = gererAuth;
+    }
+
+    // On lie le lien de bascule
+    const switchLien = document.getElementById('auth-switch');
+    if (switchLien) {
+        switchLien.onclick = (event) => {
+            event.preventDefault();
+            basculerAffichage();
+        };
+    }
+});
