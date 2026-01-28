@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ My Magic Academy - Codage 9</title>
+    <title>✨ My Magic Academy - Codage 10</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -27,13 +27,21 @@
             overflow: hidden;
         }
 
-        .app-container { width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .app-container { width: 100%; max-width: 420px; padding: 20px; display: flex; flex-direction: column; }
         .screen { display: none; animation: popIn 0.4s ease-out; width: 100%; }
         .active { display: flex !important; flex-direction: column; align-items: center; }
 
         @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- HEADER --- */
+        /* Animation Tremblement (Erreur) */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-2deg); }
+            75% { transform: translateX(10px) rotate(2deg); }
+        }
+        .shake { animation: shake 0.3s ease-in-out; border-color: #ff85a1 !important; }
+
+        /* --- UI ELEMENTS --- */
         .header-cake {
             background: var(--sucre);
             padding: 15px;
@@ -56,134 +64,52 @@
             border: 2px solid white;
         }
 
-        /* --- NAVIGATION NUAGES --- */
-        .menu-grid {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
+        .menu-grid { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; width: 100%; }
         .cloud-btn {
-            background: var(--sucre);
-            border: none;
-            width: 90px;
-            padding: 10px;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px 0 var(--lavande);
-            transition: 0.2s;
-            font-family: 'Fredoka';
-            font-weight: 700;
-            color: var(--texte);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: var(--sucre); border: none; width: 90px; padding: 10px; border-radius: 25px; cursor: pointer;
+            box-shadow: 0 5px 0 var(--lavande); transition: 0.2s; font-family: 'Fredoka'; font-weight: 700; color: var(--texte);
         }
         .cloud-btn.active { background: var(--citron); transform: scale(1.05); box-shadow: 0 3px 0 #e6d88a; }
 
-        /* --- LA CARTE DE VŒU UNIQUE --- */
-        .wish-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
+        /* --- CARTE DE VŒU --- */
         .wish-card {
-            background: var(--sucre);
-            width: 280px;
-            height: 280px;
-            border-radius: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border: 6px solid var(--fraise);
-            position: relative;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--sucre); width: 280px; height: 280px; border-radius: 50px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 6px solid var(--fraise);
+            transition: 0.3s; cursor: pointer;
         }
-        .wish-card:hover { transform: translateY(-5px) rotate(2deg); }
         .wish-card h2 { color: var(--fraise); margin: 0; font-size: 1.2rem; }
-        .wish-card .reward { font-size: 1.5rem; margin-top: 10px; }
 
-        .nav-arrows {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
+        .nav-arrows { display: flex; gap: 40px; align-items: center; margin-top: 20px; }
         .arrow {
-            background: var(--sucre);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 0 var(--lavande);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .arrow:active { transform: translateY(3px); box-shadow: none; }
-
-        /* --- JEU --- */
-        .btn-magic {
-            background: linear-gradient(to right, #FF85A1, #FFAACC);
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #e57399;
-            margin-top: 20px;
+            background: var(--sucre); border: none; width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 0 var(--lavande);
         }
 
         input {
-            width: 100%;
-            padding: 18px;
-            border: 3px solid var(--menthe);
-            border-radius: 50px;
-            text-align: center;
-            font-family: 'Fredoka';
-            font-size: 1.2rem;
-            outline: none;
-            box-sizing: border-box;
+            width: 100%; padding: 18px; border: 3px solid var(--menthe); border-radius: 50px;
+            text-align: center; font-family: 'Fredoka'; font-size: 1.2rem; outline: none; box-sizing: border-box;
         }
 
-        .auth-card {
-            background: var(--sucre);
-            padding: 35px 25px;
-            border-radius: 45px;
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 50px;
+        .btn-magic {
+            background: linear-gradient(to right, #FF85A1, #FFAACC); color: white; border: none;
+            padding: 18px; width: 100%; border-radius: 50px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 6px 0 #e57399; margin-top: 20px;
         }
+
+        .auth-card { background: var(--sucre); padding: 35px 25px; border-radius: 45px; text-align: center; width: 100%; margin-top: 50px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        
         <div id="auth-screen" class="screen active">
             <div class="auth-card">
-                <h1 style="color: var(--fraise); margin:0;">Sweet Academy ✨</h1>
+                <h1 style="color: var(--fraise);">Sweet Academy ✨</h1>
                 <input type="text" id="username" placeholder="Pseudo fée">
                 <input type="password" id="pass" placeholder="Mot de passe">
                 <button onclick="validerAuth()" class="btn-magic">Entrer ✨</button>
                 <p onclick="toggleMode()" id="switch-link" style="margin-top:15px; cursor:pointer; font-size: 0.8rem;">Créer un profil 🎀</p>
-                <div id="auth-error" style="color:var(--fraise); margin-top:10px;"></div>
             </div>
         </div>
 
@@ -192,40 +118,31 @@
                 <div style="font-size:0.8rem">BIENVENUE <b id="display-user">...</b></div>
                 <div class="diamond-counter">💎 <span id="diamond-count">0</span></div>
             </div>
-
             <div class="menu-grid">
-                <button class="cloud-btn active" onclick="changerCat('math', this)"><span>🍩</span><label>Maths</label></button>
-                <button class="cloud-btn" onclick="changerCat('french', this)"><span>🍬</span><label>Français</label></button>
-                <button class="cloud-btn" onclick="changerCat('english', this)"><span>🍦</span><label>Anglais</label></button>
+                <button class="cloud-btn active" onclick="changerCat('math', this)">🍩 Maths</button>
+                <button class="cloud-btn" onclick="changerCat('french', this)">🍬 French</button>
+                <button class="cloud-btn" onclick="changerCat('english', this)">🍦 English</button>
             </div>
-
-            <div class="wish-container">
-                <p style="color:white; text-shadow:1px 1px var(--fraise); font-weight:700;">PIOCHE TON VŒU :</p>
-                
-                <div class="wish-card" onclick="ouvrirVoeu()">
-                    <div style="font-size: 3rem;">✨</div>
-                    <h2 id="wish-title">Vœu Magique #1</h2>
-                    <div class="reward">💎 10</div>
-                    <p style="font-size:0.7rem; color:#aaa; margin-top:10px;">(Clique pour ouvrir)</p>
-                </div>
-
-                <div class="nav-arrows">
-                    <button class="arrow" onclick="naviguer(-1)">👈</button>
-                    <button class="arrow" onclick="naviguer(1)">👉</button>
-                </div>
+            <div class="wish-card" onclick="ouvrirVoeu()" id="main-wish-card">
+                <div style="font-size: 3rem;">✨</div>
+                <h2 id="wish-title">Vœu Magique #1</h2>
+                <div style="font-size: 1.5rem; margin-top: 10px;">💎 10</div>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow" onclick="naviguer(-1)">👈</button>
+                <button class="arrow" onclick="naviguer(1)">👉</button>
             </div>
         </div>
 
         <div id="game-view" class="screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--lavande); padding:20px; box-sizing:border-box; z-index:999; display:none;">
-            <div class="auth-card" style="margin-top: 80px;">
+            <div class="auth-card" id="game-card" style="margin-top: 80px;">
                 <h2 style="color:var(--fraise);">RÉALISE TON VŒU</h2>
                 <p id="ex-q" style="font-size:1.6rem; font-weight:700; margin:30px 0;"></p>
                 <input type="text" id="ex-ans" placeholder="La réponse est...">
                 <button onclick="verifierReponse()" class="btn-magic">Magie ! ✨</button>
-                <button onclick="quitterJeu()" style="background:none; border:none; color:#ccc; margin-top:10px; cursor:pointer;">Annuler</button>
+                <button onclick="quitterJeu()" style="background:none; border:none; color:#ccc; margin-top:15px; cursor:pointer;">Annuler</button>
             </div>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -235,19 +152,13 @@
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
         let session = null, diamonds = 0, mode = 'login';
-        let currentCat = 'math', currentIndex = 0;
-        let exercicesFiltres = [];
+        let currentCat = 'math', currentIndex = 0, exercicesFiltres = [];
 
         const EXERCICES = [];
         const cats = ['math', 'french', 'english'];
         for(let i=0; i<60; i++) {
             let c = cats[Math.floor(i/20)];
-            EXERCICES.push({ id: i+1, cat: c, q: c=='math'?`${i+2}x3?`: (c=='french'?`Pluriel de 'Ciel'`:`'Hello' en FR`), a: c=='math'?((i+2)*3).toString():(c=='french'?'cieux':'bonjour'), r: 10 });
-        }
-
-        function toggleMode() {
-            mode = (mode === 'login') ? 'signup' : 'login';
-            document.getElementById('switch-link').innerText = mode === 'login' ? "Créer un profil 🎀" : "Se connecter";
+            EXERCICES.push({ id: i+1, cat: c, q: c=='math'?`${i+2} + 5 ?`: (c=='french'?`Pluriel de 'Chat'`:`'Pink' en FR`), a: c=='math'?(i+7).toString():(c=='french'?'chats':'rose'), r: 10 });
         }
 
         async function validerAuth() {
@@ -267,7 +178,7 @@
                     session = data.user;
                     recupererProfil();
                 }
-            } catch (e) { document.getElementById('auth-error').innerText = "Erreur de code secret !"; }
+            } catch (e) { alert("Oups ! Identifiants inconnus."); }
         }
 
         async function recupererProfil() {
@@ -283,8 +194,7 @@
         }
 
         function changerCat(cat, el) {
-            currentCat = cat;
-            currentIndex = 0;
+            currentCat = cat; currentIndex = 0;
             document.querySelectorAll('.cloud-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             exercicesFiltres = EXERCICES.filter(e => e.cat === cat);
@@ -297,9 +207,7 @@
         }
 
         function naviguer(dir) {
-            currentIndex += dir;
-            if(currentIndex < 0) currentIndex = exercicesFiltres.length - 1;
-            if(currentIndex >= exercicesFiltres.length) currentIndex = 0;
+            currentIndex = (currentIndex + dir + exercicesFiltres.length) % exercicesFiltres.length;
             majCarte();
         }
 
@@ -310,19 +218,35 @@
             document.getElementById('ex-ans').value = "";
         }
 
-        function lancerMagie() {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffb7c5', '#c1f0e1', '#dcd3ff'], shapes: ['star'] });
+        // SON RIGOLO (Bip de ressort)
+        function jouerSonErreur() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         }
 
         async function verifierReponse() {
             const ex = exercicesFiltres[currentIndex];
+            const gameCard = document.getElementById('game-card');
+            
             if(document.getElementById('ex-ans').value.trim().toLowerCase() === ex.a.toLowerCase()) {
-                lancerMagie();
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffb7c5', '#c1f0e1', '#dcd3ff'], shapes: ['star'] });
                 diamonds += ex.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
                 setTimeout(() => { quitterJeu(); naviguer(1); }, 1500);
-            } else { alert("Oh non ! Réessaie encore 🪄"); }
+            } else {
+                // EFFET OUPS RIGOLO
+                jouerSonErreur();
+                gameCard.classList.add('shake');
+                setTimeout(() => gameCard.classList.remove('shake'), 300);
+            }
         }
 
         function quitterJeu() { document.getElementById('game-view').style.display = 'none'; }
