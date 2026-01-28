@@ -3,155 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌈 Glow Up Academy - Codage 4</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>🌸 Glow Up Academy - Codage 5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* BASE & THEME ARC-EN-CIEL */
+        /* --- DESIGN GIRLY PASTEL --- */
         :root {
-            --rainbow: linear-gradient(45deg, #ff00c1, #9600ff, #00b6ff, #00ff8e, #ffdb00, #ff0000);
-            --bg: #0a0a0c;
-            --card: rgba(255, 255, 255, 0.08);
-            --text: #ffffff;
+            --pink-soft: #FFDEE9;
+            --blue-soft: #B5FFFC;
+            --purple-pastel: #E2D1F9;
+            --main-pink: #FF85A1;
+            --grad-pastel: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+            --white: rgba(255, 255, 255, 0.9);
         }
 
         body {
             margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Quicksand', sans-serif;
+            background: var(--grad-pastel);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            color: #7B68EE;
         }
 
-        .app-container { width: 100%; max-width: 450px; padding: 20px; }
-        .screen { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .app-container { width: 100%; max-width: 420px; padding: 15px; }
+        .screen { display: none; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .active { display: block !important; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- DESIGN DU DASHBOARD --- */
-        .header-dash {
-            background: var(--card);
-            border-radius: 25px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 25px;
-        }
-
-        .user-tag { display: flex; align-items: center; gap: 12px; }
-        .avatar {
-            width: 45px; height: 45px;
-            background: var(--rainbow);
-            border-radius: 15px;
-            display: grid; place-items: center;
-            font-weight: 900; font-family: 'Montserrat';
-        }
-
-        .diamond-badge {
-            background: rgba(0, 182, 255, 0.15);
-            color: #00e5ff;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
-        }
-
-        /* --- GROS BOUTONS CATEGORIES --- */
-        .cat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .cat-btn {
-            background: var(--card);
-            border: 2px solid transparent;
-            padding: 15px 5px;
-            border-radius: 22px;
+        /* Cartes Style Nuage */
+        .card {
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px rgba(255, 133, 161, 0.2);
             text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .cat-btn.active {
-            border-color: #9600ff;
-            background: rgba(150, 0, 255, 0.1);
-            box-shadow: 0 0 20px rgba(150, 0, 255, 0.2);
-        }
-        .cat-btn span { display: block; font-size: 1.8rem; margin-bottom: 5px; }
-        .cat-btn label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; color: #aaa; cursor: pointer; }
-        .cat-btn.active label { color: white; }
-
-        /* --- LISTE DES MISSIONS --- */
-        .mission-box {
-            background: var(--card);
-            border-radius: 30px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 4px solid #fff;
         }
 
-        .ex-card {
-            background: rgba(255,255,255,0.03);
-            margin-bottom: 12px;
-            padding: 18px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid transparent;
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--main-pink);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px #fff;
         }
-        .ex-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
-        .ex-card b { color: #00ff8e; font-family: 'Montserrat'; }
 
-        /* --- BOUTONS ET INPUTS --- */
-        .btn-rainbow {
-            background: var(--rainbow);
-            background-size: 300%;
-            border: none;
-            padding: 20px;
-            width: 100%;
-            border-radius: 25px;
-            color: white;
-            font-weight: 900;
-            font-family: 'Montserrat';
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.5s;
-            margin-top: 15px;
-        }
-        .btn-rainbow:hover { background-position: right; }
-
+        /* Inputs Doux */
         input {
             width: 100%;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            color: white;
-            font-size: 1.1rem;
+            padding: 15px;
             margin: 10px 0;
-            text-align: center;
+            border: 2px solid var(--purple-pastel);
+            border-radius: 25px;
+            background: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            color: #7B68EE;
+            box-sizing: border-box;
         }
-        input:focus { border-color: #9600ff; outline: none; }
+        input:focus { border-color: var(--main-pink); box-shadow: 0 0 10px rgba(255, 133, 161, 0.2); }
 
-        .logo {
-            font-family: 'Montserrat';
-            font-weight: 900;
-            font-size: 2.2rem;
-            background: var(--rainbow);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin-bottom: 30px;
+        /* Boutons Gummies */
+        .btn-girly {
+            background: linear-gradient(to right, #FF85A1, #FFAACC);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #E57399;
+            transition: 0.2s;
+            margin-top: 15px;
         }
+        .btn-girly:active { transform: translateY(4px); box-shadow: 0 2px 0 #E57399; }
+
+        /* Dashboard Girly */
+        .header-dash {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .user-pill {
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .diamond-counter {
+            background: #FFEDF2;
+            padding: 8px 15px;
+            border-radius: 50px;
+            color: #FF5E8E;
+            font-weight: 800;
+        }
+
+        /* Onglets Pastel */
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: #fff;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border-bottom: 4px solid #eee;
+        }
+        .tab.active { background: var(--purple-pastel); border-bottom-color: #C0A9E5; color: white; }
+
+        /* Liste Missions */
+        .ex-list { display: grid; gap: 10px; max-height: 400px; overflow-y: auto; padding: 5px; }
+        .ex-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .ex-card:hover { border-color: var(--blue-soft); background: #F0FEFF; }
+        .ex-card b { color: #5ECFFF; }
+
+        .error-msg { color: #FF85A1; font-size: 0.8rem; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -159,54 +150,46 @@
     <div class="app-container">
         
         <div id="auth-screen" class="screen active">
-            <div style="margin-top: 60px;">
-                <div class="logo">GLOW UP</div>
-                <input type="text" id="username" placeholder="IDENTIFIANT">
-                <input type="password" id="pass" placeholder="MOT DE PASSE">
-                <button onclick="validerAuth()" class="btn-rainbow">SE CONNECTER 🚀</button>
-                <div id="auth-error" style="color:#ff4757; text-align:center; margin-top:15px; font-weight:bold;"></div>
+            <div class="card">
+                <h1 id="auth-title">Coucou ! ✨</h1>
+                <p style="margin-bottom: 20px;">Prête pour ton Glow Up ?</p>
+                
+                <input type="text" id="username" placeholder="Ton pseudo adorable">
+                <input type="password" id="pass" placeholder="Mot de passe magique">
+                
+                <button onclick="validerAuth()" class="btn-girly" id="btn-text">Se connecter ✨</button>
+                <p onclick="toggleMode()" id="switch-link" style="margin-top:20px; color:#A29BFE; cursor:pointer; font-weight: bold;">Pas de compte ? Créer un profil 🎀</p>
+                <div id="auth-error" class="error-msg"></div>
             </div>
         </div>
 
         <div id="dashboard" class="screen">
             <div class="header-dash">
-                <div class="user-tag">
-                    <div class="avatar" id="avatar-init">?</div>
-                    <div>
-                        <div style="font-size:0.7rem; color:#888;">PLAYER</div>
-                        <div style="font-weight:bold; font-size:1.1rem;" id="display-user">...</div>
-                    </div>
+                <div class="user-pill">
+                    <span style="background:var(--main-pink); color:white; width:30px; height:30px; border-radius:50%; display:grid; place-items:center;" id="avatar-char">?</span>
+                    <span id="display-user">Joueur</span>
                 </div>
-                <div class="diamond-badge">💎 <span id="diamond-count">0</span></div>
+                <div class="diamond-counter">💎 <span id="diamond-count">0</span></div>
             </div>
 
-            <div class="cat-grid">
-                <div class="cat-btn active" onclick="filtrer('math', this)">
-                    <span>🔢</span><label>MATHS</label>
-                </div>
-                <div class="cat-btn" onclick="filtrer('french', this)">
-                    <span>📚</span><label>FRANÇAIS</label>
-                </div>
-                <div class="cat-btn" onclick="filtrer('english', this)">
-                    <span>🇬🇧</span><label>ANGLAIS</label>
-                </div>
+            <div class="tab-bar">
+                <div class="tab active" onclick="filtrer('math', this)">🔢 Maths</div>
+                <div class="tab" onclick="filtrer('french', this)">📚 French</div>
+                <div class="tab" onclick="filtrer('english', this)">🇬🇧 English</div>
             </div>
 
-            <div class="mission-box">
-                <h4 style="margin:0 0 15px 5px; color:#555; letter-spacing:1px;">MISSIONS 6ÈME</h4>
-                <div id="ex-container"></div>
-            </div>
-            
-            <p onclick="location.reload()" style="text-align:center; color:#444; margin-top:30px; cursor:pointer;">Quitter la session</p>
+            <div class="ex-list" id="ex-container"></div>
+
+            <p onclick="location.reload()" style="text-align:center; color:#FF85A1; font-size:0.8rem; margin-top:30px; cursor:pointer;">Au revoir ! 👋</p>
         </div>
 
         <div id="game-view" class="screen">
-            <div class="mission-box" style="margin-top:50px; text-align:center;">
-                <h2 id="ex-cat" style="color:#9600ff; font-family:'Montserrat'; font-size:0.8rem;">DÉFI</h2>
-                <p id="ex-q" style="font-size:1.8rem; font-weight:900; margin:30px 0;"></p>
-                <input type="text" id="ex-ans" placeholder="RÉPONSE ICI">
-                <button onclick="verifierReponse()" class="btn-rainbow">VALIDER ✅</button>
-                <button onclick="quitterJeu()" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">RETOUR</button>
+            <div class="card">
+                <h2 id="ex-cat" style="color:var(--main-pink); font-size:1rem;">MISSION MAGIQUE</h2>
+                <p id="ex-q" style="font-size:1.5rem; font-weight:700; margin:25px 0; color:#6C5CE7;"></p>
+                <input type="text" id="ex-ans" placeholder="Ta réponse ici...">
+                <button onclick="verifierReponse()" class="btn-girly">Valider ! 🌸</button>
+                <button onclick="quitterJeu()" style="background:none; border:none; color:#BDC3C7; margin-top:15px; cursor:pointer;">Retour</button>
             </div>
         </div>
 
@@ -214,42 +197,51 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ON GARDE EXACTEMENT LES MÊMES INFOS DE CONNEXION QUE LE CODAGE 1
         const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
-        let session = null, diamonds = 0, currentEx = null;
+        let session = null, diamonds = 0, mode = 'login', currentEx = null;
 
         // BANQUE D'EXERCICES 6ÈME
-        const EXERCICES = [
-            { q: "12,5 + 7,5 ?", a: "20", r: 10, cat: 'math' },
-            { q: "Périmètre carré côté 4 ?", a: "16", r: 10, cat: 'math' },
-            { q: "10% de 500 ?", a: "50", r: 15, cat: 'math' },
-            { q: "Pluriel de 'Hibou' ?", a: "hiboux", r: 15, cat: 'french' },
-            { q: "Traduis 'Yellow' ?", a: "jaune", r: 10, cat: 'english' },
-            { q: "6 x 7 ?", a: "42", r: 10, cat: 'math' }
-        ];
-        // Remplissage des 60 missions
-        for(let i=7; i<=60; i++) {
-            let c = i <= 20 ? 'math' : (i <= 40 ? 'french' : 'english');
-            EXERCICES.push({ q: `Mission #${i}: Calcule ${i}+10`, a: (i+10).toString(), r: 5, cat: c });
+        const EXERCICES = [];
+        const cats = ['math', 'french', 'english'];
+        for(let i=0; i<60; i++) {
+            let c = cats[Math.floor(i/20)];
+            EXERCICES.push({
+                id: i+1, cat: c, 
+                q: c == 'math' ? `Calcule ${i+2} x 5` : (c == 'french' ? `Féminin de 'Boulanger ${i}'` : `Couleur 'Blue' en FR`),
+                a: c == 'math' ? ((i+2)*5).toString() : (c == 'french' ? `boulangère ${i}` : `bleu`),
+                r: 10
+            });
+        }
+
+        function toggleMode() {
+            mode = (mode === 'login') ? 'signup' : 'login';
+            document.getElementById('auth-title').innerText = mode === 'login' ? "Coucou ! ✨" : "Bienvenue ! 🎀";
+            document.getElementById('btn-text').innerText = mode === 'login' ? "Se connecter ✨" : "Créer mon compte 🌸";
+            document.getElementById('switch-link').innerText = mode === 'login' ? "Pas de compte ? Créer un profil 🎀" : "Déjà inscrite ? Se connecter";
         }
 
         async function validerAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
-            if(!user || !pass) return;
-
-            // La même transformation invisible que le Codage 1
+            if(!user || pass.length < 6) { alert("Identifiant requis & MDP de 6 car. min"); return; }
             const internalEmail = user.toLowerCase() + "@academy.user";
 
             try {
-                const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
-                if(error) throw error;
-                session = data.user;
-                recupererProfil();
-            } catch (e) { document.getElementById('auth-error').innerText = "Erreur : Identifiants inconnus"; }
+                if(mode === 'signup') {
+                    const { data, error } = await client.auth.signUp({ email: internalEmail, password: pass });
+                    if(error) throw error;
+                    await client.from('profiles').insert([{ id: data.user.id, email: user, diamonds: 0 }]);
+                    alert("Compte créé ! 🌸 Connecte-toi vite."); location.reload();
+                } else {
+                    const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
+                    if(error) throw error;
+                    session = data.user;
+                    recupererProfil();
+                }
+            } catch (e) { document.getElementById('auth-error').innerText = "Oups ! " + e.message; }
         }
 
         async function recupererProfil() {
@@ -257,44 +249,43 @@
             if(data) {
                 diamonds = data.diamonds;
                 document.getElementById('diamond-count').innerText = diamonds;
-                document.getElementById('display-user').innerText = data.email.toUpperCase();
-                document.getElementById('avatar-init').innerText = data.email[0].toUpperCase();
+                document.getElementById('display-user').innerText = data.email;
+                document.getElementById('avatar-char').innerText = data.email[0].toUpperCase();
             }
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
-            filtrer('math', document.querySelector('.cat-btn'));
+            filtrer('math', document.querySelector('.tab'));
         }
 
         function filtrer(cat, el) {
             const cont = document.getElementById('ex-container');
             cont.innerHTML = "";
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
 
-            EXERCICES.filter(e => e.cat === cat).forEach((ex, i) => {
-                const div = document.createElement('div');
-                div.className = "ex-card";
-                div.innerHTML = `<span>Mission ${i+1}</span> <b>+${ex.r} 💎</b>`;
-                div.onclick = () => {
+            EXERCICES.filter(e => e.cat === cat).forEach(ex => {
+                const item = document.createElement('div');
+                item.className = "ex-card";
+                item.innerHTML = `<span>Mission #${ex.id}</span> <b>+${ex.r} 💎</b>`;
+                item.onclick = () => {
                     currentEx = ex;
                     document.getElementById('dashboard').classList.remove('active');
                     document.getElementById('game-view').classList.add('active');
                     document.getElementById('ex-q').innerText = ex.q;
                     document.getElementById('ex-ans').value = "";
                 };
-                cont.appendChild(div);
+                cont.appendChild(item);
             });
         }
 
         async function verifierReponse() {
-            const rep = document.getElementById('ex-ans').value.trim().toLowerCase();
-            if(rep === currentEx.a.toLowerCase()) {
-                alert("SUCCÈS ! + " + currentEx.r + " 💎");
+            if(document.getElementById('ex-ans').value.trim().toLowerCase() === currentEx.a.toLowerCase()) {
+                alert("Bravo ma belle ! ✨ +" + currentEx.r + " 💎");
                 diamonds += currentEx.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
                 quitterJeu();
-            } else { alert("Échec ! Réessaie."); }
+            } else { alert("Oh non, réessaie encore ! 🎀"); }
         }
 
         function quitterJeu() {
