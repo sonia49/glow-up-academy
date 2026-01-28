@@ -7,43 +7,34 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body data-theme="pink">
+<body>
 
     <div id="auth-screen" class="screen active">
         <div class="auth-card">
-            <h1>✨ Glow Up</h1>
-            <p>Apprends et gagne des diamants !</p>
-            <input type="email" id="auth-email" placeholder="Email">
-            <input type="password" id="auth-password" placeholder="Mot de passe">
-            <button id="auth-submit" class="btn-main">C'est parti ! 🚀</button>
-            <a href="#" id="auth-switch">Créer un compte</a>
-            <p id="auth-error"></p>
+            <h1 id="auth-title">Connexion</h1>
+            <p id="auth-subtitle">Prêt pour ton Glow Up ?</p>
+            
+            <div class="form-group">
+                <input type="email" id="auth-email" placeholder="Email">
+                <input type="password" id="auth-password" placeholder="Mot de passe">
+                <button id="auth-submit" class="btn-main">Se connecter 🚀</button>
+            </div>
+
+            <p class="toggle-text">
+                <span id="switch-msg">Pas de compte ?</span> 
+                <a href="#" id="auth-switch">Créer un compte</a>
+            </p>
+            
+            <p id="error-display" class="error"></p>
         </div>
     </div>
 
-    <div id="dashboard-screen" class="screen">
-        <nav class="top-bar">
-            <div class="stat">💎 <span id="player-diamonds">0</span></div>
-            <div class="stat">⭐ Niv. <span id="player-level">1</span></div>
-            <button onclick="location.reload()" class="btn-logout">🚪</button>
-        </nav>
-
-        <main class="content">
-            <section class="card">
-                <h2>🎯 Tes Missions</h2>
-                <div class="grid">
-                    <button class="menu-item" onclick="startQuest('math')">🔢 Maths</button>
-                    <button class="menu-item" onclick="startQuest('french')">📚 Français</button>
-                    <button class="menu-item" onclick="startQuest('logic')">🧩 Logique</button>
-                </div>
-            </section>
-
-            <section class="card">
-                <h2>🛍️ Boutique</h2>
-                <div id="shop-items" class="grid-shop">
-                    </div>
-            </section>
-        </main>
+    <div id="dashboard-screen" class="screen" style="display:none;">
+        <div class="dashboard-content">
+            <h1>✨ Bienvenue dans l'Academy !</h1>
+            <p>Tu es connecté. Tes quêtes t'attendent.</p>
+            <button onclick="location.reload()" class="btn-sub">Se déconnecter</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
