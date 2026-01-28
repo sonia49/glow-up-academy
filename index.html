@@ -4,173 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍭 Candy Academy ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* VISUEL DU TONNERRE - NE PAS TOUCHER */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Fredoka', sans-serif; background: linear-gradient(-45deg, #FFE5F1, #E0BBE4, #C1F7DC, #A5E7FF); background-size: 400% 400%; animation: gradientBG 15s ease infinite; min-height: 100vh; display: flex; justify-content: center; overflow: hidden; }
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .bubble { position: fixed; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,179,217,0.2)); animation: float 8s ease-in-out infinite; z-index: 1; pointer-events: none; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-40px); } }
-        .container { width: 100%; max-width: 450px; padding: 20px; z-index: 10; position: relative; }
-        .glass { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.7); border-radius: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
-        .screen { display: none; flex-direction: column; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .active { display: flex !important; }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .logo { font-family: 'Bubblegum Sans', cursive; font-size: 3.2rem; text-align: center; background: linear-gradient(45deg, #FF6B9D, #C8A2E8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 20px 0; }
-        input { width: 100%; padding: 20px; border-radius: 30px; border: 3px solid #C1F7DC; background: white; text-align: center; font-family: 'Fredoka'; font-size: 1.1rem; margin: 10px 0; outline: none; }
-        .btn-premium { background: linear-gradient(135deg, #FF6B9D, #FFB347); color: white; border: none; padding: 20px; border-radius: 30px; font-weight: 700; font-size: 1.2rem; cursor: pointer; width: 100%; box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4); margin-top: 10px; }
-        .btn-secondary { background: white; color: #FF6B9D; border: 2px solid #FF6B9D; margin-top: 15px; }
-        .stat-badge { background: white; padding: 10px 15px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .avatar-cupcake { width: 85px; height: 85px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); animation: bounce 3s infinite ease-in-out; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        .nav-arrow { width: 65px; height: 65px; border-radius: 50%; border: none; background: white; font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(224, 187, 228, 0.6); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        /* DESIGN CLAIR ET NET COMME DEMANDÉ */
+        body { font-family: sans-serif; background: linear-gradient(to bottom, #FFE5F1, #A5E7FF); min-height: 100vh; margin: 0; display: flex; justify-content: center; align-items: center; }
+        .glass { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); padding: 30px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 20px; border: 2px solid #FFB3D9; outline: none; }
+        button { width: 100%; padding: 15px; margin: 10px 0; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; }
+        .btn-go { background: #FF6B9D; color: white; }
+        .btn-guest { background: #eee; color: #666; font-size: 0.8rem; }
+        .hidden { display: none; }
+        .stat { display: inline-block; background: white; padding: 10px; border-radius: 15px; margin: 5px; font-weight: bold; color: #FF6B9D; }
     </style>
 </head>
 <body>
 
-    <div class="bubble" style="width:120px; height:120px; left:10%; top:20%;"></div>
-    <div class="bubble" style="width:150px; height:150px; left:60%; bottom:10%;"></div>
-
-    <div class="container">
-        <div id="auth-screen" class="screen active">
-            <div class="glass" style="padding: 40px 30px; text-align: center;">
-                <h1 class="logo">Candy Academy</h1>
-                <p id="msg" style="color:#888; margin-bottom:15px;">Identifie-toi, petit génie !</p>
-                <input type="text" id="username" placeholder="Pseudo">
-                <input type="password" id="pass" placeholder="Mot de passe (6 car.)">
-                <button class="btn-premium" onclick="doLogin()">SE CONNECTER 🍬</button>
-                <button class="btn-premium btn-secondary" onclick="doSignup()">CRÉER MON COMPTE ✨</button>
-            </div>
-        </div>
-
-        <div id="dashboard" class="screen">
-            <div class="glass" style="padding: 25px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
-                <div class="avatar-cupcake">🧁</div>
-                <div style="flex:1">
-                    <div id="user-display" style="font-weight:700; color:#FF6B9D; font-size:1.4rem;">Joueur</div>
-                    <div style="display:flex; gap:10px; margin-top:8px;">
-                        <span class="stat-badge">💎 <span id="val-dia">0</span></span>
-                        <span class="stat-badge">⭐ <span id="val-niv">1</span></span>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('math')">🍩 Maths</button>
-                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('french')">🍬 Français</button>
-                <button class="stat-badge" style="flex:1; border:none;" onclick="setCat('english')">🍦 English</button>
-            </div>
-
-            <div class="glass" style="padding:50px; text-align:center; cursor:pointer;" onclick="openEx()">
-                <div id="wish-emoji" style="font-size:5rem; margin-bottom:20px;">🍩</div>
-                <h2 id="wish-title" style="color:#FF6B9D;">Vœu Magique #1</h2>
-                <div style="margin-top:20px; background:#4ECDC4; color:white; padding:12px; border-radius:20px; font-weight:700;">Gagne 10 Diamants 💎</div>
-            </div>
-
-            <div style="display:flex; justify-content:center; gap:30px; margin-top:30px;">
-                <button class="nav-arrow" onclick="nav(-1)">👈</button>
-                <button class="nav-arrow" onclick="nav(1)">👉</button>
-            </div>
-        </div>
+    <div class="glass" id="auth-box">
+        <h1 style="color:#FF6B9D;">🍭 Candy Academy</h1>
+        <p id="status" style="color:#999;">Connecte-toi vite !</p>
+        <input type="text" id="user" placeholder="Pseudo">
+        <input type="password" id="pass" placeholder="Mot de passe">
+        <button class="btn-go" onclick="connexion()">SE CONNECTER 🍬</button>
+        <button class="btn-go" style="background:#A5E7FF;" onclick="inscription()">CRÉER COMPTE ✨</button>
+        <button class="btn-guest" onclick="invite()">Mode Invité (Sans sauvegarde)</button>
     </div>
 
-    <div id="modal" class="modal-overlay">
-        <div class="glass" style="padding:50px 30px; width:100%; max-width:400px; text-align:center;">
-            <p id="ex-q" style="font-size:1.8rem; font-weight:700; color:#8B7AB8; margin-bottom:30px;"></p>
-            <input type="text" id="ex-ans" placeholder="Réponse...">
-            <button class="btn-premium" onclick="check()">Vérifier 🪄</button>
-            <p onclick="closeEx()" style="margin-top:20px; color:#ccc; cursor:pointer;">Fermer</p>
+    <div class="glass hidden" id="game-box">
+        <h2 id="hello">Salut !</h2>
+        <div class="stat">💎 <span id="dia">100</span></div>
+        <div class="stat">⭐ Niv. 1</div>
+        <hr border="0" height="1px" background="#eee">
+        <div id="ex-area" style="padding:20px; background:#FFB3D9; border-radius:20px; color:white; font-size:1.5rem; margin:10px 0; cursor:pointer;" onclick="faireExo()">
+            CLIQUE ICI POUR L'EXO
         </div>
+        <p style="font-size:0.8rem; color:#999;">Gagne 10 diamants par réponse !</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
-        const client = window.supabase.createClient(S_URL, S_KEY);
+        const supabase = window.supabase.createClient(S_URL, S_KEY);
 
-        let profile = null, currentCat = 'math', currentIdx = 0;
-        const BANK = { 
-            math: Array.from({length:30}, (_,i)=>({q:`${i+5} + ${i+5}`, a:(2*i+10).toString()})),
-            french: Array.from({length:30}, ()=>({q:"Pluriel de 'Chou'", a:"choux"})),
-            english: Array.from({length:30}, ()=>({q:"Chat en anglais", a:"cat"}))
-        };
+        let monProfil = { diamonds: 100, email: "Invité" };
 
-        // FONCTION CREATION COMPTE
-        async function doSignup() {
-            const u = document.getElementById('username').value.trim();
+        async function inscription() {
+            const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
-            if(!u || p.length < 6) { alert("Pseudo et MDP (6 car.) requis !"); return; }
+            document.getElementById('status').innerText = "Création...";
             
-            document.getElementById('msg').innerText = "⏳ Création en cours...";
-            const email = u.toLowerCase() + "@candy.app";
-            
-            const { data, error } = await client.auth.signUp({ email, password: p });
+            const { data, error } = await supabase.auth.signUp({ email: u+"@c.app", password: p });
             if(error) { alert("Erreur: " + error.message); return; }
             
-            // INSCRIPTION DU PROFIL
-            await client.from('profiles').insert([{ id: data.user.id, email: u, diamonds: 100, level: 1 }]);
-            alert("✨ Compte créé avec succès ! Clique maintenant sur SE CONNECTER.");
-            document.getElementById('msg').innerText = "Maintenant, connecte-toi !";
+            await supabase.from('profiles').insert([{ id: data.user.id, email: u, diamonds: 100 }]);
+            alert("Compte créé ! Maintenant clique sur SE CONNECTER");
+            document.getElementById('status').innerText = "Prêt !";
         }
 
-        // FONCTION CONNEXION
-        async function doLogin() {
-            const u = document.getElementById('username').value.trim();
+        async function connexion() {
+            const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
-            if(!u) return;
+            document.getElementById('status').innerText = "Magie...";
 
-            document.getElementById('msg').innerText = "🪄 Ouverture du portail...";
-            const email = u.toLowerCase() + "@candy.app";
+            const { data, error } = await supabase.auth.signInWithPassword({ email: u+"@c.app", password: p });
+            if(error) { alert("Raté ! Vérifie ton MDP"); return; }
 
-            const { data, error } = await client.auth.signInWithPassword({ email, password: p });
-            if(error) { alert("Erreur: Pseudo ou MDP incorrect."); document.getElementById('msg').innerText = "Erreur de connexion"; return; }
+            const { data: prof } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
+            monProfil = prof;
+            ouvrirJeu();
+        }
 
-            // RÉCUPÉRATION DU PROFIL
-            const { data: prof, error: profErr } = await client.from('profiles').select('*').eq('id', data.user.id).single();
-            
-            if(profErr) {
-                // Si le profil manque, on le crée à la volée pour débloquer
-                const { data: newProf } = await client.from('profiles').insert([{ id: data.user.id, email: u, diamonds: 100, level: 1 }]).select().single();
-                profile = newProf;
+        function invite() {
+            ouvrirJeu();
+        }
+
+        function ouvrirJeu() {
+            document.getElementById('auth-box').classList.add('hidden');
+            document.getElementById('game-box').classList.remove('hidden');
+            document.getElementById('hello').innerText = "Salut " + monProfil.email + " !";
+            document.getElementById('dia').innerText = monProfil.diamonds;
+        }
+
+        function faireExo() {
+            let r = prompt("Combien font 10 + 10 ?");
+            if(r === "20") {
+                alert("BRAVO ! +10 💎");
+                monProfil.diamonds += 10;
+                document.getElementById('dia').innerText = monProfil.diamonds;
+                if(monProfil.id) {
+                    supabase.from('profiles').update({ diamonds: monProfil.diamonds }).eq('id', monProfil.id).then();
+                }
             } else {
-                profile = prof;
+                alert("Oups, réessaie !");
             }
-
-            // AFFICHAGE
-            document.getElementById('user-display').innerText = profile.email.toUpperCase();
-            document.getElementById('val-dia').innerText = profile.diamonds;
-            document.getElementById('val-niv').innerText = profile.level;
-            document.getElementById('auth-screen').classList.remove('active');
-            document.getElementById('dashboard').classList.add('active');
-        }
-
-        function setCat(cat) { currentCat = cat; currentIdx = 0; updateCard(); }
-        function updateCard() {
-            const emojis = { math: '🍩', french: '🍬', english: '🍦' };
-            document.getElementById('wish-emoji').innerText = emojis[currentCat];
-            document.getElementById('wish-title').innerText = `Vœu #${currentIdx + 1}`;
-        }
-        function nav(dir) { currentIdx = (currentIdx + dir + 30) % 30; updateCard(); }
-        function openEx() {
-            document.getElementById('ex-q').innerText = BANK[currentCat][currentIdx].q + " ?";
-            document.getElementById('ex-ans').value = "";
-            document.getElementById('modal').style.display = 'flex';
-        }
-        function closeEx() { document.getElementById('modal').style.display = 'none'; }
-
-        async function check() {
-            const ex = BANK[currentCat][currentIdx];
-            if(document.getElementById('ex-ans').value.trim().toLowerCase() === ex.a.toLowerCase()) {
-                confetti();
-                profile.diamonds += 10;
-                document.getElementById('val-dia').innerText = profile.diamonds;
-                await client.from('profiles').update({ diamonds: profile.diamonds }).eq('id', profile.id);
-                closeEx(); nav(1);
-            } else { alert("Essaie encore ! 🍬"); }
         }
     </script>
 </body>
