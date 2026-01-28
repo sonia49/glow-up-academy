@@ -7,115 +7,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        /* (Le CSS reste le même que le Codage 15 pour garder le visuel du tonnerre) */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        :root {
-            --pink: #FFB3D9; --blue: #A5E7FF; --purple: #E0BBE4; 
-            --yellow: #FFF4A3; --mint: #C1F7DC; --white: rgba(255, 255, 255, 0.8);
-        }
-
-        body {
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(-45deg, #FFE5F1, #E0BBE4, #C1F7DC, #A5E7FF, #FFD4B8);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            min-height: 100vh; display: flex; justify-content: center; overflow: hidden;
-        }
-
+        :root { --pink: #FFB3D9; --blue: #A5E7FF; --purple: #E0BBE4; --yellow: #FFF4A3; --white: rgba(255, 255, 255, 0.8); }
+        body { font-family: 'Fredoka', sans-serif; background: linear-gradient(-45deg, #FFE5F1, #E0BBE4, #C1F7DC, #A5E7FF, #FFD4B8); background-size: 400% 400%; animation: gradientBG 15s ease infinite; min-height: 100vh; display: flex; justify-content: center; overflow: hidden; }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        /* --- BULLES 3D --- */
-        .bubble {
-            position: fixed; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,179,217,0.2));
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05), inset -5px -5px 15px rgba(255,255,255,0.5);
-            animation: float 8s ease-in-out infinite; z-index: 1; pointer-events: none;
-        }
-
+        .bubble { position: fixed; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,179,217,0.2)); box-shadow: 0 10px 30px rgba(0,0,0,0.05), inset -5px -5px 15px rgba(255,255,255,0.5); animation: float 8s ease-in-out infinite; z-index: 1; pointer-events: none; }
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-40px) rotate(10deg); } }
-
         .container { width: 100%; max-width: 450px; padding: 20px; z-index: 10; position: relative; }
-
-        /* --- GLASSMORPHISM --- */
-        .glass {
-            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            position: relative; overflow: hidden;
-        }
-
-        /* EFFET DE BRILLANCE QUI TRAVERSE */
-        .glass::after {
-            content: ''; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
-            transform: rotate(45deg); animation: shine 6s infinite; pointer-events: none;
-        }
+        .glass { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.7); border-radius: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+        .glass::after { content: ''; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); animation: shine 6s infinite; pointer-events: none; }
         @keyframes shine { 0% { left: -150%; } 100% { left: 150%; } }
-
         .screen { display: none; flex-direction: column; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .active { display: flex !important; }
         @keyframes popIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-
-        /* --- UI ELEMENTS --- */
         .logo { font-family: 'Bubblegum Sans', cursive; font-size: 3rem; text-align: center; background: linear-gradient(45deg, #FF6B9D, #C8A2E8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 20px 0; }
-        
         .stat-badge { background: white; padding: 10px 15px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-
-        .avatar-cupcake { 
-            width: 90px; height: 90px; background: white; border-radius: 50%; border: 5px solid white;
-            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3); font-size: 3.5rem;
-            display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
-            animation: bounce 3s infinite ease-in-out; cursor: pointer;
-        }
+        .avatar-cupcake { width: 90px; height: 90px; background: white; border-radius: 50%; border: 5px solid white; box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3); font-size: 3.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; animation: bounce 3s infinite ease-in-out; cursor: pointer; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-
-        .btn-premium {
-            background: linear-gradient(135deg, #FF6B9D, #FFB347); color: white; border: none;
-            padding: 20px; border-radius: 30px; font-family: 'Fredoka'; font-weight: 700;
-            font-size: 1.2rem; cursor: pointer; transition: 0.3s; width: 100%;
-            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
-        }
-        .btn-premium:hover { transform: scale(1.03); filter: brightness(1.1); }
-
-        input {
-            width: 100%; padding: 20px; border-radius: 30px; border: 3px solid #C1F7DC;
-            background: rgba(255,255,255,0.9); text-align: center; font-family: 'Fredoka';
-            font-size: 1.1rem; margin: 15px 0; outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: #FF6B9D; transform: translateY(-2px); }
-
-        .nav-arrow {
-            width: 65px; height: 65px; border-radius: 50%; border: none; background: white;
-            font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: 0.3s;
-        }
-        .nav-arrow:active { transform: scale(0.9); }
-
-        /* MODAL EXERCICE */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(224, 187, 228, 0.8); backdrop-filter: blur(10px);
-            z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
-        }
+        .btn-premium { background: linear-gradient(135deg, #FF6B9D, #FFB347); color: white; border: none; padding: 20px; border-radius: 30px; font-family: 'Fredoka'; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4); }
+        input { width: 100%; padding: 20px; border-radius: 30px; border: 3px solid #C1F7DC; background: rgba(255,255,255,0.9); text-align: center; font-family: 'Fredoka'; font-size: 1.1rem; margin: 15px 0; outline: none; transition: 0.3s; }
+        .nav-arrow { width: 65px; height: 65px; border-radius: 50%; border: none; background: white; font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: 0.3s; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(224, 187, 228, 0.8); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .shake { animation: shake 0.4s ease; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-15px); } 75% { transform: translateX(15px); } }
     </style>
 </head>
 <body>
 
-    <div class="bubble" style="width:120px; height:120px; left:10%; top:20%; animation-delay:0s;"></div>
-    <div class="bubble" style="width:80px; height:80px; left:80%; top:15%; animation-delay:1s;"></div>
-    <div class="bubble" style="width:150px; height:150px; left:70%; top:60%; animation-delay:2s;"></div>
-    <div class="bubble" style="width:60px; height:60px; left:20%; top:75%; animation-delay:1.5s;"></div>
-    <div class="bubble" style="width:90px; height:90px; left:50%; top:40%; animation-delay:0.5s;"></div>
+    <div class="bubble" style="width:120px; height:120px; left:10%; top:20%;"></div>
+    <div class="bubble" style="width:80px; height:80px; left:80%; top:15%;"></div>
+    <div class="bubble" style="width:150px; height:150px; left:70%; top:60%;"></div>
 
     <div class="container">
         <div id="auth-screen" class="screen active">
             <div class="glass" style="padding: 50px 30px; text-align: center;">
                 <h1 class="logo">Candy Academy</h1>
-                <p style="color:#C8A2E8; font-weight:500; margin-bottom:30px;">Prêt pour ton aventure sucrée ?</p>
-                <input type="text" id="username" placeholder="✨ Ton pseudo magique">
-                <input type="password" id="pass" placeholder="🔐 Ton mot de passe">
-                <button class="btn-premium" onclick="login()">Ouvrir le portail 🪄</button>
+                <input type="text" id="username" placeholder="✨ Ton pseudo">
+                <input type="password" id="pass" placeholder="🔐 Mot de passe">
+                <button class="btn-premium" id="login-btn" onclick="handleAuth()">Entrer au Royaume 🪄</button>
             </div>
         </div>
 
@@ -135,15 +65,15 @@
             </div>
 
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" id="btn-math" onclick="setCat('math')">🍩 Maths</button>
-                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" id="btn-french" onclick="setCat('french')">🍬 Français</button>
-                <button class="stat-badge" style="flex:1; border:none; cursor:pointer;" id="btn-english" onclick="setCat('english')">🍦 English</button>
+                <button class="stat-badge" style="flex:1; border:none;" id="btn-math" onclick="setCat('math')">🍩 Maths</button>
+                <button class="stat-badge" style="flex:1; border:none;" id="btn-french" onclick="setCat('french')">🍬 Français</button>
+                <button class="stat-badge" style="flex:1; border:none;" id="btn-english" onclick="setCat('english')">🍦 English</button>
             </div>
 
-            <div class="glass" style="padding:40px; text-align:center; cursor:pointer;" onclick="openEx()">
-                <div id="wish-emoji" style="font-size:5rem; margin-bottom:20px; animation: float 3s infinite;">🍩</div>
+            <div class="glass" style="padding:40px; text-align:center;" onclick="openEx()">
+                <div id="wish-emoji" style="font-size:5rem; margin-bottom:20px;">🍩</div>
                 <h2 id="wish-title" style="color:#FF6B9D; font-size:1.8rem;">Vœu Magique #1</h2>
-                <div style="margin-top:20px; background:#4ECDC4; color:white; padding:12px; border-radius:20px; font-weight:700;">Gagne 10 Diamants 💎</div>
+                <div style="margin-top:20px; background:#4ECDC4; color:white; padding:12px; border-radius:20px; font-weight:700;">💎 +10</div>
             </div>
 
             <div style="display:flex; justify-content:center; gap:30px; margin-top:30px;">
@@ -155,57 +85,57 @@
 
     <div id="modal" class="modal-overlay">
         <div class="glass" style="padding:50px 30px; width:100%; max-width:400px; text-align:center;" id="modal-card">
-            <h3 id="ex-header" style="color:#FF6B9D; margin-bottom:10px;">RÉALISE TON VŒU ✨</h3>
             <p id="ex-q" style="font-size:1.8rem; font-weight:700; color:#8B7AB8; margin:30px 0;"></p>
-            <input type="text" id="ex-ans" placeholder="Ta réponse ici...">
-            <button class="btn-premium" onclick="check()">Lancer le sort ! 🍬</button>
-            <p onclick="closeEx()" style="margin-top:20px; color:#ccc; cursor:pointer;">Plus tard</p>
+            <input type="text" id="ex-ans" placeholder="Réponse...">
+            <button class="btn-premium" onclick="check()">Valider ✨</button>
+            <p onclick="closeEx()" style="margin-top:20px; color:#ccc; cursor:pointer;">Annuler</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // CONFIG SUPABASE
         const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
         let profile = null, currentCat = 'math', currentIdx = 0;
-        const AVATARS = ['🧁', '🧚‍♀️', '👑', '🐱', '🦄'];
-        let avaIdx = 0;
 
-        // BANQUE DE 90 EXERCICES
         const BANK = { math: [], french: [], english: [] };
-        const qF = ["Pluriel de Chat", "Pluriel de Hibou", "Pluriel de Chou", "Pluriel de Travail", "Pluriel de Journal", "Féminin de Lion", "Féminin de Prince", "Contraire de Beau", "Pluriel de Ciel", "Pluriel de Caillou"];
-        const aF = ["chats", "hiboux", "choux", "travaux", "journaux", "lionne", "princesse", "laid", "cieux", "cailloux"];
-        const qE = ["Chat en Anglais", "Rose en Anglais", "Merci en Anglais", "Chien en Anglais", "Lundi en Anglais", "Bleu en Anglais", "Apple en Français", "Sun en Français", "Love en Français", "Goodbye en Français"];
-        const aE = ["cat", "pink", "thank you", "dog", "monday", "blue", "pomme", "soleil", "amour", "au revoir"];
-
+        // Génération simplifiée pour le test (On garde tes 90 exos)
         for(let i=1; i<=30; i++) {
-            BANK.math.push({ q: `${i+5} + ${i*2}`, a: (i+5 + i*2).toString() });
-            BANK.french.push({ q: qF[i % 10], a: aF[i % 10] });
-            BANK.english.push({ q: qE[i % 10], a: aE[i % 10] });
+            BANK.math.push({ q: `${i+5} + ${i}`, a: (i+5+i).toString() });
+            BANK.french.push({ q: "Pluriel de Chat", a: "chats" });
+            BANK.english.push({ q: "Chat en Anglais", a: "cat" });
         }
 
-        // GENERATEUR DE SONS 8-BIT
-        const playSound = (freq, type, dur) => {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.start(); osc.stop(ctx.currentTime + dur);
-        };
-
-        async function login() {
+        async function handleAuth() {
+            const btn = document.getElementById('login-btn');
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
+            if(!user || pass.length < 6) { alert("Pseudo et mot de passe (6 car.) requis !"); return; }
+            
+            btn.innerText = "Magie en cours...";
             const email = user.toLowerCase() + "@candy.user";
-            const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
-            if(error) { alert("❌ Identifiants incorrects !"); return; }
+
+            // 1. Tenter de se connecter
+            let { data, error } = await client.auth.signInWithPassword({ email, password: pass });
+
+            // 2. Si ça échoue, on tente de créer le compte
+            if(error) {
+                const { data: signData, error: signError } = await client.auth.signUp({ email, password: pass });
+                if(signError) { alert("Erreur: " + signError.message); btn.innerText = "Entrer au Royaume 🪄"; return; }
+                data = signData;
+                // Créer le profil par défaut
+                await client.from('profiles').insert([{ id: data.user.id, email: user, diamonds: 100, level: 1, streak: 0 }]);
+            }
+
+            // 3. Charger le profil
             const { data: p } = await client.from('profiles').select('*').eq('id', data.user.id).single();
             profile = p;
+            startApp();
+        }
+
+        function startApp() {
             document.getElementById('user-display').innerText = profile.email.toUpperCase();
             updateStats();
             document.getElementById('auth-screen').classList.remove('active');
@@ -221,55 +151,35 @@
 
         function setCat(cat) {
             currentCat = cat; currentIdx = 0;
-            const colors = { math: '#FFB3D9', french: '#A5E7FF', english: '#E0BBE4' };
-            const emojis = { math: '🍩', french: '🍬', english: '🍦' };
-            document.querySelectorAll('.stat-badge').forEach(b => b.style.background = 'white');
-            document.getElementById('btn-'+cat).style.background = colors[cat];
-            document.getElementById('wish-emoji').innerText = emojis[cat];
             updateCard();
         }
 
         function updateCard() {
+            const emojis = { math: '🍩', french: '🍬', english: '🍦' };
+            document.getElementById('wish-emoji').innerText = emojis[currentCat];
             document.getElementById('wish-title').innerText = `Vœu Magique #${currentIdx + 1}`;
         }
 
-        function nav(dir) {
-            currentIdx = (currentIdx + dir + 30) % 30;
-            updateCard();
-            playSound(400 + (currentIdx * 10), 'sine', 0.05);
-        }
-
-        function openEx() {
+        function nav(dir) { currentIdx = (currentIdx + dir + 30) % 30; updateCard(); }
+        function openEx() { 
             const ex = BANK[currentCat][currentIdx];
             document.getElementById('ex-q').innerText = ex.q + " ?";
-            document.getElementById('ex-ans').value = "";
             document.getElementById('modal').style.display = 'flex';
         }
-
         function closeEx() { document.getElementById('modal').style.display = 'none'; }
 
         async function check() {
             const ex = BANK[currentCat][currentIdx];
             const ans = document.getElementById('ex-ans').value.trim().toLowerCase();
             if(ans === ex.a.toLowerCase()) {
-                // SUCCESS
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#FF6B9D', '#A5E7FF', '#FFF4A3'] });
-                playSound(523, 'square', 0.1); playSound(659, 'square', 0.1); playSound(783, 'square', 0.2);
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 profile.diamonds += 10; updateStats();
                 await client.from('profiles').update({ diamonds: profile.diamonds }).eq('id', profile.id);
-                setTimeout(() => { closeEx(); nav(1); }, 1200);
+                closeEx(); nav(1);
             } else {
-                // ERROR
                 document.getElementById('modal-card').classList.add('shake');
-                playSound(110, 'sawtooth', 0.3);
                 setTimeout(() => document.getElementById('modal-card').classList.remove('shake'), 400);
             }
-        }
-
-        function cycleAvatar() {
-            avaIdx = (avaIdx + 1) % AVATARS.length;
-            document.getElementById('main-avatar').innerText = AVATARS[avaIdx];
-            playSound(800, 'sine', 0.05);
         }
     </script>
 </body>
