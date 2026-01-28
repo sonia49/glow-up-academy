@@ -3,219 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌈 Glow Up Academy - Codage 2</title>
+    <title>🌈 Glow Up Academy - Codage 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
-        /* --- DESIGN ARC-EN-CIEL & DASHBOARD --- */
+        /* --- STYLE DASHBOARD FUTURISTE --- */
         :root {
-            --rainbow: linear-gradient(45deg, #ff00c1, #9600ff, #00b6ff, #00ff8e, #ffdb00, #ff0000);
-            --glass: rgba(255, 255, 255, 0.9);
-            --shadow: 0 8px 32px rgba(0,0,0,0.1);
+            --rainbow: linear-gradient(90deg, #ff00c1, #9600ff, #00b6ff, #00ff8e, #ffdb00, #ff0000);
+            --bg-dark: #050505;
+            --card-bg: rgba(255, 255, 255, 0.07);
+            --accent: #ff00c1;
         }
 
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: #0f0c29;
-            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+            color: white;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 20px;
-            color: #333;
         }
 
-        .screen { width: 100%; max-width: 480px; display: none; animation: fadeIn 0.5s ease; }
+        .container { width: 100%; max-width: 500px; position: relative; padding-bottom: 80px; }
+        .screen { display: none; padding: 20px; animation: slideUp 0.4s ease-out; }
         .active { display: block !important; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cartes Style Glassmorphism */
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: var(--shadow);
+        /* --- ÉCRAN CONNEXION --- */
+        .auth-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 20px;
+            border-radius: 40px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
+            margin-top: 50px;
         }
 
-        h1 {
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2.5rem;
             background: var(--rainbow);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
         }
-
-        /* Gros Boutons Dégradés */
-        .btn-rainbow {
-            background: var(--rainbow);
-            background-size: 400%;
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.5s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-top: 15px;
-        }
-        .btn-rainbow:hover { background-position: right; transform: scale(1.02); }
-        .btn-rainbow:active { transform: scale(0.98); }
 
         input {
             width: 100%;
             padding: 18px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 18px;
-            background: #f0f0f0;
-            font-size: 1rem;
-            box-shadow: inset 5px 5px 10px #ddd, inset -5px -5px 10px #fff;
-        }
-
-        /* Dashboard Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .stat-box {
-            background: white;
-            padding: 15px;
+            margin: 10px 0;
             border-radius: 20px;
-            font-weight: bold;
-            box-shadow: var(--shadow);
-        }
-        .stat-label { display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; }
-        .stat-value { font-size: 1.3rem; color: #333; }
-
-        /* Liste Exercices Modernes */
-        .tab-menu { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding: 10px 0; }
-        .tab {
-            padding: 12px 20px;
+            border: none;
             background: rgba(255,255,255,0.1);
             color: white;
-            border-radius: 50px;
-            cursor: pointer;
-            white-space: nowrap;
-            border: 1px solid rgba(255,255,255,0.3);
-            font-weight: 600;
+            font-size: 1rem;
+            outline: none;
         }
-        .tab.active { background: white; color: #302b63; }
 
-        .ex-list { display: grid; gap: 12px; }
-        .ex-card {
-            background: white;
+        .btn-main {
+            background: var(--rainbow);
+            background-size: 200%;
+            border: none;
             padding: 20px;
-            border-radius: 22px;
+            width: 100%;
+            border-radius: 20px;
+            color: white;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .btn-main:hover { background-position: right; transform: scale(1.02); }
+
+        /* --- DASHBOARD HEADER --- */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-            border-left: 8px solid transparent;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .ex-card:hover { transform: scale(1.03); border-left-color: #9600ff; }
-        
-        .reward-pill {
-            background: #e0fcf5;
-            color: #20bf6b;
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.9rem;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 0 0 30px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .error { color: #ff4757; font-weight: bold; margin-top: 10px; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .avatar-circle { width: 45px; height: 45px; background: var(--rainbow); border-radius: 50%; display: grid; place-items: center; font-weight: bold; }
+
+        .diamond-pill {
+            background: rgba(0, 182, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: 1px solid #00b6ff;
+            color: #00b6ff;
+            font-weight: 800;
+            font-family: 'Orbitron';
+        }
+
+        /* --- MENU MATIÈRES --- */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .menu-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .menu-item.active { border-color: var(--accent); background: rgba(255, 0, 193, 0.1); }
+        .menu-item span { display: block; font-size: 1.5rem; margin-bottom: 5px; }
+        .menu-item label { font-size: 0.7rem; font-weight: bold; cursor: pointer; }
+
+        /* --- LISTE EXERCICES --- */
+        .ex-scroll { display: grid; gap: 15px; }
+        .ex-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid #9600ff;
+            transition: 0.2s;
+        }
+        .ex-card:hover { transform: translateX(10px); background: rgba(255,255,255,0.15); }
+        .ex-card b { font-family: 'Orbitron'; color: #00ff8e; }
+
+        /* --- ZONE DE JEU --- */
+        .game-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 1000;
+            padding: 30px; box-sizing: border-box; display: none;
+        }
+        .game-box {
+            background: var(--card-bg);
+            padding: 40px 20px; border-radius: 40px; border: 1px solid var(--accent);
+            text-align: center; margin-top: 40px;
+        }
+
+        .error { color: #ff0055; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen" class="screen active">
-        <div class="card">
-            <h1>GLOW UP</h1>
-            <input type="text" id="username" placeholder="Pseudo Magique">
-            <input type="password" id="pass" placeholder="Mot de passe secret">
-            <button onclick="validerAuth()" class="btn-rainbow" id="btn-text">Entrer dans l'Academy ⚡</button>
-            <p onclick="toggleMode()" id="switch-link" style="color:#888; cursor:pointer; margin-top:20px; font-weight: 600;">Créer un compte</p>
-            <div id="auth-error" class="error"></div>
-        </div>
-    </div>
-
-    <div id="dashboard" class="screen">
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span class="stat-label">Profil</span>
-                <span class="stat-value" id="display-user">...</span>
-            </div>
-            <div class="stat-box" style="border-bottom: 4px solid #00b6ff;">
-                <span class="stat-label">Trésor</span>
-                <span class="stat-value" style="color:#00b6ff">💎 <span id="diamond-count">0</span></span>
+    <div class="container">
+        
+        <div id="auth-screen" class="screen active">
+            <div class="auth-card">
+                <div class="logo-text">GLOW UP</div>
+                <p style="color: #888; margin-bottom: 30px;">L'Academy du Futur</p>
+                
+                <input type="text" id="username" placeholder="Identifiant">
+                <input type="password" id="pass" placeholder="Mot de passe">
+                
+                <button onclick="validerAuth()" class="btn-main" id="btn-text">Se Connecter</button>
+                <p onclick="toggleMode()" id="switch-link" style="margin-top:20px; font-size:0.9rem; cursor:pointer; color: #aaa;">Pas de compte ? <span style="color:var(--accent)">Créer un profil</span></p>
+                <div id="auth-error" class="error"></div>
             </div>
         </div>
 
-        <div id="list-view">
-            <div class="tab-menu">
-                <div class="tab active" onclick="filtrer('math')">🔢 Maths</div>
-                <div class="tab" onclick="filtrer('french')">📚 Français</div>
-                <div class="tab" onclick="filtrer('english')">🇬🇧 Anglais</div>
+        <div id="dashboard" class="screen">
+            <div class="header">
+                <div class="user-info">
+                    <div class="avatar-circle" id="user-initial">?</div>
+                    <div>
+                        <div style="font-size: 0.7rem; color: #888;">BIENVENUE</div>
+                        <div style="font-weight: 800;" id="display-user">JOUEUR</div>
+                    </div>
+                </div>
+                <div class="diamond-pill">💎 <span id="diamond-count">0</span></div>
             </div>
-            <div id="ex-container" class="ex-list"></div>
-            <button onclick="location.reload()" class="btn-rainbow" style="margin-top:30px; background: #333; font-size:0.8rem;">Déconnexion</button>
+
+            <div class="grid-menu">
+                <div class="menu-item active" onclick="filtrer('math', this)">
+                    <span>🔢</span><label>MATHS</label>
+                </div>
+                <div class="menu-item" onclick="filtrer('french', this)">
+                    <span>📚</span><label>FRANÇAIS</label>
+                </div>
+                <div class="menu-item" onclick="filtrer('english', this)">
+                    <span>🇬🇧</span><label>ANGLAIS</label>
+                </div>
+            </div>
+
+            <h3 style="margin-left: 10px; letter-spacing: 2px; font-size: 0.9rem; color: #555;">MISSIONS DISPONIBLES</h3>
+            <div id="ex-container" class="ex-scroll"></div>
         </div>
 
-        <div id="game-view" class="card" style="display:none;">
-            <div id="ex-cat" style="font-weight:900; color:#9600ff; letter-spacing: 2px;">MISSION</div>
-            <p id="ex-q" style="font-size:1.5rem; margin:30px 0; font-weight: 700; line-height:1.4;"></p>
-            <input type="text" id="ex-ans" placeholder="Ta réponse...">
-            <button onclick="verifierReponse()" class="btn-rainbow">Vérifier ✅</button>
-            <button onclick="quitterJeu()" style="background:none; border:none; color:#888; margin-top:15px; cursor:pointer; font-weight:bold;">Abandonner la mission</button>
+        <div id="game-view" class="game-overlay">
+            <div class="logo-text" style="font-size: 1.2rem; text-align: center;">MISSION EN COURS</div>
+            <div class="game-box">
+                <p id="ex-q" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 30px;"></p>
+                <input type="text" id="ex-ans" placeholder="TA RÉPONSE..." style="text-align: center; font-size: 1.5rem; background: black; border: 1px solid #333;">
+                <button onclick="verifierReponse()" class="btn-main">VALIDER LA MISSION</button>
+                <button onclick="quitterJeu()" style="background:none; border:none; color: #555; margin-top: 20px; cursor:pointer;">ABANDONNER</button>
+            </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // --- JS LOGIQUE IDENTIQUE AU CODAGE 1 ---
         const S_URL = 'https://lcbwehiwjowgthazrydy.supabase.co';
         const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjYndlaGl3am93Z3RoYXpyeWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTg4NjIsImV4cCI6MjA4NDkzNDg2Mn0.2nP42Uh262Jt-1stolzSVM8_EEzrAdCutKgd7B2MurY';
         const client = window.supabase.createClient(S_URL, S_KEY, { auth: { persistSession: false } });
 
         let session = null, diamonds = 0, mode = 'login', currentEx = null;
 
-        const EXERCICES = [
-            { q: "12,5 + 7,5 ?", a: "20", r: 10 }, { q: "Rayon d'un cercle de diamètre 10 ?", a: "5", r: 15 },
-            { q: "10% de 200 ?", a: "20", r: 15 }, { q: "15 x 3 ?", a: "45", r: 10 },
-            { q: "Pluriel de 'Cadeau' ?", a: "cadeaux", r: 10 }, { q: "Pluriel de 'Hibou' ?", a: "hiboux", r: 15 },
-            { q: "Traduis 'Yellow' ?", a: "jaune", r: 10 }, { q: "Pluriel de 'Foot' ?", a: "feet", r: 15 },
-            { q: "8 x 9 ?", a: "72", r: 10 }, { q: "Quart de 100 ?", a: "25", r: 10 },
-            { q: "Féminin de 'Acteur' ?", a: "actrice", r: 10 }, { q: "Pluriel de 'Journal' ?", a: "journaux", r: 15 },
-            { q: "Traduis 'Red' ?", a: "rouge", r: 10 }, { q: "Traduis 'Water' ?", a: "eau", r: 10 }
-        ];
-        for(let i=0; i<60; i++) { 
-            if(!EXERCICES[i]) EXERCICES.push({ q: `Défi #${i+1}: 10 + ${i} ?`, a: (10+i).toString(), r: 5 });
-            EXERCICES[i].id = i+1;
-            EXERCICES[i].cat = i < 20 ? 'math' : (i < 40 ? 'french' : 'english');
+        const EXERCICES = [];
+        const cats = ['math', 'french', 'english'];
+        for(let i=0; i<60; i++) {
+            let c = cats[Math.floor(i/20)];
+            EXERCICES.push({
+                id: i+1, cat: c, 
+                q: c == 'math' ? `${i+5} x ${Math.floor(i/10)+2} ?` : (c == 'french' ? `Pluriel de 'Mot ${i}' ?` : `Traduis 'Hello ${i}'`),
+                a: c == 'math' ? ((i+5)*(Math.floor(i/10)+2)).toString() : (c == 'french' ? `mots ${i}` : `bonjour ${i}`),
+                r: 10 + i
+            });
         }
 
         function toggleMode() {
             mode = (mode === 'login') ? 'signup' : 'login';
-            document.getElementById('auth-title').innerText = mode === 'login' ? "Connexion" : "Inscription";
-            document.getElementById('btn-text').innerText = mode === 'login' ? "Entrer dans l'Academy ⚡" : "Créer mon profil 🌈";
+            document.getElementById('btn-text').innerText = mode === 'login' ? "Se Connecter" : "Créer mon Profil";
         }
 
         async function validerAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('pass').value;
-            const errBox = document.getElementById('auth-error');
-            if(!user || pass.length < 6) { errBox.innerText = "Identifiant requis & MDP (6 car. min)"; return; }
+            if(!user || pass.length < 6) { alert("Pseudo requis & MDP 6 car. min"); return; }
             const internalEmail = user.toLowerCase() + "@academy.user";
 
             try {
@@ -223,15 +249,14 @@
                     const { data, error } = await client.auth.signUp({ email: internalEmail, password: pass });
                     if(error) throw error;
                     await client.from('profiles').insert([{ id: data.user.id, email: user, diamonds: 0 }]);
-                    alert("Compte créé ! Connecte-toi.");
-                    location.reload();
+                    alert("Compte créé !"); location.reload();
                 } else {
                     const { data, error } = await client.auth.signInWithPassword({ email: internalEmail, password: pass });
                     if(error) throw error;
                     session = data.user;
                     recupererProfil();
                 }
-            } catch (e) { errBox.innerText = "❌ " + e.message; }
+            } catch (e) { document.getElementById('auth-error').innerText = e.message; }
         }
 
         async function recupererProfil() {
@@ -239,24 +264,26 @@
             if(data) {
                 diamonds = data.diamonds;
                 document.getElementById('diamond-count').innerText = diamonds;
-                document.getElementById('display-user').innerText = data.email;
+                document.getElementById('display-user').innerText = data.email.toUpperCase();
+                document.getElementById('user-initial').innerText = data.email[0].toUpperCase();
             }
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('dashboard').classList.add('active');
-            filtrer('math');
+            filtrer('math', document.querySelector('.menu-item'));
         }
 
-        function filtrer(cat) {
+        function filtrer(cat, el) {
             const cont = document.getElementById('ex-container');
             cont.innerHTML = "";
-            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.innerText.toLowerCase().includes(cat)));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
+
             EXERCICES.filter(e => e.cat === cat).forEach(ex => {
                 const item = document.createElement('div');
                 item.className = "ex-card";
-                item.innerHTML = `<span>Mission #${ex.id}</span> <span class="reward-pill">+${ex.r} 💎</span>`;
+                item.innerHTML = `<div><small style="color:#888">MISSION #${ex.id}</small><br>Défi ${cat}</div> <b>+${ex.r} 💎</b>`;
                 item.onclick = () => {
                     currentEx = ex;
-                    document.getElementById('list-view').style.display = 'none';
                     document.getElementById('game-view').style.display = 'block';
                     document.getElementById('ex-q').innerText = ex.q;
                     document.getElementById('ex-ans').value = "";
@@ -266,20 +293,16 @@
         }
 
         async function verifierReponse() {
-            const rep = document.getElementById('ex-ans').value.trim().toLowerCase();
-            if(rep === currentEx.a.toLowerCase()) {
-                alert("✨ MAGNIFIQUE ! Tu gagnes " + currentEx.r + " 💎");
+            if(document.getElementById('ex-ans').value.trim().toLowerCase() === currentEx.a.toLowerCase()) {
+                alert("Missions Accomplie ! ✨");
                 diamonds += currentEx.r;
                 document.getElementById('diamond-count').innerText = diamonds;
                 await client.from('profiles').update({ diamonds: diamonds }).eq('id', session.id);
                 quitterJeu();
-            } else { alert("❌ Ce n'est pas la bonne réponse."); }
+            } else { alert("Échec de la mission ! Réessaie."); }
         }
 
-        function quitterJeu() {
-            document.getElementById('list-view').style.display = 'block';
-            document.getElementById('game-view').style.display = 'none';
-        }
+        function quitterJeu() { document.getElementById('game-view').style.display = 'none'; }
     </script>
 </body>
 </html>
